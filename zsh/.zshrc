@@ -26,6 +26,6 @@ source $ZSH/oh-my-zsh.sh
 bindkey -v
 
 # alias's
-alias zshconfig="mate ~/.zshrc"
-alias ohmyzsh="mate ~/.oh-my-zsh"
+alias zshconfig="vim ~/.zshrc"
+alias ohmyzsh="vim ~/.oh-my-zsh"
 alias open="xdg-open"

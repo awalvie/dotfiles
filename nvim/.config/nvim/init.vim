@@ -1,10 +1,10 @@
-"        _                    
-"       (_)                   
-" __   ___ _ __ ___  _ __ ___ 
+"        _
+"       (_)
+" __   ___ _ __ ___  _ __ ___
 " \ \ / / | '_ ` _ \| '__/ __|
-"  \ V /| | | | | | | | | (__ 
+"  \ V /| | | | | | | | | (__
 "   \_/ |_|_| |_| |_|_|  \___|
-                            
+
 " Set map leader
 let mapleader =","
 
@@ -16,7 +16,12 @@ if ! filereadable(expand('~/.config/nvim/autoload/plug.vim'))
 	autocmd VimEnter * PlugInstall
 endif
 
-" Install the necesary plugins 
+" tmux color support
+if (has("termguicolors"))
+  set termguicolors
+endif
+
+" Install the necesary plugins
 call plug#begin('~/.config/nvim/plugged')
 
 Plug 'scrooloose/nerdtree'
@@ -63,5 +68,3 @@ map <C-l> <C-w>l
 
 " Automatically deletes all trailing whitespace on save.
 autocmd BufWritePre * %s/\s\+$//e
-
-

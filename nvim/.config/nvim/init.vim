@@ -47,9 +47,14 @@ colorscheme gruvbox
 let g:airline_theme='gruvbox'
 let g:airline_powerline_fonts = 1
 
+" Goyo plugin makes text more readable when writing prose:
+map <leader>g :Goyo \| set linebreak<CR>
 
 " Nerd tree
 map <leader>n :NERDTreeToggle<CR>
+
+" disable highlighting
+map <leader>h :noh<CR>
 
 " Enable autocompletion:
 set wildmode=longest,list,full
@@ -68,3 +73,8 @@ map <C-l> <C-w>l
 
 " Automatically deletes all trailing whitespace on save.
 autocmd BufWritePre * %s/\s\+$//e
+
+" Remembers last position of the cursor
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+endif

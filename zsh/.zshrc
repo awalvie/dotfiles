@@ -25,7 +25,19 @@ source $ZSH/oh-my-zsh.sh
 # enable vim mode in terminal
 bindkey -v
 
-# alias's
 alias zshconfig="vim ~/.zshrc"
-alias ohmyzsh="vim ~/.oh-my-zsh"
 alias open="xdg-open"
+alias r="ranger"
+alias vimconfig="vim ~/dotfiles/nvim/.config/nvim/init.vim"
+
+# ctrl+r search history
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/Devel
+source /usr/local/bin/virtualenvwrapper.sh
+
+# Install Ruby Gems to ~/gems
+export GEM_HOME="$HOME/gems"
+export PATH="$HOME/gems/bin:$PATH"

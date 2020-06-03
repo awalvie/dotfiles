@@ -1,8 +1,9 @@
 # ohmyzsh defaults
-export ZSH="~/.oh-my-zsh"
+export ZSH="/home/awalvie/.oh-my-zsh"
 
-# Theme
-ZSH_THEME="robbyrussell"
+# Enable colors and change prompt:
+autoload -U colors && colors	# Load colors
+PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%} %{$fg[magenta]%}%1d%{$fg[red]%}]%{$reset_color%}$%b "
 
 plugins=(
 	git
@@ -15,20 +16,19 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-# Preferred editor for local and remote sessions
- if [[ -n $SSH_CONNECTION ]]; then
-   export EDITOR='nvim'
- else
-   export EDITOR='vim'
- fi
+export EDITOR='nvim'
 
 # enable vim mode in terminal
 bindkey -v
 
 alias zshconfig="vim ~/.zshrc"
 alias open="xdg-open"
+alias bigtree="cd ~/github/bigtree; poetry shell"
 alias r="ranger"
+alias website="r ~/github/awalvie.github.io"
 alias vimconfig="vim ~/dotfiles/nvim/.config/nvim/init.vim"
+alias expcon="expressvpn connect"
+alias expdis="expressvpn disconnect"
 
 # ctrl+r search history
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -41,3 +41,7 @@ source /usr/local/bin/virtualenvwrapper.sh
 # Install Ruby Gems to ~/gems
 export GEM_HOME="$HOME/gems"
 export PATH="$HOME/gems/bin:$PATH"
+
+# preview markdown files
+unalias md
+md() { pandoc "$1" | lynx -stdin; }

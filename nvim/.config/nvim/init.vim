@@ -20,6 +20,8 @@ endif
 " Install the necesary plugins
 call plug#begin('~/.config/nvim/plugged')
 
+" vimwiki is best wiki
+Plug 'vimwiki/vimwiki'
 " intellisense for vim
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 " Git wrapper for vim

@@ -20,12 +20,8 @@ endif
 " Install the necesary plugins
 call plug#begin('~/.config/nvim/plugged')
 
-" vimwiki is best wiki
-Plug 'vimwiki/vimwiki'
 " intellisense for vim
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
-" Git wrapper for vim
-Plug 'tpope/vim-fugitive'
 " surround things with different things
 Plug 'tpope/vim-surround'
 " Fuzzy file finder
@@ -40,7 +36,9 @@ Plug 'junegunn/goyo.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " Plugin for auto-completing closing brackets
-Plug 'raimondi/delimitmate'
+Plug 'jiangmiao/auto-pairs'
+" Plugin for quickly commenting out code
+Plug 'preservim/nerdcommenter'
 
 call plug#end()
 
@@ -51,9 +49,10 @@ endif
 
 " general settings
 filetype plugin on
+filetype indent on
 syntax on
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set autoindent
 set ignorecase
 set encoding=utf-8
@@ -84,6 +83,27 @@ let g:gruvbox_italic=1
 colorscheme gruvbox
 let g:airline_theme='gruvbox'
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
+
+" buffer navigation and management
+
+set hidden
+
+nmap <leader>T :enew<cr>
+
+" Move to the next buffer
+nmap <leader>l :bnext<CR>
+
+" Move to the previous buffer
+nmap <leader>h :bprevious<CR>
+
+" Close the current buffer and move to the previous one
+" This replicates the idea of closing a tab
+nmap <leader>bq :bp <BAR> bd #<CR>
+
+" Show all open buffers and their status
+nmap <leader>bl :ls<CR>
 
 " Goyo plugin makes text more readable when writing prose:
 map <leader>g :Goyo \| set linebreak<CR>
@@ -92,7 +112,7 @@ map <leader>g :Goyo \| set linebreak<CR>
 map <leader>n :NERDTreeToggle<CR>
 
 " disable highlighting
-map <leader>h :noh<CR>
+map <leader><space> :noh<CR>
 
 " Enable autocompletion:
 set wildmode=longest,list,full
@@ -119,6 +139,12 @@ autocmd BufWritePre * %s/\s\+$//e
 if has("autocmd")
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 endif
+
+" nerdcommenter config
+let g:NERDSpaceDelims = 1
+
+" preferences for various file formats
+autocmd FileType c setlocal noet ts=4 sw=4 tw=80
 
 " COC keymaps stolen from https://github.com/NerdyPepper/dotfiles
 inoremap <silent><expr> <TAB>

@@ -25,7 +25,7 @@ alias r="ranger"
 alias vimconfig="vim ~/dotfiles/nvim/.config/nvim/init.vim"
 alias expcon="expressvpn connect"
 alias expdis="expressvpn disconnect"
-alias lyceum="vim ~/github/lyceum/content/"
+alias lyceum="cd ~/github/lyceum/; vim ."
 
 # ctrl+r search history
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -36,7 +36,7 @@ Plug 'junegunn/goyo.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " Plugin for auto-completing closing brackets
-Plug 'jiangmiao/auto-pairs'
+Plug 'townk/vim-autoclose'
 " Plugin for quickly commenting out code
 Plug 'preservim/nerdcommenter'
 
@@ -65,16 +65,24 @@ set clipboard+=unnamedplus
 " Don't litter swp files everywhere
 set backupdir=~/.cache
 set directory=~/.cache
+
 " Ex mode is fucking dumb
 nnoremap Q <Nop>
 set magic
+
 " always have lines above and below you when scrolling
 set scrolloff=3
 set sidescroll=3
+
 " Search as you type, highlight results
 set incsearch
 set showmatch
 set hlsearch
+
+" Preferences for various file formats
+autocmd FileType c setlocal noet ts=8 sw=8 tw=80 cc=100
+autocmd FileType h setlocal noet ts=8 sw=8 tw=80 cc=100
+autocmd FileType cpp setlocal noet ts=8 sw=8 tw=80 cc=100
 
 " themeing
 set background=dark
@@ -82,34 +90,29 @@ set termguicolors
 let g:gruvbox_italic=1
 colorscheme gruvbox
 let g:airline_theme='gruvbox'
-let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 
 " buffer navigation and management
-
 set hidden
-
 nmap <leader>T :enew<cr>
-
 " Move to the next buffer
 nmap <leader>l :bnext<CR>
-
 " Move to the previous buffer
 nmap <leader>h :bprevious<CR>
-
+" Delete current buffer"
 " Close the current buffer and move to the previous one
 " This replicates the idea of closing a tab
 nmap <leader>bq :bp <BAR> bd #<CR>
-
-" Show all open buffers and their status
-nmap <leader>bl :ls<CR>
 
 " Goyo plugin makes text more readable when writing prose:
 map <leader>g :Goyo \| set linebreak<CR>
 
 " Nerd tree
 map <leader>n :NERDTreeToggle<CR>
+" close vim if the only window left open is a NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
 
 " disable highlighting
 map <leader><space> :noh<CR>
@@ -142,9 +145,6 @@ endif
 
 " nerdcommenter config
 let g:NERDSpaceDelims = 1
-
-" preferences for various file formats
-autocmd FileType c setlocal noet ts=4 sw=4 tw=80
 
 " COC keymaps stolen from https://github.com/NerdyPepper/dotfiles
 inoremap <silent><expr> <TAB>

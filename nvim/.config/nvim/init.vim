@@ -36,7 +36,7 @@ Plug 'junegunn/goyo.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " Plugin for auto-completing closing brackets
-Plug 'townk/vim-autoclose'
+Plug 'raimondi/delimitmate'
 " Plugin for quickly commenting out code
 Plug 'preservim/nerdcommenter'
 
@@ -80,9 +80,9 @@ set showmatch
 set hlsearch
 
 " Preferences for various file formats
-autocmd FileType c setlocal noet ts=8 sw=8 tw=80 cc=100
-autocmd FileType h setlocal noet ts=8 sw=8 tw=80 cc=100
-autocmd FileType cpp setlocal noet ts=8 sw=8 tw=80 cc=100
+autocmd FileType c setlocal noet ts=8 sw=8 tw=80 cc=80
+autocmd FileType h setlocal noet ts=8 sw=8 tw=80 cc=80
+autocmd FileType cpp setlocal noet ts=8 sw=8 tw=80 cc=80
 
 " themeing
 set background=dark
@@ -113,6 +113,8 @@ map <leader>n :NERDTreeToggle<CR>
 " close vim if the only window left open is a NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+" delimitmate end expand bracket to newline
+let delimitMate_expand_cr=1
 
 " disable highlighting
 map <leader><space> :noh<CR>
@@ -160,7 +162,7 @@ endfunction
 
 inoremap <silent><expr> <c-space> coc#refresh()
 
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<Plug>delimitMateCR"
 
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)

@@ -51,8 +51,8 @@ endif
 filetype plugin on
 filetype indent on
 syntax on
-set tabstop=2
-set shiftwidth=2
+set tabstop=4
+set shiftwidth=4
 set autoindent
 set ignorecase
 set encoding=utf-8
@@ -105,17 +105,6 @@ nmap <leader>h :bprevious<CR>
 " This replicates the idea of closing a tab
 nmap <leader>bq :bp <BAR> bd #<CR>
 
-" Goyo plugin makes text more readable when writing prose:
-map <leader>g :Goyo \| set linebreak<CR>
-
-" Nerd tree
-map <leader>n :NERDTreeToggle<CR>
-" close vim if the only window left open is a NERDTree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-" delimitmate end expand bracket to newline
-let delimitMate_expand_cr=1
-
 " disable highlighting
 map <leader><space> :noh<CR>
 
@@ -134,6 +123,10 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
+" indentlines for tabs
+set listchars+=tab:│\       "
+
+set list
 " turn on spell check for markdown files
 autocmd BufRead,BufNewFile *.md setlocal spell
 
@@ -145,10 +138,30 @@ if has("autocmd")
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 endif
 
+
+" =========================================================
+" Plugins
+" =========================================================
+
+" Goyo plugin makes text more readable when writing prose:
+map <leader>g :Goyo \| set linebreak<CR>
+
+" Nerd tree
+map <leader>n :NERDTreeToggle<CR>
+" close vim if the only window left open is a NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" delimitmate end expand bracket to newline
+let delimitMate_expand_cr=1
+
 " nerdcommenter config
 let g:NERDSpaceDelims = 1
 
-" COC keymaps stolen from https://github.com/NerdyPepper/dotfiles
+" COC keymaps stole
+
+let g:coc_snippet_next = '<TAB>'
+let g:coc_snippet_prev = '<S-TAB>'
+
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :

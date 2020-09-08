@@ -21,7 +21,7 @@ endif
 call plug#begin('~/.config/nvim/plugged')
 
 " intellisense for vim
-Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " surround things with different things
 Plug 'tpope/vim-surround'
 " Fuzzy file finder
@@ -39,6 +39,12 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'raimondi/delimitmate'
 " Plugin for quickly commenting out code
 Plug 'preservim/nerdcommenter'
+
+" Language Plugins
+"Ballerina
+Plug 'martskins/vim-ballerina'
+" Formatter for C code
+Plug 'rhysd/vim-clang-format'
 
 call plug#end()
 
@@ -83,6 +89,7 @@ set hlsearch
 autocmd FileType c setlocal noet ts=8 sw=8 tw=80 cc=80
 autocmd FileType h setlocal noet ts=8 sw=8 tw=80 cc=80
 autocmd FileType cpp setlocal noet ts=8 sw=8 tw=80 cc=80
+autocmd FileType sh setlocal noet ts=4 sw=4
 
 " themeing
 set background=dark

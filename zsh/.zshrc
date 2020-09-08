@@ -21,20 +21,20 @@ export EDITOR='nvim'
 alias zshconfig="vim ~/.zshrc"
 alias open="xdg-open"
 alias bigtree="cd ~/github/bigtree; poetry shell"
-alias r="ranger"
 alias vimconfig="vim ~/dotfiles/nvim/.config/nvim/init.vim"
-alias expcon="expressvpn connect"
-alias expdis="expressvpn disconnect"
-alias lyceum="cd ~/github/lyceum/; vim ."
+alias lyceum="cd ~/projects/github/lyceum/"
+
+# taskwarrior aliases
+alias in="task add +in"
+tickle () {
+	deadline=$1
+	shift
+	in +tickle wait:$deadline $@
+}
+alias tick=tickle
+alias think='tickle +1d'
+alias tasks='task +next'
+alias tmd='task modify'
 
 # ctrl+r search history
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/Devel
-source /usr/local/bin/virtualenvwrapper.sh
-
-# preview markdown files
-unalias md
-md() { pandoc "$1" | lynx -stdin; }

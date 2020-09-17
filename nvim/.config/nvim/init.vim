@@ -39,6 +39,8 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'raimondi/delimitmate'
 " Plugin for quickly commenting out code
 Plug 'preservim/nerdcommenter'
+" Auto Code Formatter
+Plug 'chiel92/vim-autoformat'
 
 " Language Plugins
 "Ballerina
@@ -149,6 +151,7 @@ endif
 " =========================================================
 " Plugins
 " =========================================================
+map <leader>0 :set ft=html<CR>
 
 " Goyo plugin makes text more readable when writing prose:
 map <leader>g :Goyo \| set linebreak<CR>
@@ -165,9 +168,6 @@ let delimitMate_expand_cr=1
 let g:NERDSpaceDelims = 1
 
 " COC keymaps stole
-
-let g:coc_snippet_next = '<TAB>'
-let g:coc_snippet_prev = '<S-TAB>'
 
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
@@ -189,6 +189,7 @@ nmap <silent> ]g <Plug>(coc-diagnostic-next)
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gi <Plug>(coc-implementation)
 
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 

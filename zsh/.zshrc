@@ -23,6 +23,7 @@ alias open="xdg-open"
 alias bigtree="cd ~/github/bigtree; poetry shell"
 alias vimconfig="vim ~/dotfiles/nvim/.config/nvim/init.vim"
 alias lyceum="cd ~/projects/github/lyceum/"
+alias serve_ly="cd ~/projects/github/sersim/src; ./main -l '/home/awalvie/projects/github/lyceum/docs/' -p 8080"
 
 # taskwarrior aliases
 alias in="task add +in"

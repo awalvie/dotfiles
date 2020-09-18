@@ -47,6 +47,8 @@ Plug 'chiel92/vim-autoformat'
 Plug 'martskins/vim-ballerina'
 " Formatter for C code
 Plug 'rhysd/vim-clang-format'
+" golang plugin for vim
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 call plug#end()
 
@@ -92,6 +94,7 @@ autocmd FileType c setlocal noet ts=8 sw=8 tw=80 cc=80
 autocmd FileType h setlocal noet ts=8 sw=8 tw=80 cc=80
 autocmd FileType cpp setlocal noet ts=8 sw=8 tw=80 cc=80
 autocmd FileType sh setlocal noet ts=4 sw=4
+autocmd FileType go setlocal noet ts=4 sw=4
 
 " themeing
 set background=dark

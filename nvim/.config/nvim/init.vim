@@ -170,8 +170,13 @@ let delimitMate_expand_cr=1
 " nerdcommenter config
 let g:NERDSpaceDelims = 1
 
-" Coc settings
+" clang format
+let g:clang_format#auto_format = 0
 
+" vim-go
+let g:go_def_mapping_enabled = 0
+
+" Coc settings
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :

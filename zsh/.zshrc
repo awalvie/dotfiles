@@ -37,7 +37,11 @@ tickle () {
 alias tick=tickle
 alias think='tickle +1d'
 alias tasks='task +next'
+
 alias tmd='task modify'
 
 # ctrl+r search history
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# custom exports
+export PATH=$PATH:~/go/bin/

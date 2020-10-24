@@ -41,6 +41,8 @@ Plug 'raimondi/delimitmate'
 Plug 'preservim/nerdcommenter'
 " Auto Code Formatter
 Plug 'chiel92/vim-autoformat'
+" rip grep, yeah, I'm going into the corner
+Plug 'jremmen/vim-ripgrep'
 
 " Language Plugins
 "Ballerina
@@ -154,6 +156,11 @@ endif
 " =========================================================
 " Plugins
 " =========================================================
+
+" ripgrep
+let g:rg_command = 'rg --vimgrep -S'
+nnoremap <C-_> :Rg<Space>
+
 map <leader>0 :set ft=html<CR>
 
 " Goyo plugin makes text more readable when writing prose:

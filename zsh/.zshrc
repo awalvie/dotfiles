@@ -29,13 +29,6 @@ alias dotfiles="cd ~/dotfiles"
 
 # taskwarrior aliases
 alias in="task add +in"
-tickle () {
-	deadline=$1
-	shift
-	in +tickle wait:$deadline $@
-}
-alias tick=tickle
-alias think='tickle +1d'
 alias tasks='task +next'
 
 alias tmd='task modify'
@@ -49,8 +42,8 @@ export PATH="$HOME/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
-PATH="/home/awalvie/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="/home/awalvie/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/home/awalvie/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/home/awalvie/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/home/awalvie/perl5"; export PERL_MM_OPT;
+# virtualenvwrapper
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/Devel
+export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
+source /usr/local/bin/virtualenvwrapper_lazy.sh

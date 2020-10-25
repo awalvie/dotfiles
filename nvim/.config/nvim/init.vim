@@ -36,7 +36,7 @@ Plug 'junegunn/goyo.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " Plugin for auto-completing closing brackets
-Plug 'raimondi/delimitmate'
+Plug 'jiangmiao/auto-pairs'
 " Plugin for quickly commenting out code
 Plug 'preservim/nerdcommenter'
 " Auto Code Formatter
@@ -45,6 +45,8 @@ Plug 'chiel92/vim-autoformat'
 Plug 'jremmen/vim-ripgrep'
 
 " Language Plugins
+" HTML autoclose tag
+Plug 'alvan/vim-closetag'
 "Ballerina
 Plug 'martskins/vim-ballerina'
 " Formatter for C code
@@ -151,7 +153,6 @@ autocmd BufWritePre * %s/\s\+$//e
 if has("autocmd")
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 endif
-
 
 " =========================================================
 " Plugins

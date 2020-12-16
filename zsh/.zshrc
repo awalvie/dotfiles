@@ -37,6 +37,7 @@ alias tmd='task modify'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # custom exports
+export GOPATH=$HOME/go
 export PATH=$PATH:~/go/bin/
 export PATH="$HOME/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"

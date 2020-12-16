@@ -94,11 +94,11 @@ set showmatch
 set hlsearch
 
 " Preferences for various file formats
-autocmd FileType c setlocal noet ts=8 sw=8 tw=80 cc=80
+autocmd FileType c setlocal noet ts=8 sw=8 tw=80
 autocmd FileType h setlocal noet ts=8 sw=8 tw=80 cc=80
 autocmd FileType cpp setlocal noet ts=8 sw=8 tw=80 cc=80
 autocmd FileType sh setlocal noet ts=4 sw=4
-autocmd FileType go setlocal noet ts=4 sw=4
+autocmd FileType go setlocal noet ts=4 sw=4 cc=80
 
 " themeing
 set background=dark

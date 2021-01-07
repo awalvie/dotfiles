@@ -120,6 +120,8 @@ nmap <leader>h :bprevious<CR>
 " Close the current buffer and move to the previous one
 " This replicates the idea of closing a tab
 nmap <leader>bq :bp <BAR> bd #<CR>
+" Close all other buffers except the current one
+command! BufOnly execute '%bdelete|edit #|normal `"'
 
 " disable highlighting
 map <leader><space> :noh<CR>
@@ -169,6 +171,7 @@ map <leader>g :Goyo \| set linebreak<CR>
 
 " Nerd tree
 map <leader>n :NERDTreeToggle<CR>
+map <leader>m :NERDTreeFind<CR>
 " close vim if the only window left open is a NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 

@@ -47,8 +47,6 @@ Plug 'jremmen/vim-ripgrep'
 " Language Plugins
 " HTML autoclose tag
 Plug 'alvan/vim-closetag'
-"Ballerina
-Plug 'martskins/vim-ballerina'
 " Formatter for C code
 Plug 'rhysd/vim-clang-format'
 " golang plugin for vim

@@ -26,6 +26,7 @@ alias lyceum="cd ~/projects/github/lyceum/"
 alias serve_ly="cd ~/projects/github/sersim/src; ./main -l '/home/awalvie/projects/github/lyceum/docs/' -p 8080"
 alias free_time="xdg-open ~/Desktop/art_related/art_books/'Instructional Books'/"
 alias dotfiles="cd ~/dotfiles"
+alias sendpost="cd ~/go/src/github.com/sendx"
 
 # taskwarrior aliases
 alias in="task add +in"

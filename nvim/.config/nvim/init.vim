@@ -43,6 +43,8 @@ Plug 'preservim/nerdcommenter'
 Plug 'chiel92/vim-autoformat'
 " rip grep, yeah, I'm going into the corner
 Plug 'jremmen/vim-ripgrep'
+" yeah, yeah, I know I'm retarded for not having using fugutive until now
+Plug 'tpope/vim-fugitive'
 
 " Language Plugins
 " HTML autoclose tag
@@ -96,7 +98,7 @@ autocmd FileType c setlocal noet ts=8 sw=8 tw=80
 autocmd FileType h setlocal noet ts=8 sw=8 tw=80 cc=80
 autocmd FileType cpp setlocal noet ts=8 sw=8 tw=80 cc=80
 autocmd FileType sh setlocal noet ts=4 sw=4
-autocmd FileType go setlocal noet ts=4 sw=4 cc=80
+autocmd FileType go setlocal noet ts=4 sw=4
 
 " themeing
 set background=dark

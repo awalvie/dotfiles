@@ -99,6 +99,7 @@ autocmd FileType h setlocal noet ts=8 sw=8 tw=80 cc=80
 autocmd FileType cpp setlocal noet ts=8 sw=8 tw=80 cc=80
 autocmd FileType sh setlocal noet ts=4 sw=4
 autocmd FileType go setlocal noet ts=4 sw=4
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
 " themeing
 set background=dark
@@ -183,6 +184,10 @@ let g:clang_format#auto_format = 0
 
 " vim-go
 let g:go_def_mapping_enabled = 0
+let g:go_fmt_command = "goimports"
+
+" by default navigate buffers with ctrlP
+nnoremap <silent> <C-y> :CtrlPBuffer<CR>
 
 " Coc settings
 inoremap <silent><expr> <TAB>

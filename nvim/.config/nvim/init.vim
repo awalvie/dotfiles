@@ -123,6 +123,7 @@ nmap <leader>h :bprevious<CR>
 nmap <leader>bq :bp <BAR> bd #<CR>
 " Close all other buffers except the current one
 command! BufOnly execute '%bdelete|edit #|normal `"'
+nmap <leader>bd :BufOnly<CR>
 
 " disable highlighting
 map <leader><space> :noh<CR>
@@ -157,6 +158,11 @@ if has("autocmd")
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 endif
 
+" NEOVIM Specific
+if has("nvim")
+	set inccommand=nosplit
+endif
+
 " =========================================================
 " Plugins
 " =========================================================
@@ -175,6 +181,11 @@ map <leader>n :NERDTreeToggle<CR>
 map <leader>m :NERDTreeFind<CR>
 " close vim if the only window left open is a NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" open by default
+autocmd StdinReadPre * let s:std_in=1
+" make it slightly perttier
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
 
 " nerdcommenter config
 let g:NERDSpaceDelims = 1

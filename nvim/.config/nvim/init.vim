@@ -43,8 +43,10 @@ Plug 'preservim/nerdcommenter'
 Plug 'chiel92/vim-autoformat'
 " rip grep, yeah, I'm going into the corner
 Plug 'jremmen/vim-ripgrep'
-" yeah, yeah, I know I'm retarded for not having using fugutive until now
-Plug 'tpope/vim-fugitive'
+" hahaha, I laugh at you emacs peasents
+Plug 'jreybert/vimagit'
+" git gutter, finally yes, I need to clean up this config sometime
+Plug 'airblade/vim-gitgutter'
 
 " Language Plugins
 " HTML autoclose tag
@@ -167,6 +169,31 @@ endif
 " Plugins
 " =========================================================
 
+" gitgutter
+" Update sign column every quarter second
+set updatetime=250
+" Use fontawesome icons as signs
+let g:gitgutter_sign_added = '+'
+let g:gitgutter_sign_modified = '>'
+let g:gitgutter_sign_removed = '-'
+let g:gitgutter_sign_removed_first_line = '^'
+let g:gitgutter_sign_modified_removed = '<'
+
+let g:gitgutter_override_sign_column_highlight = 1
+highlight SignColumn guibg=bg
+highlight SignColumn ctermbg=bg
+
+" Jump between hunks
+nmap <Leader>gn <Plug>(GitGutterNextHunk)  " git next
+nmap <Leader>gp <Plug>(GitGutterPrevHunk)  " git previous
+
+" Hunk-add and hunk-revert for chunk staging
+nmap <Leader>ga <Plug>(GitGutterStageHunk)  " git add (chunk)
+nmap <Leader>gu <Plug>(GitGutterUndoHunk)   " git undo (chunk)
+
+" Open vimagit pane
+nnoremap <leader>gs :Magit<CR>       " git status
+
 " ripgrep
 let g:rg_command = 'rg --vimgrep -S'
 nnoremap <C-_> :Rg<Space>
@@ -174,7 +201,7 @@ nnoremap <C-_> :Rg<Space>
 map <leader>0 :set ft=html<CR>
 
 " Goyo plugin makes text more readable when writing prose:
-map <leader>g :Goyo \| set linebreak<CR>
+map <leader>go :Goyo \| set linebreak<CR>
 
 " Nerd tree
 map <leader>n :NERDTreeToggle<CR>
@@ -183,9 +210,6 @@ map <leader>m :NERDTreeFind<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " open by default
 autocmd StdinReadPre * let s:std_in=1
-" make it slightly perttier
-let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 1
 
 " nerdcommenter config
 let g:NERDSpaceDelims = 1

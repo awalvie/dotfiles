@@ -172,6 +172,8 @@ endif
 " gitgutter
 " Update sign column every quarter second
 set updatetime=100
+" disable auto-set vars
+let g:gitgutter_map_keys = 0
 " Use fontawesome icons as signs
 let g:gitgutter_sign_added = '+'
 let g:gitgutter_sign_modified = '>'

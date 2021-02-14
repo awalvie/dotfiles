@@ -171,7 +171,7 @@ endif
 
 " gitgutter
 " Update sign column every quarter second
-set updatetime=250
+set updatetime=100
 " Use fontawesome icons as signs
 let g:gitgutter_sign_added = '+'
 let g:gitgutter_sign_modified = '>'
@@ -184,15 +184,16 @@ highlight SignColumn guibg=bg
 highlight SignColumn ctermbg=bg
 
 " Jump between hunks
-nmap <Leader>gn <Plug>(GitGutterNextHunk)  " git next
-nmap <Leader>gp <Plug>(GitGutterPrevHunk)  " git previous
+nmap <Leader>gn <Plug>(GitGutterNextHunk)
+nmap <Leader>gp <Plug>(GitGutterPrevHunk)
 
 " Hunk-add and hunk-revert for chunk staging
-nmap <Leader>ga <Plug>(GitGutterStageHunk)  " git add (chunk)
-nmap <Leader>gu <Plug>(GitGutterUndoHunk)   " git undo (chunk)
+nmap <Leader>ga <Plug>(GitGutterStageHunk)
+nmap <Leader>gu <Plug>(GitGutterUndoHunk)
+nmap <leader>gpr <Plug>(GitGutterPreviewHunk)
 
 " Open vimagit pane
-nnoremap <leader>gs :Magit<CR>       " git status
+nnoremap <leader>gs :Magit<CR>
 
 " ripgrep
 let g:rg_command = 'rg --vimgrep -S'
@@ -208,8 +209,6 @@ map <leader>n :NERDTreeToggle<CR>
 map <leader>m :NERDTreeFind<CR>
 " close vim if the only window left open is a NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-" open by default
-autocmd StdinReadPre * let s:std_in=1
 
 " nerdcommenter config
 let g:NERDSpaceDelims = 1

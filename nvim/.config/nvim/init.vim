@@ -192,7 +192,7 @@ nmap <Leader>gp <Plug>(GitGutterPrevHunk)
 " Hunk-add and hunk-revert for chunk staging
 nmap <Leader>ga <Plug>(GitGutterStageHunk)
 nmap <Leader>gu <Plug>(GitGutterUndoHunk)
-nmap <leader>gpr <Plug>(GitGutterPreviewHunk)
+nmap <leader>gd <Plug>(GitGutterPreviewHunk)
 
 " Open vimagit pane
 nnoremap <leader>gs :Magit<CR>

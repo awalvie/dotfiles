@@ -31,6 +31,8 @@ alias sendpost="cd ~/go/src/github.com/thebitmonk/sendx"
 # taskwarrior aliases
 alias in="task add +in"
 alias tasks='task +next'
+# alternative to using 'S' for ranger but less shit
+alias ranger='. ranger'
 
 alias tmd='task modify'
 

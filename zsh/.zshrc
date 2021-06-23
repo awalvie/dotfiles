@@ -6,6 +6,7 @@ autoload -U colors && colors	# Load colors
 PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%1d%{$fg[red]%}]%{$reset_color%}$%b "
 
 plugins=(
+	z
 	git
 	tmux
 	vi-mode
@@ -28,14 +29,6 @@ alias free_time="xdg-open ~/Desktop/art_related/art_books/'Instructional Books'/
 alias dotfiles="cd ~/dotfiles"
 alias sendpost="cd ~/go/src/github.com/thebitmonk/sendx"
 
-# taskwarrior aliases
-alias in="task add +in"
-alias tasks='task +next'
-# alternative to using 'S' for ranger but less shit
-alias ranger='. ranger'
-
-alias tmd='task modify'
-
 # ctrl+r search history
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -51,3 +44,9 @@ export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Devel
 export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
 source /usr/local/bin/virtualenvwrapper_lazy.sh
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/tmp/trash/google-cloud-sdk/path.zsh.inc' ]; then . '/tmp/trash/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/tmp/trash/google-cloud-sdk/completion.zsh.inc' ]; then . '/tmp/trash/google-cloud-sdk/completion.zsh.inc'; fi

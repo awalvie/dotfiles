@@ -19,6 +19,8 @@ source $ZSH/oh-my-zsh.sh
 
 export EDITOR='nvim'
 
+alias k="kubectl"
+alias tn="tmux new -s"
 alias zshconfig="vim ~/.zshrc"
 alias open="xdg-open"
 alias bigtree="cd ~/github/bigtree; poetry shell"

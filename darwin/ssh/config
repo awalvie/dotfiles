@@ -1,0 +1,9 @@
+Host deepsource
+    Hostname github.com
+    User git
+    IdentityFile ~/.ssh/deepsource.pub
+
+Host clavis
+    Hostname github.com
+    User git
+    IdentityFile ~/.ssh/clavis.pub

@@ -23,7 +23,6 @@ alias k="kubectl"
 alias vim="nvim"
 alias tn="tmux new -s"
 alias zshconfig="vim ~/.zshrc"
-alias open="xdg-open"
 alias vimconfig="vim ~/dotfiles/nvim/.config/nvim/init.vim"
 alias dotfiles="cd ~/dotfiles"
 

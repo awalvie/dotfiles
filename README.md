@@ -1,6 +1,6 @@
 # boomer dotfiles
 
-Minimal boomer dotfiles for everybody!
+Minimal boomer dotfiles. The dotfile organization has been heavily ~~copied~~ inspired from [Icyphox's Dotfiles](https://github.com/icyphox/dotfiles/tree/master/bash/.bashrc.d)
 
 ### To Do:
 
@@ -8,7 +8,5 @@ Minimal boomer dotfiles for everybody!
 	- exports
 	- aliases
 	- prompt
-
-	Refer: [Icyphox's Dotfiles](https://github.com/icyphox/dotfiles/tree/master/bash/.bashrc.d)
 
 - [ ] Setup `z` for jumping around directories. Refer: [rupa/z](https://github.com/rupa/z)

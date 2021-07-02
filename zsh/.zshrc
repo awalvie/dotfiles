@@ -23,7 +23,7 @@ alias k="kubectl"
 alias vim="nvim"
 alias tn="tmux new -s"
 alias zshconfig="vim ~/.zshrc"
-alias vimconfig="vim ~/dotfiles/nvim/.config/nvim/init.vim"
+alias vimconfig="vim ~/dotfiles/nvim/init.vim"
 alias dotfiles="cd ~/dotfiles"
 
 # ctrl+r search history

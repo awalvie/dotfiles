@@ -7,3 +7,13 @@ Host clavis
     Hostname github.com
     User git
     IdentityFile ~/.ssh/clavis.pub
+
+Host stone
+    Hostname 152.70.67.27
+    User ubuntu
+    IdentityFile ~/.ssh/stone.pub
+
+Host paper
+    Hostname 152.70.66.147
+    User ubuntu
+    IdentityFile ~/.ssh/paper.pub

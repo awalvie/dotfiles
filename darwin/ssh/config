@@ -6,14 +6,14 @@ Host deepsource
 Host clavis
     Hostname github.com
     User git
-    IdentityFile ~/.ssh/clavis.pub
+    IdentityFile ~/.ssh/clavis
 
 Host stone
     Hostname 152.70.67.27
     User ubuntu
-    IdentityFile ~/.ssh/stone.pub
+    IdentityFile ~/.ssh/stone
 
 Host paper
     Hostname 152.70.66.147
     User ubuntu
-    IdentityFile ~/.ssh/paper.pub
+    IdentityFile ~/.ssh/paper

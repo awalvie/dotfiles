@@ -1,5 +1,5 @@
 # ohmyzsh defaults
-export ZSH="/Users/tinker/.oh-my-zsh"
+export ZSH="/Users/opus/.oh-my-zsh"
 export PATH=$HOME/bin:$PATH
 
 # Enable colors and change prompt:

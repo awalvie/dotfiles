@@ -1,6 +1,10 @@
-# ohmyzsh defaults
+# exports
 export ZSH="/Users/opus/.oh-my-zsh"
 export PATH=$HOME/bin:$PATH
+export GOPATH=$HOME/go
+export PATH=$PATH:~/go/bin/
+export PATH=/Users/opus/Library/Python/3.9/bin:$PATH
+
 
 # Enable colors and change prompt:
 # sindresorhus/pure: https://github.com/sindresorhus/pure
@@ -44,13 +48,8 @@ alias gl="git log --oneline --decorate --graph"
 # ctrl+r search history
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# custom exports
-export GOPATH=$HOME/go
-export PATH=$PATH:~/go/bin/
-export PATH="$HOME/.pyenv/bin:$PATH"
-
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/tmp/trash/google-cloud-sdk/path.zsh.inc' ]; then . '/tmp/trash/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f '/Users/opus/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/opus/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/tmp/trash/google-cloud-sdk/completion.zsh.inc' ]; then . '/tmp/trash/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f '/Users/opus/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/opus/google-cloud-sdk/completion.zsh.inc'; fi

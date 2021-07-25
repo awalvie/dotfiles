@@ -1,9 +1,20 @@
 Host deepsource
     Hostname github.com
     User git
-    IdentityFile ~/.ssh/deepsource.pub
+    IdentityFile ~/.ssh/deepsource
 
 Host lamp
     Hostname github.com
     User git
     IdentityFile ~/.ssh/lamp
+
+Host stone
+    Hostname 152.67.172.85
+    User ubuntu
+    IdentityFile ~/.ssh/stone
+
+Host paper
+    Hostname 152.67.181.138
+    User ubuntu
+    IdentityFile ~/.ssh/paper
+

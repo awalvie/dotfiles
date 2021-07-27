@@ -1,9 +1,9 @@
 # exports
+export PATH="/Users/opus/.local/bin:$PATH"
 export ZSH="/Users/opus/.oh-my-zsh"
 export PATH=$HOME/bin:$PATH
 export GOPATH=$HOME/go
-export PATH=$PATH:~/go/bin/
-export PATH=/Users/opus/Library/Python/3.9/bin:$PATH
+export PATH=$PATH:$GOPATH/bin/
 
 
 # Enable colors and change prompt:
@@ -53,3 +53,7 @@ if [ -f '/Users/opus/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/opus/googl
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/opus/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/opus/google-cloud-sdk/completion.zsh.inc'; fi
+
+# pyenv things
+eval "$(pyenv init -)"
+

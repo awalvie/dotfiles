@@ -14,9 +14,7 @@ prompt pure
 
 plugins=(
 	z
-	git
 	tmux
-	vi-mode
 	zsh-autosuggestions
 	zsh-syntax-highlighting
 )
@@ -44,6 +42,10 @@ alias gst="git status --short"
 alias ga="git add"
 alias gd="git diff --minimal"
 alias gl="git log --oneline --decorate --graph"
+
+# vi mode
+bindkey -v
+export KEYTIMEOUT=1
 
 # ctrl+r search history
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

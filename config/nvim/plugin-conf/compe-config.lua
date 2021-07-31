@@ -6,8 +6,8 @@ require'compe'.setup {
   preselect = 'enable';
   throttle_time = 80;
   source_timeout = 200;
-  resolve_timeout = 800;
-  incomplete_delay = 400;
+  resolve_timeout = 400;
+  incomplete_delay = 200;
   max_abbr_width = 100;
   max_kind_width = 100;
   max_menu_width = 100;

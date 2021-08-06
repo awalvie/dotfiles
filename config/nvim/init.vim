@@ -26,7 +26,8 @@ Plug 'hrsh7th/nvim-compe'
 " surround things with different things
 Plug 'tpope/vim-surround'
 " Fuzzy file finder
-Plug 'kien/ctrlp.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 " File naivator
 Plug 'scrooloose/nerdtree'
 " Main theme for vim
@@ -257,5 +258,10 @@ let g:clang_format#auto_format = 0
 let g:go_def_mapping_enabled = 0
 let g:go_fmt_command = "goimports"
 
-" by default navigate buffers with ctrlP
-nnoremap <silent> <C-y> :CtrlPBuffer<CR>
+" fzf
+let g:fzf_action = {
+      \ 'ctrl-s': 'split',
+      \ 'ctrl-v': 'vsplit'
+      \ }
+nnoremap <c-p> :Files<cr>
+let g:fzf_layout = { 'down': '~40%' }

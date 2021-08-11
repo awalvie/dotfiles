@@ -18,3 +18,7 @@ Host paper
     User ubuntu
     IdentityFile ~/.ssh/paper
 
+Host clock
+    Hostname 152.70.68.68
+    User ubuntu
+    IdentityFile ~/.ssh/clock

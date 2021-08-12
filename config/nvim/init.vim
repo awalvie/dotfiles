@@ -265,4 +265,4 @@ let g:fzf_action = {
       \ }
 nnoremap <c-p> :Files<cr>
 nnoremap <c-y> :Buffer<cr>
-let g:fzf_layout = { 'down': '~40%' }
+let g:fzf_layout = { 'down': '~20%' }

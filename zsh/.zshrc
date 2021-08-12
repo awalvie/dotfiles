@@ -35,6 +35,7 @@ alias zshconfig="vim ~/.zshrc"
 alias vimconfig="vim ~/.config/nvim/init.vim"
 alias dotfiles="cd ~/dotfiles"
 alias ytd="youtube-dl --verbose -f best -o '%(title)s.%(ext)s'"
+alias dps="docker ps --format 'table {{ .ID }}\t{{.Names}}\t{{.Status}}'"
 
 # git aliases
 alias gc="git commit -v"

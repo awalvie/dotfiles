@@ -21,8 +21,8 @@ endif
 call plug#begin('~/.config/nvim/plugged')
 
 " intellisense for vim
+Plug 'nvim-lua/completion-nvim'
 Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-compe'
 " surround things with different things
 Plug 'tpope/vim-surround'
 " Fuzzy file finder
@@ -65,8 +65,8 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end()
 
 " source LSP configs
+source ~/.config/nvim/plugin-conf/completion-config.vim
 source ~/.config/nvim/plugin-conf/lsp-config.vim
-luafile ~/.config/nvim/plugin-conf/compe-config.lua
 " source language configs
 luafile ~/.config/nvim/lua/lsp/go.lua
 luafile ~/.config/nvim/lua/lsp/python.lua

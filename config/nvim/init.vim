@@ -43,8 +43,6 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'preservim/nerdcommenter'
 " Auto Code Formatter
 Plug 'chiel92/vim-autoformat'
-" rip grep, yeah, I'm going into the corner
-Plug 'jremmen/vim-ripgrep'
 " hahaha, I laugh at you emacs peasents
 Plug 'jreybert/vimagit'
 " git gutter, finally yes, I need to clean up this config sometime
@@ -235,7 +233,7 @@ nnoremap <leader>gs :Magit<CR>
 
 " ripgrep
 let g:rg_command = 'rg --vimgrep -S'
-nnoremap <C-_> :Rg<Space>
+nnoremap <C-_> :Rg<Cr>
 
 map <leader>0 :set ft=html<CR>
 
@@ -263,6 +261,6 @@ let g:fzf_action = {
       \ 'ctrl-s': 'split',
       \ 'ctrl-v': 'vsplit'
       \ }
-nnoremap <c-p> :Files<cr>
+nnoremap <c-p> :GFiles<cr>
 nnoremap <c-y> :Buffer<cr>
 let g:fzf_layout = { 'down': '~20%' }

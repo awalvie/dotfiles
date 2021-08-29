@@ -44,9 +44,11 @@ Plug 'preservim/nerdcommenter'
 " Auto Code Formatter
 Plug 'chiel92/vim-autoformat'
 " hahaha, I laugh at you emacs peasents
-Plug 'jreybert/vimagit'
+" Plug 'jreybert/vimagit'
 " git gutter, finally yes, I need to clean up this config sometime
 Plug 'airblade/vim-gitgutter'
+" alright, alright, fine, I'm installing it
+Plug 'tpope/vim-fugitive'
 
 " Language Plugins
 " markdown formatting
@@ -261,6 +263,6 @@ let g:fzf_action = {
       \ 'ctrl-s': 'split',
       \ 'ctrl-v': 'vsplit'
       \ }
-nnoremap <c-p> :GFiles<cr>
+nnoremap <c-p> :Files<cr>
 nnoremap <c-y> :Buffer<cr>
 let g:fzf_layout = { 'down': '~20%' }

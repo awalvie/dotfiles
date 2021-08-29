@@ -67,6 +67,7 @@ call plug#end()
 " source LSP configs
 source ~/.config/nvim/plugin-conf/completion-config.vim
 source ~/.config/nvim/plugin-conf/lsp-config.vim
+
 " source language configs
 luafile ~/.config/nvim/lua/lsp/go.lua
 luafile ~/.config/nvim/lua/lsp/python.lua

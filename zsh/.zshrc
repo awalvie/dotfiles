@@ -17,6 +17,8 @@ plugins=(
 	tmux
 	zsh-autosuggestions
 	zsh-syntax-highlighting
+	docker
+	docker-compose
 )
 
 
@@ -36,6 +38,7 @@ alias vimconfig="vim ~/.config/nvim/init.vim"
 alias dotfiles="cd ~/dotfiles"
 alias ytd="youtube-dl --verbose -f best -o '%(title)s.%(ext)s'"
 alias dps="docker ps --format 'table {{ .ID }}\t{{.Names}}\t{{.Status}}'"
+alias helm="helm --debug"
 
 # git aliases
 alias gc="git commit -v"
@@ -43,6 +46,7 @@ alias gst="git status --short"
 alias ga="git add"
 alias gd="git diff --minimal"
 alias gl="git log --oneline --decorate --graph"
+alias gdc="git diff --cached"
 
 # vi mode
 bindkey -v

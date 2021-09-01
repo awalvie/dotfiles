@@ -264,6 +264,6 @@ let g:fzf_action = {
       \ 'ctrl-s': 'split',
       \ 'ctrl-v': 'vsplit'
       \ }
-nnoremap <c-p> :Files<cr>
+nnoremap <c-p> :GFiles<cr>
 nnoremap <c-y> :Buffer<cr>
 let g:fzf_layout = { 'down': '~20%' }

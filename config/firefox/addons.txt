@@ -1,0 +1,110 @@
+Add-ons
+-------
+
+Name: 1Password – Password Manager
+Type: extension
+Version: 2.0.5
+Enabled: true
+ID: {d634138d-c276-4fc8-924b-40a0ea21d284}
+
+Name: Bing
+Type: extension
+Version: 1.3
+Enabled: true
+ID: bing@search.mozilla.org
+
+Name: Bitwarden - Free Password Manager
+Type: extension
+Version: 1.52.0
+Enabled: true
+ID: {446900e4-71c2-419f-a6a7-df9c091e268b}
+
+Name: Dezoomify
+Type: extension
+Version: 1.0.1
+Enabled: true
+ID: {14074c89-8a5f-4813-98df-a7117f062871}
+
+Name: DF YouTube (Distraction Free)
+Type: extension
+Version: 1.13.504
+Enabled: true
+ID: dfyoutube@example.com
+
+Name: Download All Images
+Type: extension
+Version: 0.7.7
+Enabled: true
+ID: {32af1358-428a-446d-873e-5f8eb5f2a72e}
+
+Name: DuckDuckGo
+Type: extension
+Version: 1.1
+Enabled: true
+ID: ddg@search.mozilla.org
+
+Name: Firefox Multi-Account Containers
+Type: extension
+Version: 7.4.0
+Enabled: true
+ID: @testpilot-containers
+
+Name: Google
+Type: extension
+Version: 1.1
+Enabled: true
+ID: google@search.mozilla.org
+
+Name: I don't care about cookies
+Type: extension
+Version: 3.3.2
+Enabled: true
+ID: jid1-KKzOGWgsW3Ao4Q@jetpack
+
+Name: Tabliss
+Type: extension
+Version: 2.1.0
+Enabled: true
+ID: extension@tabliss.io
+
+Name: Temporary Containers
+Type: extension
+Version: 1.9.2
+Enabled: true
+ID: {c607c8df-14a7-4f28-894f-29e8722976af}
+
+Name: uBlock Origin
+Type: extension
+Version: 1.37.2
+Enabled: true
+ID: uBlock0@raymondhill.net
+
+Name: Vimium C - All by Keyboard
+Type: extension
+Version: 1.92.4
+Enabled: true
+ID: vimium-c@gdh1995.cn
+
+Name: VisBug
+Type: extension
+Version: 0.3.38
+Enabled: true
+ID: {50864413-c4c8-43b0-80b8-982c4a368ac9}
+
+Name: Wikipedia (en)
+Type: extension
+Version: 1.1
+Enabled: true
+ID: wikipedia@search.mozilla.org
+
+Name: Intention - Stop Mindless Browsing
+Type: extension
+Version: 1.4.3
+Enabled: false
+ID: {f85e892d-eb2d-4bab-8605-215a4453d12a}
+
+Name: LeechBlock NG
+Type: extension
+Version: 1.0.13
+Enabled: false
+ID: leechblockng@proginosko.com

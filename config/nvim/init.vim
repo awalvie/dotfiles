@@ -61,6 +61,8 @@ Plug 'alvan/vim-closetag'
 Plug 'rhysd/vim-clang-format'
 " golang plugin for vim
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" python pluging for vim
+Plug 'vim-python/python-syntax'
 
 call plug#end()
 
@@ -268,3 +270,6 @@ let g:fzf_action = {
 nnoremap <c-p> :GFiles<cr>
 nnoremap <c-y> :Buffer<cr>
 let g:fzf_layout = { 'down': '~20%' }
+
+" python syntax hl
+let g:python_highlight_all = 1

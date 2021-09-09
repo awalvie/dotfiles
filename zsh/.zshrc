@@ -1,5 +1,7 @@
 # exports
 export PATH="/Users/opus/.local/bin:$PATH"
+export PATH="$PATH:/usr/local/opt/llvm/bin/"
+export PATH="$PATH:/usr/local/opt/riscv-gnu-toolchain/bin"
 export ZSH="/Users/opus/.oh-my-zsh"
 export PATH=$HOME/bin:$PATH
 export GOPATH=$HOME/go

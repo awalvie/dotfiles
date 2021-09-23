@@ -131,7 +131,6 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 
 " buffer navigation and management
 set hidden
-nmap <leader>T :enew<cr>
 " Move to the next buffer
 nmap <leader>l :bnext<CR>
 " Move to the previous buffer
@@ -141,7 +140,7 @@ nmap <leader>h :bprevious<CR>
 " This replicates the idea of closing a tab
 nmap <leader>bq :bp <BAR> bd #<CR>
 " Close all other buffers except the current one
-command! BufOnly execute '%bdelete|edit #|normal `"'
+command! BufOnly silent! execute "%bd|e#|bd#"
 nmap <leader>bd :BufOnly<CR>
 
 " disable highlighting

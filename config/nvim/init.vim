@@ -20,6 +20,8 @@ endif
 " Install the necesary plugins
 call plug#begin('~/.config/nvim/plugged')
 
+" wiki things
+Plug 'vimwiki/vimwiki'
 " intellisense for vim
 Plug 'nvim-lua/completion-nvim'
 Plug 'neovim/nvim-lspconfig'
@@ -272,3 +274,14 @@ let g:fzf_layout = { 'down': '~20%' }
 
 " python syntax hl
 let g:python_highlight_all = 1
+
+" vimwiki config
+let g:vimwiki_listsyms = '✗○◐●✓'
+let g:vimwiki_list = [{'syntax': 'markdown'}]
+
+command! Diary VimwikiDiaryIndex
+augroup vimwikigroup
+    autocmd!
+    " automatically update links on read diary
+    autocmd BufRead,BufNewFile diary.wiki VimwikiDiaryGenerateLinks
+augroup end

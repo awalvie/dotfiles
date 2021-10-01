@@ -276,7 +276,6 @@ let g:fzf_layout = { 'down': '~20%' }
 let g:python_highlight_all = 1
 
 " vimwiki config
-let g:vimwiki_listsyms = '✗○◐●✓'
 let g:vimwiki_list = [{'syntax': 'markdown'}]
 
 command! Diary VimwikiDiaryIndex

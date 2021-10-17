@@ -7,6 +7,8 @@ export PATH=$HOME/bin:$PATH
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin/
 
+# Emojis suck ass
+export MINIKUBE_IN_STYLE=false
 
 # Enable colors and change prompt:
 # sindresorhus/pure: https://github.com/sindresorhus/pure

@@ -270,7 +270,7 @@ let g:fzf_action = {
       \ }
 nnoremap <c-p> :GFiles<cr>
 nnoremap <c-y> :Buffer<cr>
-let g:fzf_layout = { 'down': '~20%' }
+let g:fzf_layout = { 'down': '~30%' }
 
 " python syntax hl
 let g:python_highlight_all = 1

@@ -65,6 +65,8 @@ Plug 'rhysd/vim-clang-format'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " python pluging for vim
 Plug 'vim-python/python-syntax'
+" YAML folding
+Plug 'pedrohdz/vim-yaml-folds'
 
 call plug#end()
 
@@ -93,6 +95,9 @@ set ignorecase
 set encoding=utf-8
 set number relativenumber
 set clipboard+=unnamedplus
+set foldnestmax=10
+set nofoldenable
+set foldlevel=2
 
 " taken from drew devault's dotfiles
 " https://git.sr.ht/~sircmpwn/dotfiles/tree/master/.vimrc

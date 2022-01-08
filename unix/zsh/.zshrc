@@ -3,6 +3,12 @@ export EDITOR='nvim'
 export ZSH="/home/awalvie/.oh-my-zsh"
 export PATH=$HOME/bin:$PATH
 
+plugins=(
+	tmux
+	zsh-autosuggestions
+	zsh-syntax-highlighting
+)
+
 # source shit
 source $ZSH/oh-my-zsh.sh
 
@@ -11,14 +17,6 @@ source $ZSH/oh-my-zsh.sh
 fpath+=$HOME/.zsh/pure
 autoload -U promptinit; promptinit
 prompt pure
-
-plugins=(
-	tmux
-	zsh-autosuggestions
-	zsh-syntax-highlighting
-	docker
-	docker-compose
-)
 
 # rupa/z
 . ~/.z.sh
@@ -31,6 +29,7 @@ alias ta="tmux attach"
 alias zshconfig="vim ~/.zshrc"
 alias vimconfig="vim ~/.config/nvim/init.vim"
 alias dot="cd ~/dotfiles"
+alias xclip="xclip -sel clip"
 
 # git aliases
 alias gc="git commit -v"

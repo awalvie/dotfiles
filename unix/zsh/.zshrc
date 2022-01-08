@@ -1,6 +1,7 @@
 # exports
 export EDITOR='nvim'
 export ZSH="/home/awalvie/.oh-my-zsh"
+export PATH=$PATH:/usr/local/go/bin
 export PATH=$HOME/bin:$PATH
 
 plugins=(

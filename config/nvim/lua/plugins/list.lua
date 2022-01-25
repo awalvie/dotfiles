@@ -44,6 +44,12 @@ require 'paq-nvim' {
 -- telescope
 'nvim-telescope/telescope.nvim';
 'nvim-lua/plenary.nvim';
+-- lspconfig
+'neovim/nvim-lspconfig';
+-- coq
+{ 'ms-jpq/coq_nvim', run = 'python3 -m coq deps' };
+'ms-jpq/coq.artifacts';
+
 
 -- Language Plugins
 -- markdown formatting

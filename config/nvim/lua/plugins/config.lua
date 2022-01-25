@@ -116,21 +116,20 @@ nmap("<C-p>", "<cmd>Telescope find_files<cr>")
 nmap("<C-_>", "<cmd>Telescope live_grep<cr>")
 nmap("<C-y>", "<cmd>Telescope buffers<cr>")
 
--- coq
+-- lspconfig
 local lspconfig = require('lspconfig')
 
--- Automatically start coq
-vim.g.coq_settings = { auto_start = 'shut-up' }
+nmap('gd','<cmd>lua vim.lsp.buf.definition()<CR>')
+nmap('gr','<cmd>lua vim.lsp.buf.references()<CR>')
+nmap('gi','<cmd>lua vim.lsp.buf.implementation()<CR>')
+nmap('K','<cmd>lua vim.lsp.buf.hover()<CR>')
+nmap('<space>rn','<cmd>lua vim.lsp.buf.rename()<CR>')
 
--- Enable some language servers with the additional completion capabilities offered by coq_nvim
-local servers = { 'clangd', 'pyright', 'gopls' }
-for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup(require('coq').lsp_ensure_capabilities({
-    -- on_attach = my_custom_on_attach,
-  }))
-end
-
+-- coq
 g.coq_settings = {
+  keymap = {
+    jump_to_mark = '<nop>',
+  },
   auto_start = 'shut-up',
   display = {
     icons = {
@@ -142,3 +141,10 @@ g.coq_settings = {
   },
 }
 
+-- Enable some language servers with the additional completion capabilities offered by coq_nvim
+local servers = { 'clangd', 'pyright', 'gopls' }
+for _, lsp in ipairs(servers) do
+  lspconfig[lsp].setup(require('coq').lsp_ensure_capabilities({
+    -- on_attach = my_custom_on_attach,
+  }))
+end

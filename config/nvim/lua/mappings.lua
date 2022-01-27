@@ -11,13 +11,7 @@ nmap('N', 'Nzzzv')
 nmap('<leader>l', '<cmd>bnext<CR>') -- Move to the next buffer
 nmap('<leader>h', '<cmd>bprevious<CR>') -- Move to the previous buffer
 nmap('<leader>bq', '<cmd>bp <BAR> bd #<CR>') -- Delete current buffer
-
--- TODO: Figure out how to do this
--- Close all other buffers except the current one
--- cmd([[
--- command! BufOnly silent! execute "%bd|e#|bd#"
--- ]])
--- nmap('<leader>bd', 'BufOnly')<CR>
+nmap('<leader>bd', '<cmd>bd|e#|bd#<CR>') -- Delete all buffers but the last one
 
 -- Begining & End of line in Normal mode
 nmap('H', '^')

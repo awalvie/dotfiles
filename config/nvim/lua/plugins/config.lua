@@ -52,6 +52,22 @@ nmap('<Leader>gu', '<cmd>GitGutterUndoHunk<cr>')
 nmap('<leader>gd', '<cmd>GitGutterPreviewHunk<cr>')
 
 -- Goyo
+g.goyo_height='60%'
+g.goyo_width='60%'
+cmd([[
+  function! s:goyo_enter()
+    set linebreak
+    set spell spelllang=en_us
+  endfunction
+
+  function! s:goyo_leave()
+    set nolinebreak
+    set nospell
+  endfunction
+
+  autocmd! User GoyoEnter nested call <SID>goyo_enter()
+  autocmd! User GoyoLeave nested call <SID>goyo_leave()
+]])
 
 nmap ('<leader>go', '<cmd>Goyo<cr>')
 

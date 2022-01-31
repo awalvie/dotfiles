@@ -1,8 +1,9 @@
-# boomer dotfiles
+boomer dotfiles
+---------------
 
 Minimal boomer dotfiles.
 
 · OS:     Darwin/PopOS
 · Shell:  zsh
-· Editor: nvim (check `config/nvim`)
+· Editor: nvim (check config/nvim)
 · WM:     tmux

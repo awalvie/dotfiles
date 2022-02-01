@@ -164,3 +164,15 @@ for _, lsp in ipairs(servers) do
     -- on_attach = my_custom_on_attach,
   }))
 end
+
+-- Treesitter config
+require 'nvim-treesitter.configs'.setup {
+  ensure_installed = { "go","python" },
+
+  highlight = {
+    enable = true,
+  },
+  indent = {
+    enable = true,
+  }
+}

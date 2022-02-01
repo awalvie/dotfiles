@@ -37,7 +37,7 @@ alias tn="tmux new -s"
 alias tl="tmux ls"
 alias ta="tmux attach"
 alias zshconfig="vim ~/.zshrc"
-alias vimconfig="vim ~/.config/nvim/init.vim"
+alias vimconfig="vim ~/.config/nvim/init.lua"
 alias dot="cd ~/dotfiles"
 alias xclip="xclip -sel clip"
 

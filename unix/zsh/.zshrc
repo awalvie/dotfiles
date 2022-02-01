@@ -22,6 +22,12 @@ fpath+=$HOME/.zsh/pure
 autoload -U promptinit; promptinit
 prompt pure
 
+# Use Xmodmap and xcape to
+# Tap caps to act as esc
+# Hold with hjkl to act as arrow keys
+xmodmap ~/.Xmodmap
+xcape -e 'Mode_switch=Escape'
+
 # rupa/z
 . ~/.z.sh
 

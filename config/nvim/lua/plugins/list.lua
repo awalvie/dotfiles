@@ -1,20 +1,10 @@
 ---------------------------------------
--- bootstrap and install paq
-local execute = vim.api.nvim_command
-local fn = vim.fn
-
-local install_path = fn.stdpath('data')..'/site/pack/paqs/start/paq-nvim'
-
-if fn.empty(fn.glob(install_path)) > 0 then
-	fn.system({'git', 'clone',  '--depth=1', 'https://github.com/savq/paq-nvim.git', install_path})
-	execute 'packadd paq-nvim'
-	execute 'paq.install()'
-end
-
----------------------------------------
 -- Plugin list
 
-require 'paq-nvim' {
+require 'paq' {
+
+-- Let Paq manage itself
+"savq/paq-nvim";
 -- surround things with different things
 'tpope/vim-surround';
 -- File naivator

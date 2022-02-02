@@ -7,3 +7,5 @@ Minimal boomer dotfiles.
 · Shell:  zsh
 · Editor: nvim (check config/nvim)
 · WM:     tmux
+
+- Write custom color scheme -- though, gruvbox is pretty nice

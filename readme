@@ -8,4 +8,8 @@ Minimal boomer dotfiles.
 · Editor: nvim (check config/nvim)
 · WM:     tmux
 
+todo
+----
+
 - Write custom color scheme -- though, gruvbox is pretty nice
+- Fragment .zshrc

@@ -158,7 +158,7 @@ g.coq_settings = {
 }
 
 -- Enable some language servers with the additional completion capabilities offered by coq_nvim
-local servers = { 'clangd', 'pyright', 'gopls' }
+local servers = { 'clangd', 'pyright', 'gopls', 'yamlls' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup(require('coq').lsp_ensure_capabilities({
     -- on_attach = my_custom_on_attach,
@@ -167,7 +167,7 @@ end
 
 -- Treesitter config
 require 'nvim-treesitter.configs'.setup {
-  ensure_installed = { "go","python" },
+  ensure_installed = { "go","python","yaml" },
 
   highlight = {
     enable = true,

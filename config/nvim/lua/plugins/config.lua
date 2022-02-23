@@ -167,7 +167,7 @@ end
 
 -- Treesitter config
 require 'nvim-treesitter.configs'.setup {
-  ensure_installed = { "go","python","yaml" },
+  ensure_installed = { "go", "python", "yaml", "lua" },
 
   highlight = {
     enable = true,
@@ -176,3 +176,14 @@ require 'nvim-treesitter.configs'.setup {
     enable = true,
   }
 }
+
+-- VimWiki config
+cmd([[
+  let g:vimwiki_list = [{'syntax': 'markdown'}]
+  command! Diary VimwikiDiaryIndex
+  augroup vimwikigroup
+      autocmd!
+      " automatically update links on read diary
+      autocmd BufRead,BufNewFile diary.wiki VimwikiDiaryGenerateLinks
+  augroup end
+]])

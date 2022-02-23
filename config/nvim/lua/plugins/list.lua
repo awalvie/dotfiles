@@ -39,6 +39,8 @@ require 'paq' {
 -- coq
 { 'ms-jpq/coq_nvim', run = 'python3 -m coq deps' };
 'ms-jpq/coq.artifacts';
+-- vimwiki
+'vimwiki/vimwiki';
 
 
 -- Language Plugins

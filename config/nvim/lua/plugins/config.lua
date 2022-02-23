@@ -179,6 +179,7 @@ require 'nvim-treesitter.configs'.setup {
 
 -- VimWiki config
 cmd([[
+  let g:vimwiki_ext2syntax = {}
   let g:vimwiki_list = [{'syntax': 'markdown'}]
   command! Diary VimwikiDiaryIndex
   augroup vimwikigroup

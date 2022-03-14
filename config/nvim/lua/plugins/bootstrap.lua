@@ -13,8 +13,8 @@
 	-- Main theme for vim
 	'morhetz/gruvbox';
 	-- Statusline theme for gruvbos
-	'vim-airline/vim-airline';
-	'vim-airline/vim-airline-themes';
+  'nvim-lualine/lualine.nvim';
+  { 'kyazdani42/nvim-web-devicons', opt = true };
 	-- Plugin for auto-completing closing brackets
 	'jiangmiao/auto-pairs';
 	-- Plugin for quickly commenting out code

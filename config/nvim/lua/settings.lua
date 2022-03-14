@@ -54,8 +54,6 @@ o.directory = '/.tmp/swap//'   -- swap files
 o.background = 'dark'
 cmd([[
 	colorscheme gruvbox
-	let g:airline#extensions#tabline#enabled = 1
-	let g:airline#extensions#tabline#fnamemod = ':t'
 ]])
 g.gruvbox_italic = 1
 o.termguicolors = true

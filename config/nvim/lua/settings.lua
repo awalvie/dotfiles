@@ -70,11 +70,6 @@ cmd([[
 	autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 ]])
 
--- turn on spell check for markdown files
-cmd([[
-	autocmd BufRead,BufNewFile *.md setlocal spell]]
-)
-
 -- Automatically deletes all trailing whitespace on save.
 cmd([[
 	autocmd BufWritePre * %s/\s\+$//e

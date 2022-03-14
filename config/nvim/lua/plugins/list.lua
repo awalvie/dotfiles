@@ -14,8 +14,6 @@ require 'paq' {
   -- Statusline theme for gruvbos
   'vim-airline/vim-airline';
   'vim-airline/vim-airline-themes';
-  -- Distraction free mode when writing prose
-  'junegunn/goyo.vim';
   -- Plugin for auto-completing closing brackets
   'jiangmiao/auto-pairs';
   -- Plugin for quickly commenting out code

@@ -25,8 +25,6 @@
 	'chiel92/vim-autoformat';
 	-- rip grep, yeah, I'm going into the corner
 	'jremmen/vim-ripgrep';
-	-- hahaha, I laugh at you emacs peasents
-	'jreybert/vimagit';
 	-- git gutter, finally yes, I need to clean up this config sometime
 	'airblade/vim-gitgutter';
 	-- sit on that tree
@@ -46,10 +44,6 @@
 	'godlygeek/tabular';
 	'plasticboy/vim-markdown';
 	'vim-pandoc/vim-pandoc-syntax';
-	-- HTML autoclose tag
-	'alvan/vim-closetag';
-	-- Formatter for C code
-	'rhysd/vim-clang-format';
 	-- golang plugin for vim
 	'fatih/vim-go';
   }
@@ -66,7 +60,7 @@
       }
     end
   end
-  
+
   local function bootstrap_paq()
     clone_paq()
     -- Load Paq

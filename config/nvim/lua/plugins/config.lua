@@ -182,7 +182,7 @@ require('lualine').setup {
       {
         'buffers',
         filetype_names = {
-          nerdtree = 'nerd',
+          nerdtree = 'explorer',
         },
       }
     }

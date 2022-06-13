@@ -43,6 +43,7 @@ alias dotfiles="cd ~/dotfiles"
 alias ytd="youtube-dl --verbose -f best -o '%(title)s.%(ext)s'"
 alias dps="docker ps --format 'table {{ .ID }}\t{{.Names}}\t{{.Status}}'"
 alias helm="helm --debug"
+alias untar="tar xvzf"
 
 # git aliases
 alias gc="git commit -v"
@@ -68,3 +69,9 @@ if [ -f '/Users/opus/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/opus
 # pyenv things
 eval "$(pyenv init -)"
 
+# deepsource aliases
+alias kw=watch_pods
+
+watch_pods() {
+	watch "kubectl get pods | grep -i $1"
+}

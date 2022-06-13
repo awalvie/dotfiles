@@ -18,7 +18,7 @@ nmap('H', '^')
 nmap('L', 'g_')
 
 -- disable highlighting
-nmap('<leader><space>', 'noh<CR>')
+nmap('<leader><space>', '<cmd>noh<CR>')
 
 -- Ex mode is fucking dumb
 nmap('Q', '<Nop>')

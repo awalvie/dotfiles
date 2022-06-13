@@ -28,6 +28,7 @@ o.wrap = false -- do not wrap lines even if very long
 o.scrolloff = 3 -- always show 3 rows from edge of the screen
 o.eol = false -- show if there's no eol char
 o.updatetime = 100
+o.foldlevelstart = 20 -- unfold all file when opening
 
 -- Search
 o.incsearch = true -- starts searching as soon as typing, without enter needed

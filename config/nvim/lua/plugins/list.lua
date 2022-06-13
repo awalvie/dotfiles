@@ -37,7 +37,8 @@ require 'paq' {
   'ms-jpq/coq.artifacts';
   -- vimwiki
   'vimwiki/vimwiki';
-
+  -- yaml folding
+   'pedrohdz/vim-yaml-folds';
 
   -- Language Plugins
   -- markdown formatting

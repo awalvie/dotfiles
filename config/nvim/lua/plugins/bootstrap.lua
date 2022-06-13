@@ -36,6 +36,8 @@
 	-- coq
 	{ 'ms-jpq/coq_nvim', run = 'python3 -m coq deps' };
 	'ms-jpq/coq.artifacts';
+  -- yaml folding
+   'pedrohdz/vim-yaml-folds';
 
 	-- Language Plugins
 	-- markdown formatting

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+URL=`git config --get remote.origin.url | sed 's/\.git//g' | sed 's/.*:/https:\/\/github.com\//'`
+BRANCH=`git rev-parse --abbrev-ref HEAD`
+
+FILE_TYPE=$1
+VALUE=$2
+
+if [[ $FILE_TYPE == "file" ]]; then
+    echo $URL/blob/$BRANCH/manifests/$VALUE
+else
+    echo $URL/tree/$BRANCH/$VALUE
+fi
+
+exit 0
+

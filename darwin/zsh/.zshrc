@@ -31,7 +31,7 @@ source $ZSH/oh-my-zsh.sh
 export EDITOR='nvim'
 
 kube () {
-	echo "hello world"
+	echo "hail awalvie"
 	kubectl "$@"
 }
 

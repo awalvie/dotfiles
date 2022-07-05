@@ -8,7 +8,7 @@ export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin/
 
 # Emojis suck ass
-export MINIKUBE_IN_STYLE=false
+export MINIKUBE_IN_GANGNAM_STYLE=false
 
 # Enable colors and change prompt:
 # sindresorhus/pure: https://github.com/sindresorhus/pure
@@ -30,9 +30,14 @@ source $ZSH/oh-my-zsh.sh
 
 export EDITOR='nvim'
 
+kube () {
+	echo "hail awalvie"
+	kubectl "$@"
+}
+
 # general aliases
 alias o="xdg-open"
-alias k="kubectl"
+alias k="kube"
 alias vim="nvim"
 alias tn="tmux new -s"
 alias tl="tmux ls"

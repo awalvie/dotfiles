@@ -6,6 +6,9 @@ export ZSH="/Users/opus/.oh-my-zsh"
 export PATH=$HOME/bin:$PATH
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin/
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+export AIRPLANE_INSTALL="/Users/opus/.airplane"
+export PATH="$AIRPLANE_INSTALL/bin:$PATH"
 
 # Emojis suck ass
 export MINIKUBE_IN_GANGNAM_STYLE=false
@@ -30,14 +33,11 @@ source $ZSH/oh-my-zsh.sh
 
 export EDITOR='nvim'
 
-kube () {
-	echo "hail awalvie"
-	kubectl "$@"
-}
-
 # general aliases
 alias o="xdg-open"
-alias k="kube"
+alias k="kubectl"
+alias ls="exa"
+alias la="exa -al"
 alias vim="nvim"
 alias tn="tmux new -s"
 alias tl="tmux ls"
@@ -57,10 +57,25 @@ alias ga="git add"
 alias gd="git diff --minimal"
 alias gl="git log --oneline --decorate --graph"
 alias gdc="git diff --cached"
+alias gcan="git commit --amend --no-edit"
 
 # vi mode
 bindkey -v
 export KEYTIMEOUT=1
+
+# Yank to the system clipboard
+function vi-yank-xclip {
+    zle vi-yank
+   echo "$CUTBUFFER" | pbcopy -i
+}
+
+zle -N vi-yank-xclip
+bindkey -M vicmd 'y' vi-yank-xclip
+
+# open in editor
+autoload edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd " " edit-command-line
 
 # ctrl+r search history
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -43,14 +43,16 @@ return require('packer').startup(function(use)
   use 'nvim-lua/plenary.nvim'
   -- lspconfig
   use 'neovim/nvim-lspconfig'
-  -- coq
-  use {
-    'ms-jpq/coq_nvim',
-    run = 'python3 -m coq deps'
-  }
-  use 'ms-jpq/coq.artifacts'
   -- yaml folding
   use 'pedrohdz/vim-yaml-folds'
+  -- completion
+  use 'hrsh7th/cmp-nvim-lsp'
+  use 'hrsh7th/cmp-buffer'
+  use 'hrsh7th/cmp-path'
+  use 'hrsh7th/cmp-cmdline'
+  use 'hrsh7th/nvim-cmp'
+  use 'L3MON4D3/LuaSnip'
+  use 'saadparwaiz1/cmp_luasnip'
 
   -- Language Plugins
   use 'fatih/vim-go'

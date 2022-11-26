@@ -2,3 +2,4 @@
 autoload
 plugged
 coc-settings.json
+config/nvim/plugin

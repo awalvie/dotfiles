@@ -113,7 +113,7 @@ g.coq_settings = {
 }
 
 -- Enable some language servers with the additional completion capabilities offered by coq_nvim
-local servers = { 'clangd', 'pyright', 'gopls', 'yamlls', "terraform_lsp" }
+local servers = { 'clangd', 'pyright', 'gopls', 'yamlls', "terraform_lsp", "rust_analyzer" }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup(require('coq').lsp_ensure_capabilities({
     -- on_attach = my_custom_on_attach,
@@ -122,7 +122,7 @@ end
 
 -- Treesitter config
 require 'nvim-treesitter.configs'.setup {
-  ensure_installed = { "go", "python", "yaml", "lua", "hcl" },
+  ensure_installed = { "go", "python", "yaml", "lua", "hcl", "rust" },
 
   highlight = {
     enable = true,
@@ -151,3 +151,7 @@ require('lualine').setup {
     }
   }
 }
+
+-- Rust config
+g.rustfmt_autosave = 1
+

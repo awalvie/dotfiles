@@ -39,9 +39,8 @@ require 'paq' {
    'pedrohdz/vim-yaml-folds';
 
   -- Language Plugins
-  -- golang plugin for vim
   'fatih/vim-go';
-
+  'rust-lang/rust.vim';
 }
 
 ---------------------------------------

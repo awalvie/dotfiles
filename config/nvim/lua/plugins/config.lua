@@ -4,31 +4,6 @@ local o = vim.opt
 local g = vim.g
 local cmd = vim.cmd
 
--- vim-markdown
--- disable header folding
-g.vim_markdown_folding_disabled = 1
-
--- do not use conceal feature, the implementation is not so good
-g.vim_markdown_conceal = 0
-
--- disable math tex conceal feature
-g.tex_conceal = ""
-g.vim_markdown_math = 1
-
--- support front matter of various format
-g.vim_markdown_frontmatter = 1  -- for YAML format
-g.vim_markdown_toml_frontmatter = 1  -- for TOML format
-g.vim_markdown_json_frontmatter = 1  -- for JSON format
-
--- vim-pandoc-syntax
--- It is designed to work with vim-pandoc.
--- To use it as a standalone plugin, add the following settings:
-cmd([[
-	augroup pandoc_syntax
-		au! BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
-	augroup END
-]])
-
 -- gitgutter
 
 g.gitgutter_map_keys = 0
@@ -156,18 +131,6 @@ require 'nvim-treesitter.configs'.setup {
     enable = true,
   }
 }
-
--- VimWiki config
-cmd([[
-  let g:vimwiki_ext2syntax = {}
-  let g:vimwiki_list = [{'syntax': 'markdown'}]
-  command! Diary VimwikiDiaryIndex
-  augroup vimwikigroup
-      autocmd!
-      " automatically update links on read diary
-      autocmd BufRead,BufNewFile diary.wiki VimwikiDiaryGenerateLinks
-  augroup end
-]])
 
 -- Lualine config
 require('lualine').setup {

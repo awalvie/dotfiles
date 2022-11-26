@@ -35,16 +35,10 @@ require 'paq' {
   -- coq
   { 'ms-jpq/coq_nvim', run = 'python3 -m coq deps' };
   'ms-jpq/coq.artifacts';
-  -- vimwiki
-  'vimwiki/vimwiki';
   -- yaml folding
    'pedrohdz/vim-yaml-folds';
 
   -- Language Plugins
-  -- markdown formatting
-  'godlygeek/tabular';
-  'plasticboy/vim-markdown';
-  'vim-pandoc/vim-pandoc-syntax';
   -- golang plugin for vim
   'fatih/vim-go';
 

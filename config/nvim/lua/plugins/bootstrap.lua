@@ -40,13 +40,10 @@
    'pedrohdz/vim-yaml-folds';
 
 	-- Language Plugins
-	-- markdown formatting
-	'godlygeek/tabular';
-	'plasticboy/vim-markdown';
-	'vim-pandoc/vim-pandoc-syntax';
 	-- golang plugin for vim
 	'fatih/vim-go';
-  }
+
+}
 
   local function clone_paq()
     local path = vim.fn.stdpath('data') .. '/site/pack/paqs/start/paq-nvim'

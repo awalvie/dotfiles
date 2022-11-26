@@ -23,24 +23,21 @@ return require('packer').startup(function(use)
   -- Statusline theme for gruvbos
   use {
     'nvim-lualine/lualine.nvim',
-    requires= { 'kyazdani42/nvim-web-devicons', opt = true }
+    requires = { 'kyazdani42/nvim-web-devicons', opt = true }
   }
-  -- Plugin for auto-completing closing brackets
-  use 'jiangmiao/auto-pairs'
   -- Plugin for quickly commenting out code
   use 'preservim/nerdcommenter'
-  -- Auto Code Formatter
-  use 'chiel92/vim-autoformat'
   -- rip grep, yeah, I'm going into the corner
   use 'jremmen/vim-ripgrep'
   -- git gutter, finally yes, I need to clean up this config sometime
   use 'airblade/vim-gitgutter'
   -- sit on that tree
   use 'nvim-treesitter/nvim-treesitter'
-  use 'nvim-treesitter/playground'
   -- telescope
-  use 'nvim-telescope/telescope.nvim'
-  use 'nvim-lua/plenary.nvim'
+  use {
+    'nvim-telescope/telescope.nvim',
+    requires = { {'nvim-lua/plenary.nvim'} }
+  }
   -- lspconfig
   use 'neovim/nvim-lspconfig'
   -- yaml folding

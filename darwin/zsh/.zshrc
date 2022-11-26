@@ -36,6 +36,9 @@ export EDITOR='nvim'
 # general aliases
 alias o="xdg-open"
 alias k="kubectl"
+alias kd="kubectl describe"
+alias kg="kubectl get"
+alias kgy="kubectl get -o yaml"
 alias ls="exa"
 alias la="exa -al"
 alias vim="nvim"

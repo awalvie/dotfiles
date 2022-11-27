@@ -96,22 +96,6 @@ nmap('gi','<cmd>lua vim.lsp.buf.implementation()<CR>')
 nmap('K','<cmd>lua vim.lsp.buf.hover()<CR>')
 nmap('<space>rn','<cmd>lua vim.lsp.buf.rename()<CR>')
 
--- coq
-g.coq_settings = {
-  keymap = {
-    jump_to_mark = '<nop>',
-  },
-  auto_start = 'shut-up',
-  display = {
-    icons = {
-      mode = 'none'
-    },
-    preview = {
-      border = 'solid',
-    },
-  },
-}
-
 -- Treesitter config
 require 'nvim-treesitter.configs'.setup {
   ensure_installed = { "go", "python", "yaml", "lua", "hcl", "rust" },
@@ -147,9 +131,6 @@ require('lualine').setup {
 -- Rust config
 g.rustfmt_autosave = 1
 
-
--- cmp config
-o.completeopt = {'menu', 'menuone', 'noselect'}
 
 -- Set up nvim-cmp.
 local cmp = require 'cmp'

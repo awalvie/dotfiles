@@ -63,6 +63,7 @@ g.grubbox_italic = 1
 -- Commands mode
 o.wildmenu = true -- on TAB, complete options for system command
 o.wildignore = 'deps,.svn,CVS,.git,.hg,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,.DS_Store,*.aux,*.out,*.toc'
+o.completeopt = {'menu', 'menuone', 'noselect'}
 
 -- Disables automatic commenting on newline:
 cmd([[

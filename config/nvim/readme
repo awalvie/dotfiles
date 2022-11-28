@@ -1,14 +1,6 @@
 FAQ for my dumb brain
 ---------------------
 
-- Initial setup command to bootstrap paq
-
-nvim --headless -u NONE -c 'lua require("plugins.bootstrap").bootstrap_paq()'
-
 - Run vim in verbose mode
 
 vim -V9myVim.log
-
-- COQ fails with COQdeps error
-
-Install python3-venv

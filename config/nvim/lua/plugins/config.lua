@@ -98,7 +98,7 @@ nmap('<space>rn','<cmd>lua vim.lsp.buf.rename()<CR>')
 
 -- Treesitter config
 require 'nvim-treesitter.configs'.setup {
-  ensure_installed = { "go", "python", "yaml", "lua", "hcl", "rust" },
+  ensure_installed = { "go", "python", "yaml", "lua", "hcl", "rust", "vim" },
 
   highlight = {
     enable = true,

@@ -219,3 +219,6 @@ for _, lsp in ipairs(servers) do
   }))
 end
 
+
+-- vim-go config
+g.go_doc_keywordprg_enabled = 0

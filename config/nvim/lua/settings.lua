@@ -29,6 +29,8 @@ o.scrolloff = 3 -- always show 3 rows from edge of the screen
 o.eol = false -- show if there's no eol char
 o.updatetime = 100
 o.foldlevelstart = 20 -- unfold all file when opening
+o.listchars='tab:│ ,nbsp:␣,trail:·,extends:>,precedes:<' -- indent guides on tabs
+o.list = true
 
 -- Search
 o.incsearch = true -- starts searching as soon as typing, without enter needed
@@ -57,6 +59,7 @@ cmd([[
 	colorscheme gruvbox
 ]])
 g.gruvbox_italic = 1
+g.gruvbox_invert_indent_guides = 1
 o.termguicolors = true
 g.grubbox_italic = 1
 

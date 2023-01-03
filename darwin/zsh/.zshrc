@@ -11,7 +11,7 @@ export AIRPLANE_INSTALL="/Users/opus/.airplane"
 export PATH="$AIRPLANE_INSTALL/bin:$PATH"
 
 # Emojis suck ass
-export MINIKUBE_IN_GANGNAM_STYLE=false
+export MINIKUBE_IN_STYLE=false
 
 # Enable colors and change prompt:
 # sindresorhus/pure: https://github.com/sindresorhus/pure

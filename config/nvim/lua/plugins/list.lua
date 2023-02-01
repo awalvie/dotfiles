@@ -55,6 +55,7 @@ return require('packer').startup(function(use)
   use 'fatih/vim-go'
   use 'rust-lang/rust.vim'
   use 'buoto/gotests-vim'
+  use 'towolf/vim-helm'
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins

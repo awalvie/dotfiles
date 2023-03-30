@@ -39,8 +39,6 @@ alias k="kubectl"
 alias kd="kubectl describe"
 alias kg="kubectl get"
 alias kgy="kubectl get -o yaml"
-alias ls="exa"
-alias la="exa -al"
 alias vim="nvim"
 alias tn="tmux new -s"
 alias tl="tmux ls"
@@ -88,13 +86,3 @@ if [ -f '/Users/opus/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/opus/googl
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/opus/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/opus/google-cloud-sdk/completion.zsh.inc'; fi
-
-# pyenv things
-eval "$(pyenv init -)"
-
-# deepsource aliases
-alias kw=watch_pods
-
-watch_pods() {
-	watch "kubectl get pods | grep -i $1"
-}

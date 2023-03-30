@@ -20,7 +20,7 @@ return require('packer').startup(function(use)
   use 'scrooloose/nerdtree'
   -- Main theme for vim
   use 'morhetz/gruvbox'
-  -- Statusline theme for gruvbos
+  -- Statusline theme for gruvbox
   use {
     'nvim-lualine/lualine.nvim',
     requires = { 'kyazdani42/nvim-web-devicons', opt = true }

@@ -9,6 +9,7 @@ export PATH=$PATH:$GOPATH/bin/
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export AIRPLANE_INSTALL="/Users/opus/.airplane"
 export PATH="$AIRPLANE_INSTALL/bin:$PATH"
+export GPG_TTY=$(tty)
 
 # Emojis suck ass
 export MINIKUBE_IN_STYLE=false

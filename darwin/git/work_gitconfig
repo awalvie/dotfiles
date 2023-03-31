@@ -1,7 +1,7 @@
 [user]
        name = Vishesh Agrawal
        email = vishesh@deepsource.io
-       signingkey = 28A2DB7A39B4B0E0
+       signingkey = 42B545DD28E79C14
 [commit]
        gpgsign = true
        verbose = true

@@ -54,14 +54,10 @@ o.backupdir = HOME .. '/.tmp/backup//' -- backups
 o.directory = '/.tmp/swap//'   -- swap files
 
 -- Themeing
-o.background = 'dark'
 cmd([[
-	colorscheme gruvbox
+	colorscheme dawnfox
 ]])
-g.gruvbox_italic = 1
-g.gruvbox_invert_indent_guides = 1
 o.termguicolors = true
-g.grubbox_italic = 1
 
 -- Commands mode
 o.wildmenu = true -- on TAB, complete options for system command

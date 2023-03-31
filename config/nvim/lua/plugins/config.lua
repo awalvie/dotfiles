@@ -12,10 +12,6 @@ g.gitgutter_sign_modified = '>'
 g.gitgutter_sign_removed = '-'
 g.gitgutter_sign_removed_first_line = '^'
 g.gitgutter_sign_modified_removed = '<'
-g.gitgutter_override_sign_column_highlight = 1
-
-cmd[[au VimEnter * highlight SignColumn guibg=bg]]
-cmd[[au VimEnter * highlight SignColumn ctermbg=bg]]
 
 -- Jump between hunks
 nmap('<Leader>gn', '<cmd>GitGutterNextHunk<cr>')

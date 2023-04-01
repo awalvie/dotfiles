@@ -14,6 +14,10 @@ local packer_bootstrap = ensure_packer()
 return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
 
+  use {
+    "windwp/nvim-autopairs",
+      config = function() require("nvim-autopairs").setup {} end
+  }
   -- surround things with different things
   use 'tpope/vim-surround'
   -- File navigator
@@ -53,8 +57,6 @@ return require('packer').startup(function(use)
 
   -- Language Plugins
   use 'fatih/vim-go'
-  use 'rust-lang/rust.vim'
-  use 'buoto/gotests-vim'
   use 'towolf/vim-helm'
 
   -- Automatically set up your configuration after cloning packer.nvim

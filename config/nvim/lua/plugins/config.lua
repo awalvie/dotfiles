@@ -132,7 +132,6 @@ require('lualine').setup {
 -- Rust config
 g.rustfmt_autosave = 1
 
-
 -- Set up nvim-cmp.
 local cmp = require 'cmp'
 local luasnip = require 'luasnip'
@@ -215,6 +214,12 @@ for _, lsp in ipairs(servers) do
   }))
 end
 
-
 -- vim-go config
 g.go_doc_keywordprg_enabled = 0
+
+-- zen-mode config
+require("zen-mode").setup{
+  window = {
+    backdrop = 1, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal
+  }
+}

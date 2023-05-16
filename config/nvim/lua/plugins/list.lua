@@ -14,6 +14,7 @@ local packer_bootstrap = ensure_packer()
 return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
 
+  -- automatically add brackets
   use {
     "windwp/nvim-autopairs",
       config = function() require("nvim-autopairs").setup {} end
@@ -54,6 +55,8 @@ return require('packer').startup(function(use)
   use 'hrsh7th/nvim-cmp'
   use 'L3MON4D3/LuaSnip'
   use 'saadparwaiz1/cmp_luasnip'
+  -- become a buddhist
+  use 'folke/zen-mode.nvim'
 
   -- Language Plugins
   use 'fatih/vim-go'

@@ -223,3 +223,10 @@ require("zen-mode").setup{
     backdrop = 1, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal
   }
 }
+
+-- copilot
+cmd ([[
+  imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
+]])
+g.copilot_no_tab_map = true
+

@@ -2,17 +2,23 @@
 export PATH="/Users/opus/.local/bin:$PATH"
 export PATH="$PATH:/usr/local/opt/llvm/bin/"
 export PATH="$PATH:/usr/local/opt/riscv-gnu-toolchain/bin"
-export ZSH="/Users/opus/.oh-my-zsh"
 export PATH=$HOME/bin:$PATH
-export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin/
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+export PATH="$PATH:$HOME/dotfiles/home/bin/"
+
+export ZSH="/Users/opus/.oh-my-zsh"
+export GOPATH=$HOME/go
 export AIRPLANE_INSTALL="/Users/opus/.airplane"
 export PATH="$AIRPLANE_INSTALL/bin:$PATH"
 export GPG_TTY=$(tty)
 
 # Emojis suck ass
 export MINIKUBE_IN_STYLE=false
+export K9S_NO_EMOJI=1
+
+# FZF colors: Generated from https://minsw.github.io/fzf-color-picker/
+export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS' --color=fg:#a8a3b3,bg:#faf4ed,hl:#a8a3b3 --color=fg+:#575279,bg+:#ebe5df,hl+:#575279 --color=info:#9893a5,prompt:#b4637a,pointer:#907aa9 --color=marker:#d7827e,spinner:#907aa9,header:#87afaf'
 
 # Enable colors and change prompt:
 # sindresorhus/pure: https://github.com/sindresorhus/pure
@@ -87,3 +93,7 @@ if [ -f '/Users/opus/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/opus/googl
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/opus/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/opus/google-cloud-sdk/completion.zsh.inc'; fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

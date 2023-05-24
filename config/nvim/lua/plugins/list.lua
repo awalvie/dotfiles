@@ -61,6 +61,8 @@ return require('packer').startup(function(use)
   -- Language Plugins
   use 'fatih/vim-go'
   use 'towolf/vim-helm'
+  use 'godlygeek/tabular'
+  use 'preservim/vim-markdown'
 
   -- Copilot
   use 'github/copilot.vim'

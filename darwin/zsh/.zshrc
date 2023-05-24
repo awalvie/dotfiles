@@ -6,6 +6,8 @@ export PATH=$HOME/bin:$PATH
 export PATH=$PATH:$GOPATH/bin/
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export PATH="$PATH:$HOME/dotfiles/home/bin/"
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+
 
 export ZSH="/Users/opus/.oh-my-zsh"
 export GOPATH=$HOME/go
@@ -57,6 +59,7 @@ alias ytd="youtube-dl --verbose -f best -o '%(title)s.%(ext)s'"
 alias dps="docker ps --format 'table {{ .ID }}\t{{.Names}}\t{{.Status}}'"
 alias helm="helm --debug"
 alias untar="tar xvzf"
+alias sjson="tr -d '\n'"
 
 # git aliases
 alias gc="git commit -v"

@@ -124,6 +124,7 @@ require('lualine').setup {
         filetype_names = {
           nerdtree = 'explorer',
         },
+        show_filename_only = false
       }
     }
   }

@@ -81,3 +81,5 @@ bindkey -M vicmd " " edit-command-line
 # ctrl+r search history
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# fnm config
+eval "$(fnm env --use-on-cd)"

@@ -1,7 +1,7 @@
 [user]
-       name = awalvie
+       name = Vishesh agrawal
        email = agrawal.vishesh.178@gmail.com
-       signingkey = DE597F21E8319021
+       signingkey = A028BCCBDD0A8A1E
 [commit]
        gpgsign = true
        verbose = true

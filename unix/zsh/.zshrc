@@ -1,13 +1,27 @@
 # exports
 export EDITOR='nvim'
-export ZSH="/home/awalvie/.oh-my-zsh"
+export ZSH="/home/vishesh/.oh-my-zsh"
 export GOPATH=$HOME/go
 
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$HOME/bin:$PATH
 export PATH=$PATH:$GOPATH/bin/
+export PATH=$PATH:/home/vishesh/.local/share/bob/nvim-bin
+export PATH="/home/vishesh/.local/bin:$PATH"
+export PYTHONPATH=~/code/work/zivid-sdk/common/python:~/code/work/zivid-sdk/documentation/python:~/code/work/zivid-sdk/infrastructure/python:~/code/work/zivid-sdk/sdk/python:~/code/work/zivid-sdk/camera-models/python:~/code/work/zivid-sdk/camera-models/starlark
+
+# FZF colors: Generated from https://minsw.github.io/fzf-color-picker/
+export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS' --color=fg:#a8a3b3,bg:#faf4ed,hl:#a8a3b3 --color=fg+:#575279,bg+:#ebe5df,hl+:#575279 --color=info:#9893a5,prompt:#b4637a,pointer:#907aa9 --color=marker:#d7827e,spinner:#907aa9,header:#87afaf'
+
+# Enable colors and change prompt:
+# sindresorhus/pure: https://github.com/sindresorhus/pure
+fpath+=$HOME/.zsh/pure
+autoload -U promptinit; promptinit
+prompt pure
+
 
 plugins=(
+	z
 	tmux
 	zsh-autosuggestions
 	zsh-syntax-highlighting
@@ -16,30 +30,31 @@ plugins=(
 # source shit
 source $ZSH/oh-my-zsh.sh
 
-# Enable colors and change prompt:
-# sindresorhus/pure: https://github.com/sindresorhus/pure
-fpath+=$HOME/.zsh/pure
-autoload -U promptinit; promptinit
-prompt pure
-
 # Use Xmodmap and xcape to
 # Tap caps to act as esc
 # Hold with hjkl to act as arrow keys
 xmodmap ~/.Xmodmap
 xcape -e 'Mode_switch=Escape'
 
-# rupa/z
-. ~/.z.sh
-
 # general aliases
+alias o="xdg-open"
+alias k="kubectl"
+alias kd="kubectl describe"
+alias kg="kubectl get"
+alias kgy="kubectl get -o yaml"
 alias vim="nvim"
 alias tn="tmux new -s"
 alias tl="tmux ls"
 alias ta="tmux attach"
 alias zshconfig="vim ~/.zshrc"
 alias vimconfig="vim ~/.config/nvim/init.lua"
-alias dot="cd ~/dotfiles"
-alias xclip="xclip -sel clip"
+alias dotfiles="cd ~/dotfiles"
+alias ytd="youtube-dl --verbose -f best -o '%(title)s.%(ext)s'"
+alias dps="docker ps --format 'table {{ .ID }}\t{{.Names}}\t{{.Status}}'"
+alias helm="helm --debug"
+alias untar="tar xvzf"
+alias sjson="tr -d '\n'"
+alias xclip="xclip -selection clipboard"
 
 # git aliases
 alias gc="git commit -v"
@@ -48,10 +63,34 @@ alias ga="git add"
 alias gd="git diff --minimal"
 alias gl="git log --oneline --decorate --graph"
 alias gdc="git diff --cached"
+alias gcan="git commit --amend --no-edit"
 
 # vi mode
 bindkey -v
 export KEYTIMEOUT=1
 
+# Yank to the system clipboard
+function vi-yank-xclip {
+    zle vi-yank
+   echo "$CUTBUFFER" | pbcopy -i
+}
+
+zle -N vi-yank-xclip
+bindkey -M vicmd 'y' vi-yank-xclip
+
+# open in editor
+autoload edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd " " edit-command-line
+
 # ctrl+r search history
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source /usr/share/doc/fzf/examples/key-bindings.zsh
+
+source ~/.autoenv/activate.sh
+
+# pyenv garbage
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"

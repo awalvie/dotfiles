@@ -72,7 +72,7 @@ export KEYTIMEOUT=1
 # Yank to the system clipboard
 function vi-yank-xclip {
     zle vi-yank
-   echo "$CUTBUFFER" | pbcopy -i
+   echo "$CUTBUFFER" | xclip -selection clipboard
 }
 
 zle -N vi-yank-xclip
@@ -94,3 +94,7 @@ export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
+
+# fnm
+export PATH="/home/vishesh/.local/share/fnm:$PATH"
+eval "`fnm env`"

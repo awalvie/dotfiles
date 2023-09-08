@@ -44,6 +44,7 @@ return require('packer').startup(function(use)
     requires = { {'nvim-lua/plenary.nvim'} }
   }
   -- lspconfig
+  use 'williamboman/mason.nvim'
   use 'neovim/nvim-lspconfig'
   -- yaml folding
   use 'pedrohdz/vim-yaml-folds'
@@ -63,9 +64,10 @@ return require('packer').startup(function(use)
   use 'towolf/vim-helm'
   use 'godlygeek/tabular'
   use 'preservim/vim-markdown'
+  use 'psf/black'
 
   -- Copilot
-  use 'github/copilot.vim'
+  -- use 'github/copilot.vim'
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if packer_bootstrap then

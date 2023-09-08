@@ -215,6 +215,7 @@ for _, lsp in ipairs(servers) do
   }))
 end
 
+g.python3_host_prog = '/home/vishesh/.pyenv/versions/vim/bin/python'
 -- vim-go config
 g.go_doc_keywordprg_enabled = 0
 
@@ -231,3 +232,16 @@ cmd ([[
 ]])
 g.copilot_no_tab_map = true
 
+
+-- mason
+require("mason").setup()
+
+-- black
+g.black_use_virtualenv =  '/home/vishesh/.pyenv/versions/vim/bin/python'
+
+cmd ([[
+augroup black_on_save
+  autocmd!
+  autocmd BufWritePre *.py Black
+augroup end
+]])

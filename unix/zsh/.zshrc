@@ -1,14 +1,13 @@
 # exports
 export EDITOR='nvim'
-export ZSH="/home/vishesh/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 export GOPATH=$HOME/go
 
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$HOME/bin:$PATH
 export PATH=$PATH:$GOPATH/bin/
 export PATH=$PATH:/home/vishesh/.local/share/bob/nvim-bin
-export PATH="/home/vishesh/.local/bin:$PATH"
-export PYTHONPATH=~/code/work/zivid-sdk/common/python:~/code/work/zivid-sdk/documentation/python:~/code/work/zivid-sdk/infrastructure/python:~/code/work/zivid-sdk/sdk/python:~/code/work/zivid-sdk/camera-models/python:~/code/work/zivid-sdk/camera-models/starlark
+export PATH="$PATH/.local/bin:$PATH"
 
 # FZF colors: Generated from https://minsw.github.io/fzf-color-picker/
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS' --color=fg:#a8a3b3,bg:#faf4ed,hl:#a8a3b3 --color=fg+:#575279,bg+:#ebe5df,hl+:#575279 --color=info:#9893a5,prompt:#b4637a,pointer:#907aa9 --color=marker:#d7827e,spinner:#907aa9,header:#87afaf'

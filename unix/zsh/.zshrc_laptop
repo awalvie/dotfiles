@@ -85,3 +85,7 @@ bindkey -M vicmd " " edit-command-line
 # ctrl+r search history
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 source /usr/share/doc/fzf/examples/key-bindings.zsh
+
+# fnm
+export PATH="$HOME/.local/share/fnm:$PATH"
+eval "`fnm env`"

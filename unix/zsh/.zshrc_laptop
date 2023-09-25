@@ -89,3 +89,9 @@ source /usr/share/doc/fzf/examples/key-bindings.zsh
 # fnm
 export PATH="$HOME/.local/share/fnm:$PATH"
 eval "`fnm env`"
+
+# virtualenvwrapper
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/projects
+source /home/remote/.local/bin/virtualenvwrapper.sh

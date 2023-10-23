@@ -24,7 +24,7 @@ return require('packer').startup(function(use)
   -- File navigator
   use 'scrooloose/nerdtree'
   -- Main theme for vim
-  use "EdenEast/nightfox.nvim"
+  use "nordtheme/vim"
   -- Statusline theme for gruvbox
   use {
     'nvim-lualine/lualine.nvim',

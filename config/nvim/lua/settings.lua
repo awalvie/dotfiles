@@ -55,7 +55,7 @@ o.directory = '/.tmp/swap//'   -- swap files
 
 -- Themeing
 cmd([[
-  colorscheme dawnfox
+  colorscheme nord
 ]])
 o.termguicolors = true
 

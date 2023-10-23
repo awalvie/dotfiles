@@ -124,7 +124,7 @@ require('lualine').setup {
         filetype_names = {
           nerdtree = 'explorer',
         },
-        show_filename_only = false
+        show_filename_only = true
       }
     }
   }
@@ -215,7 +215,7 @@ for _, lsp in ipairs(servers) do
   }))
 end
 
-g.python3_host_prog = '/home/remote/.virtualenvs/vim/bin/python'
+g.python3_host_prog = '/home/remote/.pyenv/versions/vim/bin/python'
 -- vim-go config
 g.go_doc_keywordprg_enabled = 0
 
@@ -237,7 +237,8 @@ g.copilot_no_tab_map = true
 require("mason").setup()
 
 -- black
-g.black_use_virtualenv =  '/home/remote/.virtualenvs/vim/bin/python'
+g.black_use_virtualenv =  '/home/remote/.pyenv/versions/vim/bin/python'
+g.black_linelength = 120
 
 cmd ([[
 augroup black_on_save
@@ -245,3 +246,16 @@ augroup black_on_save
   autocmd BufWritePre *.py Black
 augroup end
 ]])
+
+
+-- Configure Pyright
+require('lspconfig').pyright.setup {
+    settings = {
+        python = {
+            analysis = {
+                autoImportCompletions = true,
+                diagnosticMode = "workspace",
+            }
+        }
+    }
+}

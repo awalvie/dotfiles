@@ -110,23 +110,13 @@ require 'nvim-treesitter.configs'.setup {
 }
 
 -- Lualine config
-require('lualine').setup {
+require('lualine').setup()
+
+-- Bufferline config
+local bufferline = require('bufferline')
+bufferline.setup {
   options = {
-    component_separators = { left = ' ', right = ' '},
-    section_separators = { left = ' ', right = ' '},
-    always_divide_middle = false,
-    icons_enabled = false,
-  },
-  tabline = {
-    lualine_a = {
-      {
-        'buffers',
-        filetype_names = {
-          nerdtree = 'explorer',
-        },
-        show_filename_only = true
-      }
-    }
+    style_preset = bufferline.style_preset.minimal,
   }
 }
 
@@ -207,7 +197,7 @@ cmp.setup.cmdline(':', {
 })
 
 -- Enable some language servers with the additional completion capabilities offered by coq_nvim
-local servers = { 'clangd', 'pyright', 'gopls', 'yamlls', "terraform_lsp", "rust_analyzer" }
+local servers = { 'clangd', 'pylsp', 'gopls', 'yamlls', "terraform_lsp", "rust_analyzer" }
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup(({
@@ -216,6 +206,7 @@ for _, lsp in ipairs(servers) do
 end
 
 g.python3_host_prog = '/home/remote/.pyenv/versions/vim/bin/python'
+
 -- vim-go config
 g.go_doc_keywordprg_enabled = 0
 
@@ -247,15 +238,16 @@ augroup black_on_save
 augroup end
 ]])
 
-
--- Configure Pyright
-require('lspconfig').pyright.setup {
-    settings = {
-        python = {
-            analysis = {
-                autoImportCompletions = true,
-                diagnosticMode = "workspace",
-            }
-        }
+-- configure pylsp
+require'lspconfig'.pylsp.setup{
+  settings = {
+    pylsp = {
+      plugins = {
+        pylint = {
+          enabled = true,
+          executable = '/home/remote/.pyenv/shims/pylint',
+        },
+      }
     }
+  }
 }

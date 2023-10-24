@@ -30,6 +30,10 @@ return require('packer').startup(function(use)
     'nvim-lualine/lualine.nvim',
     requires = { 'kyazdani42/nvim-web-devicons', opt = true }
   }
+  use {
+    'akinsho/bufferline.nvim',
+    tag = "*", requires = 'nvim-tree/nvim-web-devicons'
+  }
   -- Plugin for quickly commenting out code
   use 'preservim/nerdcommenter'
   -- rip grep, yeah, I'm going into the corner
@@ -67,7 +71,7 @@ return require('packer').startup(function(use)
   use 'psf/black'
 
   -- Copilot
-  -- use 'github/copilot.vim'
+  use 'github/copilot.vim'
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if packer_bootstrap then

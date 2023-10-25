@@ -9,8 +9,12 @@ export ZSH="/Users/garage/.oh-my-zsh"
 export GOPATH=$HOME/go
 export GPG_TTY=$(tty)
 
-# FZF colors: Generated from https://minsw.github.io/fzf-color-picker/
-export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS' --color=fg:#a8a3b3,bg:#faf4ed,hl:#a8a3b3 --color=fg+:#575279,bg+:#ebe5df,hl+:#575279 --color=info:#9893a5,prompt:#b4637a,pointer:#907aa9 --color=marker:#d7827e,spinner:#907aa9,header:#87afaf'
+# fzf colors with alacritty nord
+export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+    --color=fg:#e5e9f0,bg:#2E3440,hl:#81a1c1
+    --color=fg+:#e5e9f0,bg+:#2E3440,hl+:#81a1c1
+    --color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac
+    --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'
 
 # Enable colors and change prompt:
 # sindresorhus/pure: https://github.com/sindresorhus/pure

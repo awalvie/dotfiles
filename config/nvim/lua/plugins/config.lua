@@ -243,13 +243,8 @@ require'lspconfig'.pylsp.setup{
   settings = {
     pylsp = {
       plugins = {
-        pylint = {
-          enabled = true,
-          executable = '/home/remote/.pyenv/shims/pylint',
-        },
         ruff = {
           enabled = true,
-          executable = '/home/remote/.pyenv/shims/ruff',
         },
         mypy = {
           enabled = true,

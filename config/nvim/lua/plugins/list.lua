@@ -34,6 +34,8 @@ return require('packer').startup(function(use)
     'akinsho/bufferline.nvim',
     tag = "*", requires = 'nvim-tree/nvim-web-devicons'
   }
+  -- Indent guide
+  use 'lukas-reineke/indent-blankline.nvim'
   -- Plugin for quickly commenting out code
   use 'preservim/nerdcommenter'
   -- rip grep, yeah, I'm going into the corner

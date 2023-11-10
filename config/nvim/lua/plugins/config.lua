@@ -255,3 +255,6 @@ require'lspconfig'.pylsp.setup{
     }
   }
 }
+
+-- Configure intdent-blankline
+require("ibl").setup()

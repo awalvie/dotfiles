@@ -66,8 +66,6 @@ return require('packer').startup(function(use)
   use 'folke/zen-mode.nvim'
 
   -- Language Plugins
-  use 'fatih/vim-go'
-  use 'towolf/vim-helm'
   use 'godlygeek/tabular'
   use 'preservim/vim-markdown'
   use 'psf/black'

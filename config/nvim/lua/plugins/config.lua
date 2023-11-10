@@ -197,7 +197,7 @@ cmp.setup.cmdline(':', {
 })
 
 -- Enable some language servers with the additional completion capabilities offered by coq_nvim
-local servers = { 'clangd', 'pylsp', 'gopls', 'yamlls', "terraform_lsp", "rust_analyzer" }
+local servers = { 'clangd', 'pylsp', 'gopls', 'yamlls', "terraform_lsp", "rust_analyzer", "lua_ls" }
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup(({

@@ -14,7 +14,14 @@ export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
     --color=fg:#e5e9f0,bg:#2E3440,hl:#81a1c1
     --color=fg+:#e5e9f0,bg+:#2E3440,hl+:#81a1c1
     --color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac
-    --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'
+    --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b
+	--height 60%
+	--border sharp
+	--layout reverse
+	--prompt "∷ "
+	--pointer ▶
+	--marker ⇒'
+
 
 # Enable colors and change prompt:
 # sindresorhus/pure: https://github.com/sindresorhus/pure
@@ -89,6 +96,7 @@ bindkey -M vicmd " " edit-command-line
 # ctrl+r search history
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 source /usr/share/doc/fzf/examples/key-bindings.zsh
+source /usr/share/doc/fzf/examples/completion.zsh
 
 # fnm
 export PATH="$HOME/.local/share/fnm:$PATH"

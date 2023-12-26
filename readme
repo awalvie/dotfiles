@@ -11,6 +11,4 @@ Minimal boomer dotfiles.
 todo
 ----
 
-- Write custom color scheme -- though, gruvbox is pretty nice
-- Fragment .zshrc
-- Use nvim-tree instaed of nerdtree
+- Migrate from packer.vim to lazy.nvim

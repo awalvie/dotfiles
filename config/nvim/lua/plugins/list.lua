@@ -34,6 +34,8 @@ return require('packer').startup(function(use)
     'akinsho/bufferline.nvim',
     tag = "*", requires = 'nvim-tree/nvim-web-devicons'
   }
+  -- Comform formatting
+  use 'stevearc/conform.nvim'
   -- Indent guide
   use 'lukas-reineke/indent-blankline.nvim'
   -- Plugin for quickly commenting out code
@@ -68,7 +70,6 @@ return require('packer').startup(function(use)
   -- Language Plugins
   use 'godlygeek/tabular'
   use 'preservim/vim-markdown'
-  use 'psf/black'
 
   -- Copilot
   use 'github/copilot.vim'

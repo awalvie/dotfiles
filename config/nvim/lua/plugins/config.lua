@@ -23,8 +23,8 @@ nmap('<Leader>gu', '<cmd>GitGutterUndoHunk<cr>')
 nmap('<leader>gd', '<cmd>GitGutterPreviewHunk<cr>')
 
 -- Nerd tree
-nmap('<leader>n','<cmd>NERDTreeToggle<cr>')
-nmap('<leader>m','<cmd>NERDTreeFind<cr>')
+nmap('<leader>n', '<cmd>NERDTreeToggle<cr>')
+nmap('<leader>m', '<cmd>NERDTreeFind<cr>')
 
 -- close vim if the only window left open is a NERDTree
 cmd([[
@@ -35,7 +35,7 @@ cmd([[
 g.NERDSpaceDelims = 1
 
 -- telescope
-require('telescope').setup{
+require('telescope').setup {
   defaults = {
     vimgrep_arguments = {
       'rg', '--color=never',
@@ -60,9 +60,9 @@ require('telescope').setup{
         mirror = false,
       },
     },
-    file_sorter =  require'telescope.sorters'.get_fuzzy_file,
+    file_sorter = require 'telescope.sorters'.get_fuzzy_file,
     file_ignore_patterns = {},
-    generic_sorter =  require'telescope.sorters'.get_generic_fuzzy_sorter,
+    generic_sorter = require 'telescope.sorters'.get_generic_fuzzy_sorter,
     winblend = 0,
     border = {},
     borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
@@ -70,12 +70,12 @@ require('telescope').setup{
     use_less = true,
     path_display = {},
     set_env = { ['COLORTERM'] = 'truecolor' }, -- default = nil,
-    file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
-    grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
-    qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
+    file_previewer = require 'telescope.previewers'.vim_buffer_cat.new,
+    grep_previewer = require 'telescope.previewers'.vim_buffer_vimgrep.new,
+    qflist_previewer = require 'telescope.previewers'.vim_buffer_qflist.new,
 
     -- Developer configurations: Not meant for general override
-    buffer_previewer_maker = require'telescope.previewers'.buffer_previewer_maker
+    buffer_previewer_maker = require 'telescope.previewers'.buffer_previewer_maker
   }
 }
 
@@ -197,11 +197,11 @@ cmp.setup.cmdline(':', {
 })
 
 -- Enable some language servers with the additional completion capabilities offered by coq_nvim
-local servers = { 'clangd', 'pylsp', 'gopls', 'yamlls', "terraform_lsp", "rust_analyzer", "lua_ls", "html" }
+local servers = { 'clangd', 'pylsp', 'gopls', 'yamlls', "terraform_lsp", "rust_analyzer", "lua_ls", "html", 'ruff_lsp' }
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup(({
-    capabilities=capabilities
+    capabilities = capabilities
   }))
 end
 
@@ -211,14 +211,14 @@ g.python3_host_prog = '/home/remote/.pyenv/versions/vim/bin/python'
 g.go_doc_keywordprg_enabled = 0
 
 -- zen-mode config
-require("zen-mode").setup{
+require("zen-mode").setup {
   window = {
     backdrop = 1, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal
   }
 }
 
 -- copilot
-cmd ([[
+cmd([[
   imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
 ]])
 g.copilot_no_tab_map = true
@@ -227,19 +227,8 @@ g.copilot_no_tab_map = true
 -- mason
 require("mason").setup()
 
--- black
-g.black_use_virtualenv =  '/home/remote/.pyenv/versions/vim/bin/python'
-g.black_linelength = 120
-
-cmd ([[
-augroup black_on_save
-  autocmd!
-  autocmd BufWritePre *.py Black
-augroup end
-]])
-
 -- configure pylsp
-require'lspconfig'.pylsp.setup{
+require 'lspconfig'.pylsp.setup {
   settings = {
     pylsp = {
       plugins = {
@@ -258,3 +247,15 @@ require'lspconfig'.pylsp.setup{
 
 -- Configure intdent-blankline
 require("ibl").setup()
+
+-- Configure conform
+require("conform").setup({
+  formatters_by_ft = {
+    python = { "ruff_format" },
+  },
+  format_on_save = {
+    -- I recommend these options. See :help conform.format for details.
+    lsp_fallback = true,
+    async = true,
+  },
+})

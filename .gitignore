@@ -3,3 +3,4 @@ autoload
 plugged
 coc-settings.json
 config/nvim/plugin
+lazy-lock.json

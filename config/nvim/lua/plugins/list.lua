@@ -1,8 +1,8 @@
 local ensure_packer = function()
   local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
   if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
     vim.cmd [[packadd packer.nvim]]
     return true
   end
@@ -15,10 +15,7 @@ return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
 
   -- automatically add brackets
-  use {
-    "windwp/nvim-autopairs",
-      config = function() require("nvim-autopairs").setup {} end
-  }
+  use 'm4xshen/autoclose.nvim'
   -- surround things with different things
   use 'tpope/vim-surround'
   -- File navigator
@@ -49,7 +46,7 @@ return require('packer').startup(function(use)
   -- telescope
   use {
     'nvim-telescope/telescope.nvim',
-    requires = { {'nvim-lua/plenary.nvim'} }
+    requires = { { 'nvim-lua/plenary.nvim' } }
   }
   -- lspconfig
   use 'williamboman/mason.nvim'
@@ -64,8 +61,6 @@ return require('packer').startup(function(use)
   use 'hrsh7th/nvim-cmp'
   use 'L3MON4D3/LuaSnip'
   use 'saadparwaiz1/cmp_luasnip'
-  -- become a buddhist
-  use 'folke/zen-mode.nvim'
 
   -- Language Plugins
   use 'godlygeek/tabular'

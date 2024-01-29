@@ -210,13 +210,6 @@ g.python3_host_prog = '/home/remote/.pyenv/versions/vim/bin/python'
 -- vim-go config
 g.go_doc_keywordprg_enabled = 0
 
--- zen-mode config
-require("zen-mode").setup {
-  window = {
-    backdrop = 1, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal
-  }
-}
-
 -- copilot
 cmd([[
   imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
@@ -259,3 +252,6 @@ require("conform").setup({
     async = true,
   },
 })
+
+-- Automatically close brackets
+require("autoclose").setup()

@@ -54,6 +54,7 @@ alias dps="docker ps --format 'table {{ .ID }}\t{{.Names}}\t{{.Status}}'"
 alias helm="helm --debug"
 alias untar="tar xvzf"
 alias sjson="tr -d '\n'"
+alias code="open -b com.microsoft.VSCode"
 
 # git aliases
 alias gc="git commit -v"

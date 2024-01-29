@@ -11,6 +11,8 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+vim.g.mapleader = ","
+
 require("lazy").setup({
   -- automatically add brackets
   'm4xshen/autoclose.nvim',

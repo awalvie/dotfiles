@@ -54,6 +54,9 @@ o.backupdir = HOME .. '/.tmp/backup//' -- backups
 o.directory = '/.tmp/swap//'           -- swap files
 
 -- Themeing
+g.nord_underline = 1
+g.nord_italic = 1
+g.nord_italic_comments = 1
 cmd([[
   colorscheme nord
 ]])

@@ -178,7 +178,12 @@ cmp.setup({
 
   }),
   sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
+    {
+      name = 'nvim_lsp',
+      entry_filter = function(entry, ctx)
+        return require('cmp.types').lsp.CompletionItemKind[entry:get_kind()] ~= 'Text'
+      end
+    },
     { name = 'luasnip' },
     { name = 'path' },
     { name = 'buffer' },

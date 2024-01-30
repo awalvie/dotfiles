@@ -29,16 +29,16 @@ o.scrolloff = 3 -- always show 3 rows from edge of the screen
 o.eol = false -- show if there's no eol char
 o.updatetime = 100
 o.foldlevelstart = 20 -- unfold all file when opening
-o.listchars='tab:│ ,nbsp:␣,trail:·,extends:>,precedes:<' -- indent guides on tabs
+o.listchars = 'tab:│ ,nbsp:␣,trail:·,extends:>,precedes:<' -- indent guides on tabs
 o.list = true
 
 -- Search
-o.incsearch = true -- starts searching as soon as typing, without enter needed
+o.incsearch = true  -- starts searching as soon as typing, without enter needed
 o.ignorecase = true -- ignore letter case when searching
-o.smartcase = true -- case insentive unless capitals used in search
+o.smartcase = true  -- case insentive unless capitals used in search
 
 -- White characters
-o.tabstop = 4 -- 1 tab = 4 spaces
+o.tabstop = 4    -- 1 tab = 4 spaces
 o.shiftwidth = 4 -- indentation rule
 o.autoindent = true
 
@@ -46,12 +46,12 @@ o.autoindent = true
 o.clipboard = 'unnamedplus'
 
 -- Backup files
-o.backup = true -- use backup files
+o.backup = true                        -- use backup files
 o.writebackup = false
-o.swapfile = false -- do not use swap file
+o.swapfile = false                     -- do not use swap file
 o.undodir = HOME .. '/.tmp/undo//'     -- undo files
 o.backupdir = HOME .. '/.tmp/backup//' -- backups
-o.directory = '/.tmp/swap//'   -- swap files
+o.directory = '/.tmp/swap//'           -- swap files
 
 -- Themeing
 cmd([[
@@ -61,8 +61,9 @@ o.termguicolors = true
 
 -- Commands mode
 o.wildmenu = true -- on TAB, complete options for system command
-o.wildignore = 'deps,.svn,CVS,.git,.hg,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,.DS_Store,*.aux,*.out,*.toc'
-o.completeopt = {'menu', 'menuone', 'noselect'}
+o.wildignore =
+'deps,.svn,CVS,.git,.hg,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,.DS_Store,*.aux,*.out,*.toc'
+o.completeopt = { 'menu', 'menuone', 'noselect' }
 
 -- Disables automatic commenting on newline:
 cmd([[

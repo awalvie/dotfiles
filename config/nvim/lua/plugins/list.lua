@@ -27,13 +27,16 @@ require("lazy").setup({
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' }
   },
-  {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
+  { 'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons' },
   -- Comform formatting
   'stevearc/conform.nvim',
   -- Indent guide
   'lukas-reineke/indent-blankline.nvim',
   -- Plugin for quickly commenting out code
-  'preservim/nerdcommenter',
+  {
+    'numToStr/Comment.nvim',
+    lazy = false,
+  },
   -- rip grep, yeah, I'm going into the corner
   'jremmen/vim-ripgrep',
   -- git gutter, finally yes, I need to clean up this config sometime
@@ -42,8 +45,9 @@ require("lazy").setup({
   'nvim-treesitter/nvim-treesitter',
   -- telescope
   {
-    'nvim-telescope/telescope.nvim', tag = '0.1.5',
-      dependencies = { 'nvim-lua/plenary.nvim' }
+    'nvim-telescope/telescope.nvim',
+    tag = '0.1.5',
+    dependencies = { 'nvim-lua/plenary.nvim' }
   },
   -- lspconfig
   'williamboman/mason.nvim',
@@ -65,4 +69,7 @@ require("lazy").setup({
 
   -- Copilot
   'github/copilot.vim',
+
+  -- Startup Time
+  'dstein64/vim-startuptime'
 })

@@ -32,7 +32,7 @@ cmd([[
 ]])
 
 -- nerdcommenter
-g.NERDSpaceDelims = 1
+require('Comment').setup()
 
 -- telescope
 require('telescope').setup {
@@ -66,7 +66,7 @@ require('telescope').setup {
     winblend = 0,
     border = {},
     borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
-    color_devicons = true,
+    color_devicons = false,
     use_less = true,
     path_display = {},
     set_env = { ['COLORTERM'] = 'truecolor' }, -- default = nil,
@@ -110,13 +110,19 @@ require 'nvim-treesitter.configs'.setup {
 }
 
 -- Lualine config
-require('lualine').setup()
+require('lualine').setup({
+  options = {
+    icons_enabled = 'false',
+  }
+})
 
 -- Bufferline config
 local bufferline = require('bufferline')
 bufferline.setup {
   options = {
     style_preset = bufferline.style_preset.minimal,
+    color_icons = false,
+    show_buffer_icons = false,
   }
 }
 

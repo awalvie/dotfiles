@@ -24,11 +24,13 @@ vim.o.synmaxcol = 300 -- stop syntax highlight after x lines for performance
 -- Display
 o.relativenumber = true
 o.sidescroll = 3
-o.wrap = false -- do not wrap lines even if very long
-o.scrolloff = 3 -- always show 3 rows from edge of the screen
-o.eol = false -- show if there's no eol char
+o.wrap = false        -- do not wrap lines even if very long
+o.scrolloff = 3       -- always show 3 rows from edge of the screen
+o.eol = false         -- show if there's no eol char
 o.updatetime = 100
 o.foldlevelstart = 20 -- unfold all file when opening
+o.foldmethod = "expr"
+o.foldexpr = "nvim_treesitter#foldexpr()"
 o.listchars = 'tab:│ ,nbsp:␣,trail:·,extends:>,precedes:<' -- indent guides on tabs
 o.list = true
 

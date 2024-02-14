@@ -1,0 +1,20 @@
+import:
+  - ./colors.yml
+
+window:
+  padding:
+    x: 10
+    y: 5
+  dynamic_padding: false
+
+  decorations: "none"
+
+font:
+  normal:
+    family: Liga SFMono Nerd Font
+  bold:
+    family: Liga SFMono Nerd Font
+  italic:
+    family: Liga SFMono Nerd Font
+  size: 15
+

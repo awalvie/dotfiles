@@ -31,6 +31,7 @@ o.updatetime = 100
 o.foldlevelstart = 20 -- unfold all file when opening
 o.foldmethod = "expr"
 o.foldexpr = "nvim_treesitter#foldexpr()"
+o.foldenable = false
 o.listchars = 'tab:│ ,nbsp:␣,trail:·,extends:>,precedes:<' -- indent guides on tabs
 o.list = true
 

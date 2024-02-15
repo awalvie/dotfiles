@@ -8,10 +8,10 @@ nmap('n', 'nzzzv')
 nmap('N', 'Nzzzv')
 
 -- buffer navigation and management
-nmap('<leader>l', '<cmd>bnext<CR>') -- Move to the next buffer
-nmap('<leader>h', '<cmd>bprevious<CR>') -- Move to the previous buffer
-nmap('<leader>bq', '<cmd>bp <BAR> bd #<CR>') -- Delete current buffer
-nmap('<leader>bd', '<cmd>bd|e#|bd#<CR>') -- Delete all buffers but the last one
+nmap('<leader>l', '<cmd>bnext<CR>')                  -- Move to the next buffer
+nmap('<leader>h', '<cmd>bprevious<CR>')              -- Move to the previous buffer
+nmap('<leader>bq', '<cmd>bp <BAR> bd #<CR>')         -- Delete current buffer
+nmap('<leader>bd', '<cmd>BufferLineCloseOthers<CR>') -- Delete all buffers but the last one
 
 -- Begining & End of line in Normal mode
 nmap('H', '^')

@@ -41,6 +41,17 @@ require("lazy").setup({
   'jremmen/vim-ripgrep',
   -- git gutter, finally yes, I need to clean up this config sometime
   'airblade/vim-gitgutter',
+  -- big git repos and bigger git plugins
+  {
+    "NeogitOrg/neogit",
+    dependencies = {
+      "nvim-lua/plenary.nvim",  -- required
+      "sindrets/diffview.nvim", -- optional - Diff integration
+
+      -- Only one of these is needed, not both.
+      "nvim-telescope/telescope.nvim", -- optional
+    },
+  },
   -- sit on that tree
   'nvim-treesitter/nvim-treesitter',
   -- telescope

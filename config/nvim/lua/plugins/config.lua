@@ -265,3 +265,10 @@ require("conform").setup({
 
 -- Automatically close brackets
 require("autoclose").setup()
+
+-- Neogit config
+require('neogit').setup {
+  kind = "split",
+}
+
+nmap('<leader>ng', '<cmd>Neogit<cr>')

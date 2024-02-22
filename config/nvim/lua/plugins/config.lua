@@ -271,4 +271,4 @@ require('neogit').setup {
   kind = "split",
 }
 
-nmap('<leader>ng', '<cmd>Neogit<cr>')
+nmap('<leader>gg', '<cmd>Neogit<cr>')

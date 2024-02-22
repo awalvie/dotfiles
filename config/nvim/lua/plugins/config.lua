@@ -206,12 +206,39 @@ cmp.setup.cmdline(':', {
   })
 })
 
--- Enable some language servers with the additional completion capabilities offered by coq_nvim
+-- Enable some language servers and configure what the hover box looks like
+-- Specify how the border looks like
+local border = {
+  { '┌', 'FloatBorder' },
+  { '─', 'FloatBorder' },
+  { '┐', 'FloatBorder' },
+  { '│', 'FloatBorder' },
+  { '┘', 'FloatBorder' },
+  { '─', 'FloatBorder' },
+  { '└', 'FloatBorder' },
+  { '│', 'FloatBorder' },
+}
+
+-- Add the border on hover and on signature help popup window
+local handlers = {
+  ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
+  ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
+}
+
+-- Add border to the diagnostic popup window
+vim.diagnostic.config({
+  virtual_text = {
+    prefix = ' ',
+  },
+  float = { border = border },
+})
+
 local servers = { 'clangd', 'pylsp', 'gopls', 'yamlls', "terraform_lsp", "rust_analyzer", "lua_ls", "html", 'ruff_lsp' }
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup(({
-    capabilities = capabilities
+    capabilities = capabilities,
+    handlers = handlers
   }))
 end
 

@@ -21,7 +21,18 @@ require("lazy").setup({
   -- File navigator
   'scrooloose/nerdtree',
   -- Main theme for vim
-  "nordtheme/vim",
+  {
+    "gbprod/nord.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("nord").setup({})
+      vim.cmd.colorscheme("nord")
+    end,
+  },
+  install = {
+    colorscheme = { "nord" },
+  },
   -- Statusline theme for gruvbox
   {
     'nvim-lualine/lualine.nvim',

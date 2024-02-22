@@ -4,23 +4,6 @@ local o = vim.opt
 local g = vim.g
 local cmd = vim.cmd
 
--- gitgutter
-
-g.gitgutter_map_keys = 0
-g.gitgutter_sign_added = '+'
-g.gitgutter_sign_modified = '>'
-g.gitgutter_sign_removed = '-'
-g.gitgutter_sign_removed_first_line = '^'
-g.gitgutter_sign_modified_removed = '<'
-
--- Jump between hunks
-nmap('<Leader>gn', '<cmd>GitGutterNextHunk<cr>')
-nmap('<Leader>gp', '<cmd>GitGutterPrevHunk<cr>')
-
--- Hunk-add and hunk-revert for chunk staging
-nmap('<Leader>ga', '<cmd>GitGutterStageHunk<cr>')
-nmap('<Leader>gu', '<cmd>GitGutterUndoHunk<cr>')
-nmap('<leader>gd', '<cmd>GitGutterPreviewHunk<cr>')
 
 -- Nerd tree
 nmap('<leader>n', '<cmd>NERDTreeToggle<cr>')

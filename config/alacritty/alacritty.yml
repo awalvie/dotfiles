@@ -1,5 +1,5 @@
 import:
-  - ~/dotfiles/config/alacritty/colors.yml
+  - ~/dotfiles/config/alacritty/colors/nord.yml
 
 window:
   padding:

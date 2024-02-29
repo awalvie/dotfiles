@@ -82,7 +82,7 @@ nmap(']d', '<cmd>lua vim.diagnostic.goto_next()<CR>')
 
 -- Treesitter config
 require 'nvim-treesitter.configs'.setup {
-  ensure_installed = { "go", "python", "yaml", "lua", "hcl", "rust", "vim", "vimdoc" },
+  ensure_installed = { "go", "python", "yaml", "lua", "hcl", "rust", "vim", "vimdoc", "latex" },
 
   highlight = {
     enable = true,

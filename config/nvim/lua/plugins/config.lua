@@ -216,7 +216,7 @@ vim.diagnostic.config({
   float = { border = border },
 })
 
-local servers = { 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'ruff_lsp', 'pylyzer' }
+local servers = { 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'ruff_lsp' }
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup(({

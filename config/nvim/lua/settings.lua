@@ -87,7 +87,3 @@ cmd([[
 	  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 	endif
 ]])
-
--- Python config
-g.python3_host_prog = '/home/remote/.pyenv/versions/vim/bin/python'
-g.python_host_prog = '/home/remote/.pyenv/versions/vim/bin/python'

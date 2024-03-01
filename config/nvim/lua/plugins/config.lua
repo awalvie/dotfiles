@@ -216,7 +216,7 @@ vim.diagnostic.config({
   float = { border = border },
 })
 
-local servers = { 'clangd', 'pylsp', 'gopls', 'yamlls', "terraform_lsp", "rust_analyzer", "lua_ls", "html", 'ruff_lsp' }
+local servers = { 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'ruff_lsp', 'pylyzer' }
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup(({
@@ -226,6 +226,7 @@ for _, lsp in ipairs(servers) do
 end
 
 g.python3_host_prog = '/home/remote/.pyenv/versions/vim/bin/python'
+g.python_host_prog = '/home/remote/.pyenv/versions/vim/bin/python'
 
 -- vim-go config
 g.go_doc_keywordprg_enabled = 0
@@ -239,24 +240,6 @@ g.copilot_no_tab_map = true
 
 -- mason
 require("mason").setup()
-
--- configure pylsp
-require 'lspconfig'.pylsp.setup {
-  settings = {
-    pylsp = {
-      plugins = {
-        ruff = {
-          enabled = true,
-        },
-        mypy = {
-          enabled = true,
-          live_mode = false,
-          dmypy = True,
-        },
-      }
-    }
-  }
-}
 
 -- Configure intdent-blankline
 require("ibl").setup()

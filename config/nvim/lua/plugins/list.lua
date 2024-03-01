@@ -118,13 +118,7 @@ require("lazy").setup({
   'L3MON4D3/LuaSnip',
   'saadparwaiz1/cmp_luasnip',
 
-  -- Language Plugins
-  'godlygeek/tabular',
-  'preservim/vim-markdown',
-
   -- Copilot
   'github/copilot.vim',
 
-  -- Startup Time
-  'dstein64/vim-startuptime'
 })

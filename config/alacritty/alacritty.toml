@@ -1,0 +1,21 @@
+import = ["/Users/garage/dotfiles/config/alacritty/colors/nord.toml"]
+
+[font]
+size = 15
+
+[font.bold]
+family = "Liga SFMono Nerd Font"
+
+[font.italic]
+family = "Liga SFMono Nerd Font"
+
+[font.normal]
+family = "Liga SFMono Nerd Font"
+
+[window]
+decorations = "none"
+dynamic_padding = false
+
+[window.padding]
+x = 10
+y = 5

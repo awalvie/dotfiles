@@ -66,20 +66,6 @@ nmap("<C-p>", "<cmd>Telescope find_files<cr>")
 nmap("<C-_>", "<cmd>Telescope live_grep<cr>")
 nmap("<C-y>", "<cmd>Telescope buffers<cr>")
 
--- lspconfig
-local lspconfig = require('lspconfig')
-
-nmap('gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
-nmap('gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
-nmap('ga', '<cmd>lua vim.lsp.buf.code_action()<CR>')
-nmap('gr', '<cmd>lua vim.lsp.buf.references()<CR>')
-nmap('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
-nmap('K', '<cmd>lua vim.lsp.buf.hover()<CR>')
-nmap('<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
-nmap('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
-nmap('[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
-nmap(']d', '<cmd>lua vim.diagnostic.goto_next()<CR>')
-
 -- Treesitter config
 require 'nvim-treesitter.configs'.setup {
   ensure_installed = { "go", "python", "yaml", "lua", "hcl", "rust", "vim", "vimdoc", "latex" },

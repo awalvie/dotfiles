@@ -107,6 +107,8 @@ require("lazy").setup({
   -- lspconfig
   'williamboman/mason.nvim',
   'neovim/nvim-lspconfig',
+  -- show lsp signature while typing
+  'ray-x/lsp_signature.nvim',
   -- yaml folding
   'pedrohdz/vim-yaml-folds',
   -- completion
@@ -117,6 +119,9 @@ require("lazy").setup({
   'hrsh7th/nvim-cmp',
   'L3MON4D3/LuaSnip',
   'saadparwaiz1/cmp_luasnip',
+
+  -- none-ls config
+  'nvimtools/none-ls.nvim',
 
   -- Copilot
   'github/copilot.vim',

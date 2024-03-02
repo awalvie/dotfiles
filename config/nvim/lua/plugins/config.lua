@@ -216,7 +216,7 @@ vim.diagnostic.config({
   float = { border = border },
 })
 
-local servers = { 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'ruff_lsp' }
+local servers = { 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'jedi_language_server' }
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup(({
@@ -224,9 +224,6 @@ for _, lsp in ipairs(servers) do
     handlers = handlers
   }))
 end
-
-g.python3_host_prog = '/home/remote/.pyenv/versions/vim/bin/python'
-g.python_host_prog = '/home/remote/.pyenv/versions/vim/bin/python'
 
 -- vim-go config
 g.go_doc_keywordprg_enabled = 0
@@ -265,3 +262,15 @@ require('neogit').setup {
 }
 
 nmap('<leader>gg', '<cmd>Neogit<cr>')
+
+-- Python config
+g.python3_host_prog = '/home/remote/.pyenv/versions/vim/bin/python'
+g.python_host_prog = '/home/remote/.pyenv/versions/vim/bin/python'
+
+local null_ls = require("null-ls")
+
+null_ls.setup({
+  sources = {
+    null_ls.builtins.diagnostics.mypy,
+  },
+})

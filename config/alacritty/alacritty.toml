@@ -12,6 +12,16 @@ family = "Liga SFMono Nerd Font"
 [font.normal]
 family = "Liga SFMono Nerd Font"
 
+[[keyboard.bindings]]
+chars = "\u001F"
+key = "Slash"
+mods = "Control"
+
+[[keyboard.bindings]]
+chars = "\u001F"
+key = "Slash"
+mods = "Control|Shift"
+
 [window]
 decorations = "none"
 dynamic_padding = false

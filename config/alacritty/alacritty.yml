@@ -18,3 +18,6 @@ font:
     family: Liga SFMono Nerd Font
   size: 15
 
+key_bindings:
+  - { key: Slash,  mods: Control,       chars: ^_ }
+  - { key: Slash,  mods: Control|Shift, chars: ^_ }

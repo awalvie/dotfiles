@@ -213,10 +213,13 @@ vim.diagnostic.config({
   virtual_text = {
     prefix = ' ',
   },
-  float = { border = border },
+  float = {
+    border = border,
+    source = true,
+  },
 })
 
-local servers = { 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'jedi_language_server' }
+local servers = { 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'pyright' }
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup(({

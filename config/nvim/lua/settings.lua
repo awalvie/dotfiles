@@ -19,7 +19,6 @@ o.history = 1000
 vim.o.timeout = false
 vim.o.ttimeout = true
 vim.o.ttimeoutlen = 100
-vim.o.synmaxcol = 300 -- stop syntax highlight after x lines for performance
 
 -- Display
 o.relativenumber = true

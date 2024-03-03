@@ -204,7 +204,10 @@ local border = {
 
 -- Add the border on hover and on signature help popup window
 local handlers = {
-  ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
+  ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+    border = border,
+    wrap = false,
+  }),
   ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
 }
 
@@ -269,11 +272,3 @@ nmap('<leader>gg', '<cmd>Neogit<cr>')
 -- Python config
 g.python3_host_prog = '/home/remote/.pyenv/versions/vim/bin/python'
 g.python_host_prog = '/home/remote/.pyenv/versions/vim/bin/python'
-
-local null_ls = require("null-ls")
-
-null_ls.setup({
-  sources = {
-    null_ls.builtins.diagnostics.mypy,
-  },
-})

@@ -120,9 +120,6 @@ require("lazy").setup({
   'L3MON4D3/LuaSnip',
   'saadparwaiz1/cmp_luasnip',
 
-  -- none-ls config
-  'nvimtools/none-ls.nvim',
-
   -- Copilot
   'github/copilot.vim',
 

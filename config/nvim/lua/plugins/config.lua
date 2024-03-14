@@ -155,6 +155,7 @@ cmp.setup({
     },
     { name = 'luasnip' },
     { name = 'path' },
+    { name = 'nvim_lsp_signature_help' }
   })
 })
 
@@ -206,7 +207,6 @@ local border = {
 local handlers = {
   ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
     border = border,
-    wrap = false,
   }),
   ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
 }
@@ -230,9 +230,6 @@ for _, lsp in ipairs(servers) do
     handlers = handlers
   }))
 end
-
--- vim-go config
-g.go_doc_keywordprg_enabled = 0
 
 -- copilot
 cmd([[

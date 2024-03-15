@@ -222,7 +222,7 @@ vim.diagnostic.config({
   },
 })
 
-local servers = { 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'pyright' }
+local servers = { 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'pylsp' }
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup(({
@@ -267,5 +267,5 @@ require('neogit').setup {
 nmap('<leader>gg', '<cmd>Neogit<cr>')
 
 -- Python config
-g.python3_host_prog = '/home/remote/.pyenv/versions/vim/bin/python'
+g.python3_host_prog = '/home/remote/.pyenv/versions/vim/bin/python3'
 g.python_host_prog = '/home/remote/.pyenv/versions/vim/bin/python'

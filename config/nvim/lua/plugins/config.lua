@@ -247,13 +247,14 @@ require("ibl").setup()
 -- Configure conform
 require("conform").setup({
   formatters_by_ft = {
-    python = { "ruff_format" },
+    python = { "isort", "ruff_format" },
   },
   format_on_save = {
     -- I recommend these options. See :help conform.format for details.
     lsp_fallback = true,
     async = true,
   },
+  notify_on_error = false,
 })
 
 -- Automatically close brackets

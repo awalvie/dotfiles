@@ -97,7 +97,10 @@ require("lazy").setup({
     },
   },
   -- sit on that tree
-  'nvim-treesitter/nvim-treesitter',
+  {
+    'nvim-treesitter/nvim-treesitter',
+    dependencies = { 'nvim-treesitter/nvim-treesitter-context' }
+  },
   -- telescope
   {
     'nvim-telescope/telescope.nvim',

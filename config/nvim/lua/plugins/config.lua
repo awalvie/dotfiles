@@ -78,6 +78,12 @@ require 'nvim-treesitter.configs'.setup {
   }
 }
 
+-- module configuration
+require 'treesitter-context'.setup {
+  enable = true,
+  throttle = true,
+}
+
 -- Lualine config
 require('lualine').setup({
   options = {

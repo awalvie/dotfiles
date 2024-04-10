@@ -276,3 +276,11 @@ nmap('<leader>gg', '<cmd>Neogit<cr>')
 -- Python config
 g.python3_host_prog = '/home/remote/.pyenv/versions/vim/bin/python3'
 g.python_host_prog = '/home/remote/.pyenv/versions/vim/bin/python'
+
+-- global-note config
+local global_note = require("global-note")
+global_note.setup()
+
+vim.keymap.set("n", "<leader>gn", global_note.toggle_note, {
+  desc = "Toggle global note",
+})

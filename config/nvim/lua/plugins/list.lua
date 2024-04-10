@@ -126,4 +126,6 @@ require("lazy").setup({
   -- Copilot
   'github/copilot.vim',
 
+  -- ah, I can't think of anything funny
+  "backdround/global-note.nvim",
 })

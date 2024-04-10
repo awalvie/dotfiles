@@ -281,6 +281,6 @@ g.python_host_prog = '/home/remote/.pyenv/versions/vim/bin/python'
 local global_note = require("global-note")
 global_note.setup()
 
-vim.keymap.set("n", "<leader>gn", global_note.toggle_note, {
+vim.keymap.set("n", "<leader>z", global_note.toggle_note, {
   desc = "Toggle global note",
 })

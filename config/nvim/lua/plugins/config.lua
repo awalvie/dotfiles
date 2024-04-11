@@ -68,7 +68,7 @@ nmap("<C-y>", "<cmd>Telescope buffers<cr>")
 
 -- Treesitter config
 require 'nvim-treesitter.configs'.setup {
-  ensure_installed = { "go", "python", "yaml", "lua", "hcl", "rust", "vim", "vimdoc", "latex" },
+  ensure_installed = { "go", "python", "yaml", "lua", "hcl", "rust", "vim", "vimdoc", "latex", "markdown", "markdown_inline" },
 
   highlight = {
     enable = true,

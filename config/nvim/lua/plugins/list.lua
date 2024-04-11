@@ -128,4 +128,7 @@ require("lazy").setup({
 
   -- ah, I can't think of anything funny
   "backdround/global-note.nvim",
+
+  -- maker of plugins, breaker of vim
+  { "folke/neodev.nvim",       opts = {} }
 })

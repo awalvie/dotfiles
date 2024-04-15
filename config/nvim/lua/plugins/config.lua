@@ -82,6 +82,7 @@ require 'nvim-treesitter.configs'.setup {
 require 'treesitter-context'.setup {
   enable = true,
   throttle = true,
+  max_lines = 2,
 }
 
 -- Lualine config

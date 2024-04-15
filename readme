@@ -11,4 +11,5 @@ Minimal boomer dotfiles.
 todo
 ----
 
-- Migrate from packer.vim to lazy.nvim
+- [ ] Setup nvim-dap and learn how to use it
+- [x] Migrate from packer.vim to lazy.nvim

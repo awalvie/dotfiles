@@ -8,6 +8,7 @@ export PATH=$HOME/bin:$PATH
 export PATH=$PATH:$GOPATH/bin/
 export PATH=$PATH:/home/vishesh/.local/share/bob/nvim-bin
 export PATH="$PATH/.local/bin:$PATH"
+export BAT_THEME="Nord"
 
 # FZF colors: Generated from https://minsw.github.io/fzf-color-picker/
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'

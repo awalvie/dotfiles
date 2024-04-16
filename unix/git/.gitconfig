@@ -1,5 +1,6 @@
 [core]
 	pager = delta
+	excludesfile = /home/vishesh/.gitignore
 [interactive]
 	diffFilter = delta --color-only
 [delta]
@@ -12,3 +13,6 @@
 	conflictstyle = diff3
 [diff]
 	colorMoved = default
+[safe]
+	directory = /home/vishesh/code/entropy/cadvisor/actions-runner/_work/workshop/workshop
+	directory = /home/vishesh/code/entropy/cadvisor/actions-runner/_work/workshop/workshop

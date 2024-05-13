@@ -70,7 +70,7 @@ alias sjson="tr -d '\n'"
 alias xclip="xclip -selection clipboard"
 
 # git aliases
-alias gc="git commit -v"
+alias gc="git commit -v -s"
 alias gst="git status --short"
 alias ga="git add"
 alias gd="git diff --minimal"
@@ -101,8 +101,6 @@ bindkey -M vicmd " " edit-command-line
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 source /usr/share/doc/fzf/examples/completion.zsh
 
-source ~/.autoenv/activate.sh
-
 # pyenv garbage
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
@@ -112,3 +110,5 @@ eval "$(pyenv virtualenv-init -)"
 # fnm
 export PATH="/home/vishesh/.local/share/fnm:$PATH"
 eval "`fnm env`"
+
+source ~/.autoenv/activate.sh

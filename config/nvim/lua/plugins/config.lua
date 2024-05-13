@@ -68,7 +68,7 @@ nmap("<C-y>", "<cmd>Telescope buffers<cr>")
 
 -- Treesitter config
 require 'nvim-treesitter.configs'.setup {
-  ensure_installed = { "go", "python", "yaml", "lua", "hcl", "rust", "vim", "vimdoc", "latex", "markdown", "markdown_inline" },
+  ensure_installed = { "go", "python", "yaml", "lua", "hcl", "rust", "vim", "vimdoc", "latex", "markdown", "markdown_inline", "bash" },
 
   highlight = {
     enable = true,
@@ -229,7 +229,7 @@ vim.diagnostic.config({
   },
 })
 
-local servers = { 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'pylsp' }
+local servers = { 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'pylsp', "bashls" }
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup(({

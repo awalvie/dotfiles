@@ -8,6 +8,12 @@ local cmd = vim.cmd
 nmap('<leader>n', '<cmd>Neotree toggle reveal<cr>')
 
 require("neo-tree").setup({
+  close_if_last_window = true,
+  popup_border_style = "rounded",
+  window = {
+    width = 30,
+    position = "left",
+  },
   filesystem = {
     hijack_netrw_behavior = "open_current",
   }
@@ -88,6 +94,7 @@ require 'treesitter-context'.setup {
 require('lualine').setup({
   options = {
     icons_enabled = 'false',
+    globalstatus = true,
   }
 })
 
@@ -95,9 +102,19 @@ require('lualine').setup({
 local bufferline = require('bufferline')
 bufferline.setup {
   options = {
+    always_show_bufferline = true,
     style_preset = bufferline.style_preset.minimal,
     color_icons = false,
     show_buffer_icons = false,
+
+    offsets = {
+      {
+        filetype = "neo-tree",
+        text = "Neotree",
+        text_align = "center",
+        separator = true,
+      }
+    }
   }
 }
 

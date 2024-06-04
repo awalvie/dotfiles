@@ -2,13 +2,13 @@
 size = 15
 
 [font.bold]
-family = "Liga SFMono Nerd Font"
+family = "IosevkaTerm Nerd Font"
 
 [font.italic]
-family = "Liga SFMono Nerd Font"
+family = "IosevkaTerm Nerd Font Italic"
 
 [font.normal]
-family = "Liga SFMono Nerd Font"
+family = "IosevkaTerm Nerd Font"
 
 [[keyboard.bindings]]
 chars = "\u001F"

@@ -4,15 +4,14 @@ local o = vim.opt
 local g = vim.g
 local cmd = vim.cmd
 
+-- neotree
+nmap('<leader>n', '<cmd>Neotree toggle reveal<cr>')
 
--- Nerd tree
-nmap('<leader>n', '<cmd>NERDTreeToggle<cr>')
-nmap('<leader>m', '<cmd>NERDTreeFind<cr>')
-
--- close vim if the only window left open is a NERDTree
-cmd([[
-	autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-]])
+require("neo-tree").setup({
+  filesystem = {
+    hijack_netrw_behavior = "open_current",
+  }
+})
 
 -- nerdcommenter
 require('Comment').setup()

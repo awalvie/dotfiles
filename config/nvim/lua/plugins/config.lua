@@ -16,6 +16,28 @@ require("neo-tree").setup({
   },
   filesystem = {
     hijack_netrw_behavior = "open_current",
+  },
+  source_selector = {
+    winbar = true,
+    content_layout = "center",
+    sources = {
+      {
+        source = "filesystem",
+        display_name = " 󰉓 File ",
+      },
+      {
+        source = "buffers",
+        display_name = " 󰈚 Bufs ",
+      },
+      {
+        source = "git_status",
+        display_name = " 󰊢 Git ",
+      },
+      {
+        source = "document_symbols",
+        display_name = " 󰌗 Syms ",
+      },
+    },
   }
 })
 

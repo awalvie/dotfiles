@@ -236,24 +236,13 @@ nmap('[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
 nmap(']d', '<cmd>lua vim.diagnostic.goto_next()<CR>')
 
 -- Enable some language servers and configure what the hover box looks like
--- Specify how the border looks like
-local border = {
-  { '┌', 'FloatBorder' },
-  { '─', 'FloatBorder' },
-  { '┐', 'FloatBorder' },
-  { '│', 'FloatBorder' },
-  { '┘', 'FloatBorder' },
-  { '─', 'FloatBorder' },
-  { '└', 'FloatBorder' },
-  { '│', 'FloatBorder' },
-}
 
--- Add the border on hover and on signature help popup window
+-- Specify how the border looks like
 local handlers = {
   ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
-    border = border,
+    border = 'rounded',
   }),
-  ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
+  ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' }),
 }
 
 -- Add border to the diagnostic popup window
@@ -262,7 +251,7 @@ vim.diagnostic.config({
     prefix = ' ',
   },
   float = {
-    border = border,
+    border = 'rounded',
     source = true,
   },
 })

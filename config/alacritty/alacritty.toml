@@ -3,12 +3,15 @@ size = 15
 
 [font.bold]
 family = "IosevkaTerm Nerd Font"
+style = "Bold"
 
 [font.italic]
-family = "IosevkaTerm Nerd Font Italic"
+family = "IosevkaTerm Nerd Font"
+style = "Italic"
 
 [font.normal]
 family = "IosevkaTerm Nerd Font"
+style = "Regular"
 
 [[keyboard.bindings]]
 chars = "\u001F"

@@ -23,19 +23,19 @@ require("neo-tree").setup({
     sources = {
       {
         source = "filesystem",
-        display_name = " 󰉓 File ",
+        display_name = " 󰉓  ",
       },
       {
         source = "buffers",
-        display_name = " 󰈚 Bufs ",
+        display_name = " 󰈚  ",
       },
       {
         source = "git_status",
-        display_name = " 󰊢 Git ",
+        display_name = " 󰊢  ",
       },
       {
         source = "document_symbols",
-        display_name = " 󰌗 Syms ",
+        display_name = " 󰌗  ",
       },
     },
   }

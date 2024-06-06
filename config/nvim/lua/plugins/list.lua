@@ -118,6 +118,17 @@ require("lazy").setup({
   -- lspconfig
   'williamboman/mason.nvim',
   'neovim/nvim-lspconfig',
+
+  {
+    'nvimdev/lspsaga.nvim',
+    config = function()
+      require('lspsaga').setup({})
+    end,
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter', -- optional
+      'nvim-tree/nvim-web-devicons',     -- optional
+    }
+  },
   -- show lsp signature while typing
   -- yaml folding
   'pedrohdz/vim-yaml-folds',

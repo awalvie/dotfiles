@@ -6,7 +6,7 @@ export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$HOME/bin:$PATH
 export PATH=$PATH:$GOPATH/bin
-export PATH=$PATH:/home/vishesh/.local/share/bob/nvim-bin
+export PATH=$PATH:$HOME/.local/share/bob/nvim-bin
 export PATH="$PATH/.local/bin:$PATH"
 export BAT_THEME="Nord"
 
@@ -108,7 +108,12 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
 # fnm
-export PATH="/home/vishesh/.local/share/fnm:$PATH"
+export PATH="$HOME/.local/share/fnm:$PATH"
 eval "`fnm env`"
 
-source ~/.autoenv/activate.sh
+# fnm
+FNM_PATH="$HOME/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="$HOME/.local/share/fnm:$PATH"
+  eval "`fnm env`"
+fi

@@ -153,6 +153,7 @@ local has_words_before = function()
 end
 
 cmp.setup({
+  preselect = cmp.PreselectMode.None,
   snippet = {
     expand = function(args)
       require('luasnip').lsp_expand(args.body)
@@ -167,7 +168,7 @@ cmp.setup({
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.abort(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<CR>'] = cmp.mapping.confirm({ select = false }),
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
@@ -301,8 +302,8 @@ require('neogit').setup {
 nmap('<leader>gg', '<cmd>Neogit<cr>')
 
 -- Python config
-g.python3_host_prog = '/home/remote/.pyenv/versions/vim/bin/python3'
-g.python_host_prog = '/home/remote/.pyenv/versions/vim/bin/python'
+g.python3_host_prog = '/home/hyperion/.pyenv/versions/vim/bin/python3'
+g.python_host_prog = '/home/hyperion/.pyenv/versions/vim/bin/python'
 
 -- global-note config
 local global_note = require("global-note")

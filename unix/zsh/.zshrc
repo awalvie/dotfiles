@@ -36,6 +36,7 @@ prompt pure
 plugins=(
 	z
 	tmux
+        fzf-tab
 	zsh-autosuggestions
 	zsh-syntax-highlighting
 )

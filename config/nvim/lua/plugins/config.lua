@@ -257,7 +257,8 @@ vim.diagnostic.config({
   },
 })
 
-local servers = { 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'pylsp', "bashls" }
+local servers = { 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'pylsp', 'bashls',
+  'ansiblels', 'pyright' }
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup(({
@@ -265,6 +266,18 @@ for _, lsp in ipairs(servers) do
     handlers = handlers
   }))
 end
+
+-- configure pylsp
+require('lspconfig').pylsp.setup {
+  settings = {
+    pylsp = {
+      plugins = {
+        pyflakes = { enabled = false },
+        pylint = { enabled = false },
+      }
+    }
+  }
+}
 
 -- copilot
 cmd([[
@@ -283,6 +296,7 @@ require("ibl").setup()
 require("conform").setup({
   formatters_by_ft = {
     python = { "isort", "ruff_format" },
+    yaml = { "prettierd" }
   },
   format_on_save = {
     -- I recommend these options. See :help conform.format for details.

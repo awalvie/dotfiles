@@ -54,6 +54,7 @@ o.swapfile = false                     -- do not use swap file
 o.undodir = HOME .. '/.tmp/undo//'     -- undo files
 o.backupdir = HOME .. '/.tmp/backup//' -- backups
 o.directory = '/.tmp/swap//'           -- swap files
+o.hidden = true
 
 -- Themeing
 g.nord_underline = 1

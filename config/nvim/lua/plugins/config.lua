@@ -301,10 +301,11 @@ nmap('<leader>gg', '<cmd>Neogit<cr>')
 g.python3_host_prog = '/home/hyperion/.pyenv/versions/vim/bin/python3'
 g.python_host_prog = '/home/hyperion/.pyenv/versions/vim/bin/python'
 
--- global-note config
-local global_note = require("global-note")
-global_note.setup()
-
-vim.keymap.set("n", "<leader>z", global_note.toggle_note, {
-  desc = "Toggle global note",
+-- Diffview config
+require('diffview').setup({
+  enhanced_diff_hl = true,
 })
+nmap('<leader>dv', '<cmd>DiffviewOpen<cr>')
+nmap('<leader>dc', '<cmd>DiffviewClose<cr>')
+nmap('<leader>dr', '<cmd>DiffviewRefresh<cr>')
+nmap('<leader>df', '<cmd>DiffviewFileHistory<cr>')

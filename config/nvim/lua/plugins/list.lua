@@ -93,14 +93,17 @@ require("lazy").setup({
       end,
     },
   },
+  -- I like big diffs and I cannot lie
+  {
+    "sindrets/diffview.nvim",
+    lazy = true,
+  }, -- optional - Diff integration
   -- big git repos and bigger git plugins
   {
     "NeogitOrg/neogit",
     dependencies = {
-      "nvim-lua/plenary.nvim",  -- required
-      "sindrets/diffview.nvim", -- optional - Diff integration
-
-      -- Only one of these is needed, not both.
+      "nvim-lua/plenary.nvim",         -- required
+      "sindrets/diffview.nvim",        -- optional - Diff integration
       "nvim-telescope/telescope.nvim", -- optional
     },
   },
@@ -139,21 +142,24 @@ require("lazy").setup({
   'williamboman/mason.nvim',
   'neovim/nvim-lspconfig',
 
-  {
-    'nvimdev/lspsaga.nvim',
-    config = function()
-      require('lspsaga').setup({
-        ui = {
-          code_action = ''
-        }
-      })
-    end,
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter', -- optional
-      'nvim-tree/nvim-web-devicons',     -- optional
-    }
-  },
+  -- disabled for a while to see if I can live without it
+  --
   -- show lsp signature while typing
+  -- {
+  --   'nvimdev/lspsaga.nvim',
+  --   config = function()
+  --     require('lspsaga').setup({
+  --       ui = {
+  --         code_action = ''
+  --       }
+  --     })
+  --   end,
+  --   dependencies = {
+  --     'nvim-treesitter/nvim-treesitter', -- optional
+  --     'nvim-tree/nvim-web-devicons',     -- optional
+  --   }
+  -- },
+
   -- yaml folding
   'pedrohdz/vim-yaml-folds',
   -- completion
@@ -168,9 +174,6 @@ require("lazy").setup({
 
   -- Copilot
   'github/copilot.vim',
-
-  -- ah, I can't think of anything funny
-  "backdround/global-note.nvim",
 
   -- maker of plugins, breaker of vim
   { "folke/neodev.nvim",       opts = {} },

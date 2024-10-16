@@ -146,7 +146,29 @@ require("lazy").setup({
   {
     'nvim-telescope/telescope.nvim',
     tag = '0.1.5',
-    dependencies = { 'nvim-lua/plenary.nvim' }
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      {
+        -- Build command stolen from lazy's config
+        -- https://github.com/nvim-telescope/telescope-fzf-native.nvim?tab=readme-ov-file#lazynvim
+        'nvim-telescope/telescope-fzf-native.nvim',
+        build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release'
+      },
+      {
+        "AckslD/nvim-neoclip.lua",
+        dependencies = {
+          { 'kkharji/sqlite.lua', module = 'sqlite' },
+          -- you'll need at least one of these
+          -- {'nvim-telescope/telescope.nvim'},
+          -- {'ibhagwan/fzf-lua'},
+        },
+        config = function()
+          require('neoclip').setup()
+        end,
+      },
+      'fdschmidt93/telescope-egrepify.nvim',
+    },
+
   },
   -- lspconfig
   'williamboman/mason.nvim',
@@ -197,9 +219,6 @@ require("lazy").setup({
       vim.o.timeoutlen = 300
     end,
     opts = {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
     }
   }
 })

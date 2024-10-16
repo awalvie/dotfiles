@@ -15,7 +15,17 @@ vim.g.mapleader = ","
 
 require("lazy").setup({
   -- automatically add brackets
-  'm4xshen/autoclose.nvim',
+  {
+    'm4xshen/autoclose.nvim',
+    config = function()
+      require("autoclose").setup({
+        options = {
+          disable_command_mode = true,
+          pair_spaces = true,
+        }
+      })
+    end,
+  },
   -- surround things with different things
   'tpope/vim-surround',
   -- File navigator

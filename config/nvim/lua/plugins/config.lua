@@ -287,9 +287,6 @@ require("conform").setup({
   notify_on_error = false,
 })
 
--- Automatically close brackets
-require("autoclose").setup()
-
 -- Neogit config
 require('neogit').setup {
   kind = "split",

@@ -174,26 +174,6 @@ require("lazy").setup({
   'williamboman/mason.nvim',
   'neovim/nvim-lspconfig',
 
-  -- disabled for a while to see if I can live without it
-  --
-  -- show lsp signature while typing
-  -- {
-  --   'nvimdev/lspsaga.nvim',
-  --   config = function()
-  --     require('lspsaga').setup({
-  --       ui = {
-  --         code_action = ''
-  --       }
-  --     })
-  --   end,
-  --   dependencies = {
-  --     'nvim-treesitter/nvim-treesitter', -- optional
-  --     'nvim-tree/nvim-web-devicons',     -- optional
-  --   }
-  -- },
-
-  -- yaml folding
-  'pedrohdz/vim-yaml-folds',
   -- completion
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-buffer',

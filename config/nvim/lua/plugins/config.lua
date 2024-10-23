@@ -71,7 +71,7 @@ require('telescope').setup {
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('egrepify')
 
-nmap("<C-r>", "<cmd>Telescope neoclip<cr>")
+nmap("<C-;>", "<cmd>Telescope neoclip<cr>")
 nmap("<C-e>", "<cmd>Telescope egrepify<cr>")
 nmap("<C-p>", "<cmd>Telescope find_files<cr>")
 nmap("<C-_>", "<cmd>Telescope live_grep<cr>")

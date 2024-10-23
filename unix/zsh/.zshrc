@@ -70,6 +70,7 @@ alias untar="tar xvzf"
 alias sjson="tr -d '\n'"
 alias xclip="xclip -selection clipboard"
 alias lg="lazygit"
+alias cat="bat"
 
 # git aliases
 alias gc="git commit -v -s"

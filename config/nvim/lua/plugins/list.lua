@@ -158,9 +158,6 @@ require("lazy").setup({
         "AckslD/nvim-neoclip.lua",
         dependencies = {
           { 'kkharji/sqlite.lua', module = 'sqlite' },
-          -- you'll need at least one of these
-          -- {'nvim-telescope/telescope.nvim'},
-          -- {'ibhagwan/fzf-lua'},
         },
         config = function()
           require('neoclip').setup()
@@ -184,6 +181,7 @@ require("lazy").setup({
   'L3MON4D3/LuaSnip',
   'saadparwaiz1/cmp_luasnip',
 
+  -- markdown
   {
     'MeanderingProgrammer/render-markdown.nvim',
     dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
@@ -193,6 +191,7 @@ require("lazy").setup({
     ---@type render.md.UserConfig
     opts = {},
   },
+
   -- Copilot
   'github/copilot.vim',
 
@@ -205,7 +204,7 @@ require("lazy").setup({
     event = "VeryLazy",
     init = function()
       vim.o.timeout = true
-      vim.o.timeoutlen = 300
+      vim.o.timeoutlen = 500
     end,
     opts = {
     }

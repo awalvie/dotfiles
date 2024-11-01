@@ -261,7 +261,10 @@ require('lspconfig').pylsp.setup {
         pycodestyle = {
           enabled = true,
           ignore = { "E501" },
-        }
+        },
+        rope_autoimport = {
+          enabled = true,
+        },
       }
     }
   }

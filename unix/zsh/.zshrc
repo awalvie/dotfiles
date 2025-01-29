@@ -13,6 +13,10 @@ export BAT_THEME="Nord"
 # Prune duplicates in $PATH
 export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print}')
 
+# GPG TTY
+GPG_TTY=$(tty)
+export GPG_TTY
+
 # FZF colors: Generated from https://minsw.github.io/fzf-color-picker/
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
     --color=fg:#e5e9f0,bg:#2E3440,hl:#81a1c1

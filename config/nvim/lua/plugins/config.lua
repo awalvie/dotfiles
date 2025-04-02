@@ -221,15 +221,6 @@ nmap('[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
 nmap(']d', '<cmd>lua vim.diagnostic.goto_next()<CR>')
 
 -- Enable some language servers and configure what the hover box looks like
-
--- Specify how the border looks like
-local handlers = {
-  ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
-    border = 'rounded',
-  }),
-  ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' }),
-}
-
 -- Add border to the diagnostic popup window
 vim.diagnostic.config({
   virtual_text = {
@@ -262,9 +253,9 @@ require('lspconfig').pylsp.setup {
           enabled = true,
           ignore = { "E501" },
         },
-        rope_autoimport = {
-          enabled = true,
-        },
+        -- rope_autoimport = {
+        --   enabled = true,
+        -- },
       }
     }
   }

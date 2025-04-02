@@ -33,6 +33,7 @@ o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 o.foldenable = false
 o.listchars = 'tab:│ ,nbsp:␣,trail:·,extends:>,precedes:<' -- indent guides on tabs
 o.list = true
+o.winborder = 'rounded' -- border for floating windows
 
 -- Search
 o.incsearch = true  -- starts searching as soon as typing, without enter needed

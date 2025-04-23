@@ -34,3 +34,10 @@ nmap('<C-h>', '<C-w>h')
 nmap('<C-j>', '<C-w>j')
 nmap('<C-k>', '<C-w>k')
 nmap('<C-l>', '<C-w>l')
+
+-- Copy current file path to clipboard
+vim.keymap.set("n", "<leader>cp", function()
+  local rel_path = vim.fn.expand("%")         -- Get relative path
+  vim.fn.setreg("+", rel_path)                -- Copy to system clipboard
+  print("Copied relative path: " .. rel_path) -- Print message
+end, { silent = true })

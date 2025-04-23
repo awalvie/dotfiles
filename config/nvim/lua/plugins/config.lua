@@ -206,9 +206,7 @@ cmp.setup.cmdline(':', {
   })
 })
 
--- lspconfig
-local lspconfig = require('lspconfig')
-
+-- lsp configuration
 nmap('gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
 nmap('gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
 nmap('ga', '<cmd>lua vim.lsp.buf.code_action()<CR>')
@@ -220,46 +218,14 @@ nmap('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
 nmap('[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
 nmap(']d', '<cmd>lua vim.diagnostic.goto_next()<CR>')
 
--- Enable some language servers and configure what the hover box looks like
--- Add border to the diagnostic popup window
-vim.diagnostic.config({
-  virtual_text = {
-    prefix = ' ',
-  },
-  float = {
-    border = 'rounded',
-    source = true,
-  },
-})
-
 local servers = { 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'pylsp', 'bashls',
   'ansiblels', 'pyright' }
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup(({
-    capabilities = capabilities,
-    handlers = handlers
-  }))
-end
 
--- configure pylsp
-require('lspconfig').pylsp.setup {
-  settings = {
-    pylsp = {
-      plugins = {
-        pyflakes = { enabled = false },
-        pylint = { enabled = false },
-        pycodestyle = {
-          enabled = true,
-          ignore = { "E501" },
-        },
-        -- rope_autoimport = {
-        --   enabled = true,
-        -- },
-      }
-    }
-  }
-}
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+for _, lsp in ipairs(servers) do
+  vim.lsp.enable(lsp)
+end
 
 -- copilot
 cmd([[

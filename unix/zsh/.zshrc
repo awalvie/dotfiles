@@ -40,7 +40,8 @@ prompt pure
 plugins=(
 	z
 	tmux
-        fzf-tab
+    fzf-tab
+	direnv
 	zsh-autosuggestions
 	zsh-syntax-highlighting
 )

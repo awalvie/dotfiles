@@ -61,10 +61,15 @@ require('telescope').setup {
       },
     },
     winblend = 0,
-    border = {},
+    border = false,
     borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
     color_devicons = false,
-  }
+  },
+  pickers = {
+    find_files = {
+      no_ignore = true,
+    },
+  },
 }
 
 -- Additional telescope extensions

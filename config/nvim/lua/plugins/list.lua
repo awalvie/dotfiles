@@ -210,5 +210,10 @@ require("lazy").setup({
     end,
     opts = {
     }
-  }
+  },
+  {
+    "Fildo7525/pretty_hover",
+    event = "LspAttach",
+    opts = {}
+  },
 })

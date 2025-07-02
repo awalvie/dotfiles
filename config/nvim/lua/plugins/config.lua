@@ -217,14 +217,15 @@ nmap('gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
 nmap('ga', '<cmd>lua vim.lsp.buf.code_action()<CR>')
 nmap('gr', '<cmd>lua vim.lsp.buf.references()<CR>')
 nmap('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
-nmap('K', '<cmd>lua vim.lsp.buf.hover()<CR>')
+vim.keymap.set('n', 'K', require('pretty_hover').hover, { silent = true })
 nmap('<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
 nmap('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
 nmap('[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
 nmap(']d', '<cmd>lua vim.diagnostic.goto_next()<CR>')
 
-local servers = { 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'pylsp', 'bashls',
-  'ansiblels', 'pyright' }
+local servers = { 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'basedpyright',
+  'bashls',
+  'ansiblels', }
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 

@@ -118,13 +118,15 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"Fildo7525/pretty_hover",
-		event = "LspAttach",
-		opts = {},
-	},
-	{
 		'echasnovski/mini.nvim',
 		event = "VeryLazy",
 		version = '*'
+	},
+	{
+		'nvimdev/lspsaga.nvim',
+		dependencies = {
+			'nvim-treesitter/nvim-treesitter', -- optional
+			'nvim-tree/nvim-web-devicons', -- optional
+		}
 	},
 })

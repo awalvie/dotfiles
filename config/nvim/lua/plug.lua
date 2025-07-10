@@ -122,4 +122,9 @@ require("lazy").setup({
 		event = "LspAttach",
 		opts = {},
 	},
+	{
+		'echasnovski/mini.nvim',
+		event = "VeryLazy",
+		version = '*'
+	},
 })

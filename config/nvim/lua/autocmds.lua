@@ -2,24 +2,24 @@ local api = vim.api
 local augroup = api.nvim_create_augroup
 local autocmd = api.nvim_create_autocmd
 
--- Disable automatic commenting on newline
-autocmd("FileType", {
-	group = augroup("CustomizeFormatOptions", { clear = true }),
-	pattern = "*",
-	callback = function()
-		vim.opt_local.formatoptions:remove("c")
-		vim.opt_local.formatoptions:remove("r")
-		vim.opt_local.formatoptions:remove("o")
-	end,
-})
-
--- Trim trailing whitespace on save
-autocmd("BufWritePre", {
-	group = augroup("TrimTrailingWhitespace", { clear = true }),
-	pattern = "*",
-	command = "%s/\\s\\+$//e",
-})
-
+-- -- Disable automatic commenting on newline
+-- autocmd("FileType", {
+-- 	group = augroup("CustomizeFormatOptions", { clear = true }),
+-- 	pattern = "*",
+-- 	callback = function()
+-- 		vim.opt_local.formatoptions:remove("c")
+-- 		vim.opt_local.formatoptions:remove("r")
+-- 		vim.opt_local.formatoptions:remove("o")
+-- 	end,
+-- })
+--
+-- -- Trim trailing whitespace on save
+-- autocmd("BufWritePre", {
+-- 	group = augroup("TrimTrailingWhitespace", { clear = true }),
+-- 	pattern = "*",
+-- 	command = "%s/\\s\\+$//e",
+-- })
+--
 -- Restore cursor position when reopening files
 autocmd({ "BufReadPost" }, {
 	group = augroup("RestoreCursorPosition", { clear = true }),

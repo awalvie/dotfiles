@@ -1,5 +1,6 @@
 HOME = os.getenv("HOME")
 
+-- Skips having to prepend "vim." every time
 local o = vim.opt
 local g = vim.g
 local cmd = vim.cmd
@@ -7,18 +8,14 @@ local cmd = vim.cmd
 -- Global Options --
 --------------------
 
--- Leader Key
-g.mapleader = ","
-
 -- basic settings
-o.encoding = "utf-8"
 o.backspace = "indent,eol,start" -- backspace works on every char in insert mode
 o.history = 1000
 
 -- Mapping waiting time
-vim.o.timeout = false
-vim.o.ttimeout = true
-vim.o.ttimeoutlen = 100
+o.timeout = false
+o.ttimeout = true
+o.ttimeoutlen = 100
 
 -- Display
 o.relativenumber = true
@@ -29,11 +26,20 @@ o.eol = false         -- show if there's no eol char
 o.updatetime = 100
 o.foldlevelstart = 20 -- unfold all file when opening
 o.foldmethod = "expr"
-o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+o.foldexpr = "require('vim.treesitter').foldexpr()"
 o.foldenable = false
-o.listchars = 'tab:│ ,nbsp:␣,trail:·,extends:>,precedes:<' -- indent guides on tabs
+o.listchars = {
+	tab = '│ ',
+	nbsp = '␣',
+	trail = '·',
+	extends = '>',
+	precedes = '<',
+}
+o.list = true
 o.list = true
 o.winborder = 'rounded' -- border for floating windows
+o.lazyredraw = true     -- redraw only when needed, not after every command
+o.hlsearch = true       -- highlight search results
 
 -- Search
 o.incsearch = true  -- starts searching as soon as typing, without enter needed
@@ -61,9 +67,6 @@ o.hidden = true
 g.nord_underline = 1
 g.nord_italic = 1
 g.nord_italic_comments = 1
-cmd([[
-  colorscheme nord
-]])
 o.termguicolors = true
 
 -- Commands mode
@@ -72,19 +75,6 @@ o.wildignore =
 'deps,.svn,CVS,.git,.hg,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,.DS_Store,*.aux,*.out,*.toc'
 o.completeopt = { 'menu', 'menuone', 'noselect' }
 
--- Disables automatic commenting on newline:
-cmd([[
-	autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-]])
-
--- Automatically deletes all trailing whitespace on save.
-cmd([[
-	autocmd BufWritePre * %s/\s\+$//e
-]])
-
--- Remembers last position of the cursor
-cmd([[
-	if has("autocmd")
-	  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
-	endif
-]])
+-- Python config
+g.python3_host_prog = '/home/hyperion/.pyenv/versions/vim/bin/python3'
+g.python_host_prog = '/home/hyperion/.pyenv/versions/vim/bin/python'

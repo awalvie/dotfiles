@@ -21,12 +21,3 @@ end
 function tmap(shortcut, command)
   map('t', shortcut, command)
 end
-
-vim.api.nvim_create_user_command('Note', function()
-  local project_dir = vim.fs.dirname(vim.fs.find({ '.git' }, { upward = true })[1]) or vim.fn.getcwd()
-  local project_name = vim.fn.fnamemodify(project_dir, ':t')
-  local note_file = vim.env.HOME .. '/note/' .. project_name .. '.md'
-  vim.fn.mkdir(vim.env.HOME .. '/note/', 'p')
-  vim.cmd.vsplit()
-  vim.api.nvim_set_current_buf(vim.fn.bufadd(note_file))
-end, {})

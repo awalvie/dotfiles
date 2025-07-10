@@ -7,5 +7,6 @@ vim.g.mapleader = ","
 require('options')
 require('keymaps')
 require('autocmds')
+require('filetype')
 require('plug')
 require('plugins')

@@ -22,16 +22,6 @@ autocmd("BufWritePre", {
 
 -- Restore cursor position when reopening files
 autocmd({ "BufReadPost" }, {
--- Use relative numbers only in normal mode
-autocmd({ "InsertEnter" }, {
-  group = augroup("RelativeNumberToggle", { clear = true }),
-  pattern = "*",
-  callback = function() vim.wo.relativenumber = false end,
-})
-autocmd({ "InsertLeave" }, {
-  group = "RelativeNumberToggle",
-  pattern = "*",
-  callback = function() vim.wo.relativenumber = true end,
 	group = augroup("RestoreCursorPosition", { clear = true }),
 	pattern = "*",
 	callback = function(args)

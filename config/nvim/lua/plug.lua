@@ -129,4 +129,7 @@ require("lazy").setup({
 			'nvim-tree/nvim-web-devicons', -- optional
 		}
 	},
+	{
+		'trevorhauter/gitportal.nvim'
+	},
 })

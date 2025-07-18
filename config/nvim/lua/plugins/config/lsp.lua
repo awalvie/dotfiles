@@ -20,3 +20,16 @@ map('n', 'K', "<cmd>Lspsaga hover_doc<CR>", { silent = true })
 map('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
 map('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
 map('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>')
+
+-- Specific pylsp config
+require('lspconfig').pylsp.setup {
+	settings = {
+		pylsp = {
+			plugins = {
+				pycodestyle = {
+					ignore = { 'E501' }, -- Ignore line length errors
+				}
+			}
+		}
+	}
+}

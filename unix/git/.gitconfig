@@ -4,7 +4,6 @@
 	diffFilter = delta --color-only
 [delta]
   navigate = true
-  side-by-side = true
   true-color = always
 	features = arctic-fox
 [merge]

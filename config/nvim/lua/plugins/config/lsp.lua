@@ -1,6 +1,6 @@
 -- lsp.lua
 local map = vim.keymap.set
-local servers = { 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'basedpyright',
+local servers = { 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'pylsp',
 	'bashls', 'ansiblels' }
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()

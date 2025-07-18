@@ -132,4 +132,7 @@ require("lazy").setup({
 	{
 		'trevorhauter/gitportal.nvim'
 	},
+	{
+		'folke/trouble.nvim',
+	},
 })

@@ -1,8 +1,7 @@
 require("lspsaga").setup({
-	ui = {
-		border = "rounded",
-		winblend = 0,
-	},
+	lightbulb = {
+		enable = false,
+	}
 })
 
 local keymap = vim.keymap.set

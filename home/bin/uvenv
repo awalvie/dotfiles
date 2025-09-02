@@ -1,0 +1,71 @@
+#!/bin/bash
+
+# uvenv: Robust uv wrapper for centralized project venvs
+
+UVENV_HOME="${HOME}/venvs"
+
+usage() {
+    echo "Usage: uvenv <command>"
+    echo "Commands:"
+    echo "  create      Create venv for current directory"
+    echo "  activate    Activate venv for current directory"
+    echo "  remove      Remove venv for current directory"
+    echo "  show        Show path to venv for current directory"
+    echo "  help        Show this message"
+}
+
+project_name() {
+    basename "$PWD"
+}
+
+venv_path() {
+    echo "${UVENV_HOME}/$(project_name)"
+}
+
+create_venv() {
+    local venv=$(venv_path)
+    if [ -d "$venv" ]; then
+        echo "Venv already exists: $venv"
+        return 1
+    fi
+    mkdir -p "$UVENV_HOME"
+    uv venv "$venv"
+    # Optionally create symlink .venv for compatibility
+    ln -sf "$venv" .venv
+    echo "Created venv at $venv and linked .venv"
+}
+
+activate_venv() {
+    local venv=$(venv_path)
+    if [ ! -d "$venv" ]; then
+        echo "Venv does not exist: $venv"
+        return 1
+    fi
+    # shellcheck source=/dev/null
+    source "$venv/bin/activate"
+    echo "Activated venv: $venv"
+}
+
+remove_venv() {
+    local venv=$(venv_path)
+    if [ ! -d "$venv" ]; then
+        echo "Venv does not exist: $venv"
+        return 1
+    fi
+    rm -rf "$venv"
+    rm -f .venv
+    echo "Removed venv: $venv and .venv symlink"
+}
+
+show_venv() {
+    echo "$(venv_path)"
+}
+
+case "$1" in
+    create) create_venv ;;
+    activate) activate_venv ;;
+    remove) remove_venv ;;
+    show) show_venv ;;
+    help|*) usage ;;
+esac
+

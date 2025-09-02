@@ -39,6 +39,7 @@ plugins=(
 
 # source shit
 source $ZSH/oh-my-zsh.sh
+source $HOME/bin/uvenv
 
 # Use Xmodmap and xcape to
 # Tap caps to act as esc

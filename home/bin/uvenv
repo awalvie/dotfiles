@@ -1,71 +1,133 @@
-#!/bin/bash
-
-# uvenv: Robust uv wrapper for centralized project venvs
+# uvenv.sh: Robust uv wrapper for centralized project venvs
 
 UVENV_HOME="${HOME}/venvs"
 
-usage() {
-    echo "Usage: uvenv <command>"
-    echo "Commands:"
-    echo "  create      Create venv for current directory"
-    echo "  activate    Activate venv for current directory"
-    echo "  remove      Remove venv for current directory"
-    echo "  show        Show path to venv for current directory"
-    echo "  help        Show this message"
+uvenv() {
+    usage() {
+        echo "Usage: uvenv <command> [options]"
+        echo "Commands:"
+        echo "  create [--python <version>]   Create venv for current directory (optionally with Python version)"
+        echo "  activate [--python <version>] Activate venv for current directory"
+        echo "  deactivate                    Deactivate currently active venv"
+        echo "  remove [--python <version>]   Remove venv for current directory"
+        echo "  show [--python <version>]     Show path to venv for current directory"
+        echo "  help                          Show this message"
+    }
+
+    project_name() {
+        basename "$PWD"
+    }
+
+    venv_path() {
+        local version="$1"
+        echo "${UVENV_HOME}/$(project_name)/${version}"
+    }
+
+    detect_python_version() {
+        python -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")'
+    }
+
+    parse_python_arg() {
+        local python_version=""
+        while [[ $# -gt 0 ]]; do
+            case "$1" in
+                --python)
+                    shift
+                    python_version="$1"
+                    ;;
+                *)
+                    echo "Unknown option: $1"
+                    usage
+                    return 1
+                    ;;
+            esac
+            shift
+        done
+
+        if [ -n "$python_version" ]; then
+            echo "$python_version"
+        else
+            detect_python_version
+        fi
+    }
+
+    create_venv() {
+        local python_version
+        python_version=$(parse_python_arg "$@") || return 1
+        local venv
+        venv=$(venv_path "$python_version")
+
+        if [ -d "$venv" ]; then
+            echo "Venv already exists: $venv"
+            return 1
+        fi
+
+        mkdir -p "$(dirname "$venv")"
+        uv venv "$venv" --python "python${python_version}"
+
+        # Point `.venv` to this specific version
+        ln -sfn "$venv" .venv
+        echo "Created venv at $venv and linked .venv"
+    }
+
+    activate_venv() {
+        local python_version
+        python_version=$(parse_python_arg "$@") || return 1
+        local venv
+        venv=$(venv_path "$python_version")
+
+        if [ ! -d "$venv" ]; then
+            echo "Venv does not exist: $venv"
+            return 1
+        fi
+
+        # shellcheck source=/dev/null
+        source "$venv/bin/activate"
+        echo "Activated venv: $venv"
+    }
+
+    deactivate_venv() {
+        if declare -F deactivate >/dev/null; then
+            local active="$VIRTUAL_ENV"
+            deactivate
+            echo "Deactivated venv: $active"
+        else
+            echo "No virtual environment is currently active"
+            return 1
+        fi
+    }
+
+    remove_venv() {
+        local python_version
+        python_version=$(parse_python_arg "$@") || return 1
+        local venv
+        venv=$(venv_path "$python_version")
+
+        if [ ! -d "$venv" ]; then
+            echo "Venv does not exist: $venv"
+            return 1
+        fi
+
+        rm -rf "$venv"
+        # Only remove `.venv` if it points to this venv
+        if [ "$(readlink .venv 2>/dev/null)" = "$venv" ]; then
+            rm -f .venv
+        fi
+        echo "Removed venv: $venv"
+    }
+
+    show_venv() {
+        local python_version
+        python_version=$(parse_python_arg "$@") || return 1
+        venv_path "$python_version"
+    }
+
+    case "$1" in
+        create) shift; create_venv "$@" ;;
+        activate) shift; activate_venv "$@" ;;
+        deactivate) deactivate_venv ;;
+        remove) shift; remove_venv "$@" ;;
+        show) shift; show_venv "$@" ;;
+        help|*) usage ;;
+    esac
 }
-
-project_name() {
-    basename "$PWD"
-}
-
-venv_path() {
-    echo "${UVENV_HOME}/$(project_name)"
-}
-
-create_venv() {
-    local venv=$(venv_path)
-    if [ -d "$venv" ]; then
-        echo "Venv already exists: $venv"
-        return 1
-    fi
-    mkdir -p "$UVENV_HOME"
-    uv venv "$venv"
-    # Optionally create symlink .venv for compatibility
-    ln -sf "$venv" .venv
-    echo "Created venv at $venv and linked .venv"
-}
-
-activate_venv() {
-    local venv=$(venv_path)
-    if [ ! -d "$venv" ]; then
-        echo "Venv does not exist: $venv"
-        return 1
-    fi
-    # shellcheck source=/dev/null
-    source "$venv/bin/activate"
-    echo "Activated venv: $venv"
-}
-
-remove_venv() {
-    local venv=$(venv_path)
-    if [ ! -d "$venv" ]; then
-        echo "Venv does not exist: $venv"
-        return 1
-    fi
-    rm -rf "$venv"
-    rm -f .venv
-    echo "Removed venv: $venv and .venv symlink"
-}
-
-show_venv() {
-    echo "$(venv_path)"
-}
-
-case "$1" in
-    create) create_venv ;;
-    activate) activate_venv ;;
-    remove) remove_venv ;;
-    show) show_venv ;;
-    help|*) usage ;;
-esac
-

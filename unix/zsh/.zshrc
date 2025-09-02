@@ -48,6 +48,7 @@ plugins=(
 
 # source shit
 source $ZSH/oh-my-zsh.sh
+source $HOME/bin/uvenv
 
 # Use Xmodmap and xcape to
 # Tap caps to act as esc
@@ -108,17 +109,6 @@ bindkey -M vicmd " " edit-command-line
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 source /usr/share/doc/fzf/examples/completion.zsh
-
-# pyenv garbage
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-
-# fnm
-export PATH="$HOME/.local/share/fnm:$PATH"
-eval "`fnm env`"
 
 # fnm
 FNM_PATH="$HOME/.local/share/fnm"

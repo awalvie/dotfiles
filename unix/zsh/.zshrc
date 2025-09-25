@@ -110,9 +110,16 @@ bindkey -M vicmd " " edit-command-line
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 source /usr/share/doc/fzf/examples/completion.zsh
 
-export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
-	--color fg:#D8DEE9,hl:#A3BE8C,fg+:#D8DEE9,hl+:#A3BE8C
-	--color pointer:#BF616A,info:#4C566A,spinner:#4C566A,header:#4C566A,prompt:#81A1C1,marker:#EBCB8B'
+export FZF_DEFAULT_OPTS="
+--height=40% --layout=default --info=inline --pointer='➤' --marker='✓' \
+--color=fg:#D8DEE9,bg:#2E3440,fg+:#ECEFF4,bg+:#4C566A,pointer:#88C0D0,marker:#BF616A,header:#81A1C1,info:#8FBCBB,border:#5E81AC \
+--border
+"
+
+zstyle ':fzf-tab:*' fzf-flags \
+  --height=40% --layout=default --info=inline --pointer='➤' --marker='✓' \
+  --color=fg:#D8DEE9,bg:#2E3440,fg+:#ECEFF4,bg+:#4C566A,pointer:#88C0D0,marker:#BF616A,header:#81A1C1,info:#8FBCBB,border:#5E81AC \
+  --border
 
 # fnm
 FNM_PATH="$HOME/.local/share/fnm"

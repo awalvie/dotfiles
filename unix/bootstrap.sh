@@ -64,6 +64,8 @@ main() {
         libxkbcommon-dev
         unzip
         fontconfig
+        ripgrep
+        direnv
 	)
 	install_packages "${packages[@]}"
 
@@ -158,12 +160,13 @@ main() {
     # Change default shell to zsh for the current user
     sudo chsh -s $(which zsh) $USER 
 
-    # Install starship prompt
-    if ! command -v starship &>/dev/null; then
-        echo "Installing starship prompt..." | tee -a "$LOGFILE"
-        curl -fsSL https://starship.rs/install.sh | bash -s -- -y | tee -a "$LOGFILE"
+    # Install Pure prompt
+    PURE_DIR="$HOME/.pure"
+    if [ ! -d "$PURE_DIR" ]; then
+        echo "Installing Pure prompt..." | tee -a "$LOGFILE"
+        git clone --depth=1 https://github.com/sindresorhus/pure.git "$PURE_DIR" | tee -a "$LOGFILE"
     else
-        echo "starship already installed." | tee -a "$LOGFILE"
+        echo "Pure prompt already installed." | tee -a "$LOGFILE"
     fi
 
     # Install cargo (Rust) if not present

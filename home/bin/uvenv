@@ -2,7 +2,30 @@
 
 UVENV_HOME="${HOME}/venvs"
 
+# Check and install uv if not present
+ensure_uv_installed() {
+    if ! command -v uv &>/dev/null; then
+        echo "uv not found. Installing uv..."
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        
+        # Source the shell configuration to update PATH
+        if [ -f "$HOME/.cargo/env" ]; then
+            source "$HOME/.cargo/env"
+        fi
+        
+        # Verify installation
+        if ! command -v uv &>/dev/null; then
+            echo "Error: Failed to install uv. Please install manually."
+            return 1
+        fi
+        
+        echo "uv installed successfully!"
+    fi
+}
+
 uvenv() {
+    # Ensure uv is installed before proceeding
+    ensure_uv_installed || return 1
     usage() {
         echo "Usage: uvenv <command> [options]"
         echo "Commands:"

@@ -90,6 +90,21 @@ load_plugin "Aloxaf/fzf-tab"  # Load after compinit but before syntax-highlighti
 load_plugin "zsh-users/zsh-syntax-highlighting"  # Always load last
 
 # ============================================================================
+# Pure Prompt Setup
+# ============================================================================
+
+# Install Pure prompt if not present
+PURE_DIR="$HOME/.pure"
+if [[ ! -d "$PURE_DIR" ]]; then
+    git clone --depth=1 https://github.com/sindresorhus/pure.git "$PURE_DIR" 2>/dev/null
+fi
+
+# Add Pure to fpath and initialize
+fpath+=("$PURE_DIR")
+autoload -U promptinit; promptinit
+prompt pure
+
+# ============================================================================
 # External Tool Configuration
 # ============================================================================
 
@@ -200,9 +215,7 @@ bindkey -M vicmd " " edit-command-line
 # Prompt
 # ============================================================================
 
-# ============================================================================
-# Prompt
-# ============================================================================
+# Pure prompt configuration (loaded via plugin system)
+# Pure is async and will be available after plugin loading
 
-# Initialize Starship prompt
-eval "$(starship init zsh)"
+eval "$(direnv hook zsh)"

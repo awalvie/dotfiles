@@ -86,7 +86,6 @@ load_plugin() {
 # Load plugins in correct order
 load_plugin "rupa/z"
 load_plugin "zsh-users/zsh-autosuggestions"
-load_plugin "Aloxaf/fzf-tab"  # Load after compinit but before syntax-highlighting
 load_plugin "zsh-users/zsh-syntax-highlighting"  # Always load last
 
 # ============================================================================
@@ -105,28 +104,20 @@ autoload -U promptinit; promptinit
 prompt pure
 
 # ============================================================================
-# External Tool Configuration
-# ============================================================================
-
-# Load FZF key bindings first (before setting options)
-source /usr/share/doc/fzf/examples/key-bindings.zsh
-source /usr/share/doc/fzf/examples/completion.zsh
-
-
-# Load FZF key bindings and completion
-source /usr/share/doc/fzf/examples/key-bindings.zsh
-source /usr/share/doc/fzf/examples/completion.zsh
-
-# FZF-tab configuration
-zstyle ':fzf-tab:*' fzf-flags \
-  --height=40% --layout=default --info=inline --pointer='➤' --marker='✓' \
-  --color=fg:#D8DEE9,bg:#2E3440,fg+:#ECEFF4,bg+:#4C566A,pointer:#88C0D0,marker:#BF616A,header:#81A1C1,info:#8FBCBB,border:#5E81AC \
-  --border
-
-# ============================================================================
 # External Sources and Tools
 # ============================================================================
-
+# FZF
+export FZF_DEFAULT_OPTS="
+  --color=bg:#2E3440,bg+:#434C5E
+  --color=spinner:#88C0D0,hl:#81A1C1
+  --color=fg:#D8DEE9,header:#81A1C1
+  --color=info:#EBCB8B,pointer:#88C0D0
+  --color=marker:#A3BE8C,fg+:#ECEFF4
+  --color=prompt:#8FBCBB,hl+:#5E81AC
+  --layout=reverse
+"
+source <(fzf --zsh)
+#
 # Source custom scripts (if they exist)
 [[ -f "$HOME/bin/uvenv" ]] && source "$HOME/bin/uvenv"
 

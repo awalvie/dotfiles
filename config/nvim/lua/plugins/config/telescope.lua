@@ -3,6 +3,15 @@ local map = vim.keymap.set
 
 require('telescope').setup {
 	defaults = {
+		vimgrep_arguments = {
+			'rg',
+			'--color=never',
+			'--no-heading',
+			'--with-filename',
+			'--line-number',
+			'--column',
+			'--ignore-case',
+		},
 		prompt_prefix = "> ",
 		selection_caret = "> ",
 		entry_prefix = "  ",
@@ -22,7 +31,7 @@ require('telescope').setup {
 	},
 	extensions = {
 		fzf = {
-			fuzzy = true,           -- false will only do exact matching
+			fuzzy = true,          -- false will only do exact matching
 			override_generic_sorter = true, -- override the generic sorter
 			override_file_sorter = true, -- override the file sorter
 			case_mode = "smart_case", -- or "ignore_case" or "respect_case"

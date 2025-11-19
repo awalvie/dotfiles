@@ -213,6 +213,9 @@ alias gcan="git commit --amend --no-edit"
 bindkey -v
 export KEYTIMEOUT=1
 
+# Fix backspace in vi mode
+bindkey -v '^?' backward-delete-char
+
 # Yank to system clipboard in vi mode
 function vi-yank-xclip {
     zle vi-yank

@@ -35,3 +35,9 @@ autocmd({ "BufReadPost" }, {
 		end
 	end,
 })
+
+-- Equalize splits on terminal resize
+autocmd("VimResized", {
+	group = augroup("EqualizeOnResize", { clear = true }),
+	callback = function() vim.cmd("wincmd =") end,
+})

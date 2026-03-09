@@ -135,4 +135,13 @@ require("lazy").setup({
 	{
 		'folke/trouble.nvim',
 	},
+	{
+		'NeogitOrg/neogit',
+		dependencies = {
+			'nvim-lua/plenary.nvim',
+			'sindrets/diffview.nvim',
+			'nvim-telescope/telescope.nvim',
+		},
+	},
+	{ 'sindrets/diffview.nvim', dependencies = { 'nvim-lua/plenary.nvim' } },
 })

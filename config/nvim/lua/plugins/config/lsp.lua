@@ -83,7 +83,7 @@ vim.lsp.config.ansiblels = {
 }
 
 -- Enable the configured servers
-vim.lsp.enable({ 'pylsp', 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'bashls', 'ansiblels' })
+vim.lsp.enable({ 'basedpyright', 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'bashls', 'ansiblels' })
 
 map('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
 map('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')

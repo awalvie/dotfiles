@@ -108,7 +108,7 @@ require("lazy").setup({
 		opts = {},
 	},
 	'github/copilot.vim',
-	{ "folke/neodev.nvim", opts = {} },
+	{ "folke/neodev.nvim",      opts = {} },
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
@@ -144,4 +144,32 @@ require("lazy").setup({
 		},
 	},
 	{ 'sindrets/diffview.nvim', dependencies = { 'nvim-lua/plenary.nvim' } },
+	{
+		"folke/snacks.nvim",
+		priority = 1000,
+		lazy = false,
+		---@type snacks.Config
+		opts = {
+			-- your configuration comes here
+			-- or leave it empty to use the default settings
+			-- refer to the configuration section below
+			bigfile = { enabled = true },
+			input = { enabled = true },
+			notifier = { enabled = true },
+			quickfile = { enabled = true },
+			scope = { enabled = true },
+			words = { enabled = true },
+			gh = { enabled = true },
+			picker = {
+				gh_issue = {},
+				gh_pr = {},
+			},
+		},
+		keys = {
+			{ "<leader>gi", function() Snacks.picker.gh_issue() end,                  desc = "GitHub Issues (open)" },
+			{ "<leader>gI", function() Snacks.picker.gh_issue({ state = "all" }) end, desc = "GitHub Issues (all)" },
+			{ "<leader>gp", function() Snacks.picker.gh_pr() end,                     desc = "GitHub Pull Requests (open)" },
+			{ "<leader>gP", function() Snacks.picker.gh_pr({ state = "all" }) end,    desc = "GitHub Pull Requests (all)" },
+		},
+	}
 })

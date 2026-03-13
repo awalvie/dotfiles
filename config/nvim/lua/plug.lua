@@ -123,13 +123,6 @@ require("lazy").setup({
 		version = '*'
 	},
 	{
-		'nvimdev/lspsaga.nvim',
-		dependencies = {
-			'nvim-treesitter/nvim-treesitter', -- optional
-			'nvim-tree/nvim-web-devicons', -- optional
-		}
-	},
-	{
 		'trevorhauter/gitportal.nvim'
 	},
 	{

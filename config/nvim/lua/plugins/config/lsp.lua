@@ -3,6 +3,13 @@ local map = vim.keymap.set
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- Configure servers using vim.lsp.config (the official way)
+vim.lsp.config.ty = {
+	cmd = { 'ty', 'server' },
+	filetypes = { 'python' },
+	root_markers = { 'pyproject.toml', 'setup.py', '.git' },
+	capabilities = capabilities,
+}
+
 vim.lsp.config.pylsp = {
 	cmd = { 'pylsp' },
 	filetypes = { 'python' },
@@ -83,16 +90,15 @@ vim.lsp.config.ansiblels = {
 }
 
 -- Enable the configured servers
-vim.lsp.enable({ 'basedpyright', 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'bashls', 'ansiblels' })
+vim.lsp.enable({ 'ty', 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'bashls',
+	'ansiblels' })
 
 map('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
 map('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
 map('n', 'ga', '<cmd>lua vim.lsp.buf.code_action()<CR>')
 map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')
 map('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
-map('n', 'K', "<cmd>Lspsaga hover_doc<CR>", { silent = true })
+map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { silent = true })
 map('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
 map('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
 map('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>')
-
-

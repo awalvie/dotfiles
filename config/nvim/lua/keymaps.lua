@@ -13,6 +13,9 @@ nmap('<leader>h', '<cmd>bprevious<CR>')              -- Move to the previous buf
 nmap('<leader>bq', '<cmd>bp <BAR> bd #<CR>')         -- Delete current buffer
 nmap('<leader>bd', '<cmd>BufferLineCloseOthers<CR>') -- Delete all buffers but the last one
 
+-- tab navigation
+vim.keymap.set("n", "<leader>dq", ":diffoff! | only<CR>") -- Close all diff windows when using Gitsigns.diffthis()
+
 -- Begining & End of line in Normal mode
 nmap('H', '^')
 nmap('L', 'g_')
@@ -37,7 +40,7 @@ nmap('<C-l>', '<C-w>l')
 
 -- Copy current file path to clipboard
 vim.keymap.set("n", "<leader>cp", function()
-  local rel_path = vim.fn.expand("%")         -- Get relative path
-  vim.fn.setreg("+", rel_path)                -- Copy to system clipboard
-  print("Copied relative path: " .. rel_path) -- Print message
+	local rel_path = vim.fn.expand("%")      -- Get relative path
+	vim.fn.setreg("+", rel_path)             -- Copy to system clipboard
+	print("Copied relative path: " .. rel_path) -- Print message
 end, { silent = true })

@@ -104,9 +104,6 @@ require("lazy").setup({
 		version = '*'
 	},
 	{
-		'trevorhauter/gitportal.nvim'
-	},
-	{
 		'folke/trouble.nvim',
 	},
 	{

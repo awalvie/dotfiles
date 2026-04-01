@@ -124,4 +124,8 @@ require("lazy").setup({
 		},
 	},
 	{ 'sindrets/diffview.nvim', dependencies = { 'nvim-lua/plenary.nvim' } },
+	{
+		'folke/flash.nvim',
+		event = 'VeryLazy',
+	},
 })

@@ -76,22 +76,9 @@ require("lazy").setup({
 		dependencies = { 'nvim-treesitter/nvim-treesitter-context' },
 	},
 	{
-		'nvim-telescope/telescope.nvim',
-		tag = '0.1.8',
-		dependencies = {
-			'nvim-lua/plenary.nvim',
-			{
-				'nvim-telescope/telescope-fzf-native.nvim',
-				build = 'make',
-			},
-			{
-				"AckslD/nvim-neoclip.lua",
-				dependencies = {
-					{ 'kkharji/sqlite.lua', module = 'sqlite' },
-				},
-			},
-			'fdschmidt93/telescope-egrepify.nvim',
-		},
+		'folke/snacks.nvim',
+		priority = 1000,
+		lazy = false,
 	},
 	'williamboman/mason.nvim',
 	'neovim/nvim-lspconfig',
@@ -108,7 +95,7 @@ require("lazy").setup({
 		opts = {},
 	},
 	'github/copilot.vim',
-	{ "folke/neodev.nvim",      opts = {} },
+	{ "folke/neodev.nvim", opts = {} },
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
@@ -123,6 +110,13 @@ require("lazy").setup({
 		version = '*'
 	},
 	{
+		'nvimdev/lspsaga.nvim',
+		dependencies = {
+			'nvim-treesitter/nvim-treesitter', -- optional
+			'nvim-tree/nvim-web-devicons', -- optional
+		}
+	},
+	{
 		'trevorhauter/gitportal.nvim'
 	},
 	{
@@ -133,36 +127,7 @@ require("lazy").setup({
 		dependencies = {
 			'nvim-lua/plenary.nvim',
 			'sindrets/diffview.nvim',
-			'nvim-telescope/telescope.nvim',
 		},
 	},
 	{ 'sindrets/diffview.nvim', dependencies = { 'nvim-lua/plenary.nvim' } },
-	{
-		"folke/snacks.nvim",
-		priority = 1000,
-		lazy = false,
-		---@type snacks.Config
-		opts = {
-			-- your configuration comes here
-			-- or leave it empty to use the default settings
-			-- refer to the configuration section below
-			bigfile = { enabled = true },
-			input = { enabled = true },
-			notifier = { enabled = true },
-			quickfile = { enabled = true },
-			scope = { enabled = true },
-			words = { enabled = true },
-			gh = { enabled = true },
-			picker = {
-				gh_issue = {},
-				gh_pr = {},
-			},
-		},
-		keys = {
-			{ "<leader>gi", function() Snacks.picker.gh_issue() end,                  desc = "GitHub Issues (open)" },
-			{ "<leader>gI", function() Snacks.picker.gh_issue({ state = "all" }) end, desc = "GitHub Issues (all)" },
-			{ "<leader>gp", function() Snacks.picker.gh_pr() end,                     desc = "GitHub Pull Requests (open)" },
-			{ "<leader>gP", function() Snacks.picker.gh_pr({ state = "all" }) end,    desc = "GitHub Pull Requests (all)" },
-		},
-	}
 })

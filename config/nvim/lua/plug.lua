@@ -75,6 +75,7 @@ require("lazy").setup({
 		lazy = false,
 	},
 	'williamboman/mason.nvim',
+	'mason-org/mason-lspconfig.nvim',
 	'neovim/nvim-lspconfig',
 	'hrsh7th/cmp-nvim-lsp',
 	'hrsh7th/cmp-buffer',
@@ -89,7 +90,6 @@ require("lazy").setup({
 		opts = {},
 	},
 	'github/copilot.vim',
-	{ "folke/neodev.nvim", opts = {} },
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
@@ -102,13 +102,6 @@ require("lazy").setup({
 		'echasnovski/mini.nvim',
 		event = "VeryLazy",
 		version = '*'
-	},
-	{
-		'nvimdev/lspsaga.nvim',
-		dependencies = {
-			'nvim-treesitter/nvim-treesitter', -- optional
-			'nvim-tree/nvim-web-devicons', -- optional
-		}
 	},
 	{
 		'trevorhauter/gitportal.nvim'

@@ -1,6 +1,7 @@
 -- lsp.lua
 local map = vim.keymap.set
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local mason_lspconfig = require('mason-lspconfig')
 
 -- Configure servers using vim.lsp.config (the official way)
 vim.lsp.config.ty = {
@@ -90,8 +91,34 @@ vim.lsp.config.ansiblels = {
 }
 
 -- Enable the configured servers
-vim.lsp.enable({ 'ty', 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'bashls',
-	'ansiblels' })
+local enabled_servers = {
+	'ty',
+	'clangd',
+	'gopls',
+	'yamlls',
+	'terraform_lsp',
+	'rust_analyzer',
+	'lua_ls',
+	'html',
+	'bashls',
+	'ansiblels',
+}
+
+vim.lsp.enable(enabled_servers)
+
+mason_lspconfig.setup({
+	ensure_installed = {
+		'clangd',
+		'gopls',
+		'yamlls',
+		'terraformls',
+		'rust_analyzer',
+		'lua_ls',
+		'html',
+		'bashls',
+		'ansiblels',
+	},
+})
 
 map('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
 map('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')

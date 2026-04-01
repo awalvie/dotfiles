@@ -48,11 +48,6 @@ require("lazy").setup({
 	'stevearc/conform.nvim',
 	'lukas-reineke/indent-blankline.nvim',
 	{
-		'numToStr/Comment.nvim',
-		lazy = false,
-	},
-	'jremmen/vim-ripgrep',
-	{
 		"lewis6991/gitsigns.nvim",
 	},
 	{

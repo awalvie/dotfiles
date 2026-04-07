@@ -49,8 +49,9 @@ require("lazy").setup({
 		"lewis6991/gitsigns.nvim",
 	},
 	{
-		'nvim-treesitter/nvim-treesitter',
-		dependencies = { 'nvim-treesitter/nvim-treesitter-context' },
+	  'nvim-treesitter/nvim-treesitter',
+	  lazy = false,
+	  build = ':TSUpdate'
 	},
 	{
 		'folke/snacks.nvim',

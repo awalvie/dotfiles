@@ -15,6 +15,16 @@ require("snacks").setup({
 	},
 	picker = {
 		enabled = true,
+		sources = {
+			files = {
+				exclude = { ".venv", ".venv/**", "**/.venv/**", ".cache", ".cache/**", "**/.cache/**" },
+				include = { ".github/workflows/**", "**/.github/workflows/**" },
+			},
+			grep = {
+				exclude = { ".venv", ".venv/**", "**/.venv/**", ".cache", ".cache/**", "**/.cache/**" },
+				include = { ".github/workflows/**", "**/.github/workflows/**" },
+			},
+		},
 		layout = {
 			preset = "telescope",
 			layout = {

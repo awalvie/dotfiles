@@ -2,6 +2,17 @@
 local map = vim.keymap.set
 
 require("snacks").setup({
+	indent = {
+		enabled = true,
+		indent = {
+			enabled = true,
+			char = "│",
+		},
+		scope = {
+			enabled = true,
+			char = "│",
+		},
+	},
 	picker = {
 		enabled = true,
 		layout = {

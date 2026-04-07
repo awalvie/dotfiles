@@ -1,6 +1,6 @@
 -- lsp.lua
 local map = vim.keymap.set
-local capabilities = vim.lsp.protocol.make_client_capabilities()
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- Configure servers using vim.lsp.config (the official way)
 vim.lsp.config.ty = {
@@ -100,5 +100,6 @@ map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')
 map('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
 map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { silent = true })
 map('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
+map('n', '<leader>wd', '<cmd>lua vim.lsp.buf.workspace_diagnostics()<CR>')
 map('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
 map('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>')

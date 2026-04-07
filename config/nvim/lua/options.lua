@@ -13,7 +13,8 @@ o.backspace = "indent,eol,start" -- backspace works on every char in insert mode
 o.history = 1000
 
 -- Mapping waiting time
-o.timeout = false
+o.timeout = true
+o.timeoutlen = 500
 o.ttimeout = true
 o.ttimeoutlen = 100
 
@@ -39,7 +40,6 @@ o.listchars = {
 	extends = '>',
 	precedes = '<',
 }
-o.list = true
 o.list = true
 o.winborder = 'rounded' -- border for floating windows
 o.lazyredraw = true     -- redraw only when needed, not after every command
@@ -80,5 +80,5 @@ o.wildignore =
 o.completeopt = { 'menu', 'menuone', 'noselect' }
 
 -- Python config
-g.python3_host_prog = '/home/hyperion/.pyenv/versions/vim/bin/python3'
-g.python_host_prog = '/home/hyperion/.pyenv/versions/vim/bin/python'
+g.python3_host_prog = HOME .. '/.pyenv/versions/vim/bin/python3'
+g.python_host_prog = HOME .. '/.pyenv/versions/vim/bin/python'

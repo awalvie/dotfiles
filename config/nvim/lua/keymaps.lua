@@ -23,6 +23,12 @@ nmap('L', 'g_')
 -- disable highlighting
 nmap('<leader><space>', '<cmd>noh<CR>')
 
+-- Built-in Neovim 0.12 undo tree UI
+vim.keymap.set('n', '<leader>uu', function()
+	vim.cmd('packadd nvim.undotree')
+	vim.cmd('Undotree')
+end, { desc = 'Open Undotree' })
+
 -- Ex mode is fucking dumb
 nmap('Q', '<Nop>')
 

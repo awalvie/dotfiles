@@ -41,3 +41,12 @@ autocmd("VimResized", {
 	group = augroup("EqualizeOnResize", { clear = true }),
 	callback = function() vim.cmd("wincmd =") end,
 })
+
+-- Close Undotree with q
+autocmd("FileType", {
+	group = augroup("UndotreeKeymaps", { clear = true }),
+	pattern = "undotree",
+	callback = function(args)
+		vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = args.buf, silent = true })
+	end,
+})

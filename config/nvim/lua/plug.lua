@@ -59,8 +59,6 @@ require("lazy").setup({
 		lazy = false,
 	},
 	'williamboman/mason.nvim',
-	'mason-org/mason-lspconfig.nvim',
-	'neovim/nvim-lspconfig',
 	'hrsh7th/cmp-nvim-lsp',
 	'hrsh7th/cmp-buffer',
 	'hrsh7th/cmp-path',
@@ -77,10 +75,6 @@ require("lazy").setup({
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
-		init = function()
-			vim.o.timeout = true
-			vim.o.timeoutlen = 500
-		end,
 	},
 	{
 		'echasnovski/mini.nvim',

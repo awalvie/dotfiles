@@ -1,5 +1,6 @@
 return {
 	'hrsh7th/cmp-nvim-lsp',
+	lazy = false,
 	config = function()
 		local map = vim.keymap.set
 		local capabilities = require('cmp_nvim_lsp').default_capabilities()

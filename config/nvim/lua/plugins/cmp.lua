@@ -1,6 +1,7 @@
 return {
 	'hrsh7th/nvim-cmp',
 	dependencies = {
+		'folke/lazydev.nvim',
 		'hrsh7th/cmp-nvim-lsp',
 		'hrsh7th/cmp-buffer',
 		'hrsh7th/cmp-path',
@@ -60,6 +61,7 @@ return {
 
 			}),
 			sources = cmp.config.sources({
+				{ name = 'lazydev', group_index = 0 },
 				{
 					name = 'nvim_lsp',
 					entry_filter = function(entry)

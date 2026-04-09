@@ -7,7 +7,8 @@ return {
 				yaml = { "prettierd" }
 			},
 			format_on_save = {
-				lsp_fallback = true,
+				lsp_format = "fallback",
+				timeout_ms = 500,
 			},
 			notify_on_error = false,
 		})

@@ -92,7 +92,7 @@ return {
 		}
 
 		-- Enable the configured servers
-		vim.lsp.enable({ 'ty', 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'bashls',
+		vim.lsp.enable({ 'ty', 'pylsp', 'clangd', 'gopls', 'yamlls', 'terraform_lsp', 'rust_analyzer', 'lua_ls', 'html', 'bashls',
 			'ansiblels' })
 
 		map('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')

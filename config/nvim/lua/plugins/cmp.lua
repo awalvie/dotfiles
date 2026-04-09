@@ -66,6 +66,7 @@ return {
 						return require('cmp.types').lsp.CompletionItemKind[entry:get_kind()] ~= 'Text'
 					end
 				},
+				{ name = 'buffer' },
 				{ name = 'luasnip' },
 				{ name = 'path' },
 				{ name = 'nvim_lsp_signature_help' }
@@ -74,7 +75,7 @@ return {
 
 		cmp.setup.cmdline('/', {
 			mapping = cmp.mapping.preset.cmdline(),
-			sources = { { name = 'buffer' }, { name = 'luasnip' } }
+			sources = { { name = 'buffer' } }
 		})
 
 		cmp.setup.cmdline(':', {

@@ -161,7 +161,6 @@ fi
 # General utilities
 alias o="xdg-open"
 alias vim="nvim"
-alias cat="bat"
 alias lg="lazygit"
 alias untar="tar xvzf"
 alias sjson="tr -d '\n'"

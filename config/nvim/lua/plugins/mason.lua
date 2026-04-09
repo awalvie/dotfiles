@@ -1,7 +1,8 @@
 return {
-  'williamboman/mason.nvim',
-  config = function()
-    require("mason").setup()
+  'mason-org/mason.nvim',
+  opts = {},
+  config = function(_, opts)
+    require("mason").setup(opts)
 
     -- Auto-update all installed Mason packages in the background on startup
     vim.api.nvim_create_autocmd("VimEnter", {

@@ -204,6 +204,11 @@ alias gl="git log --oneline --decorate --graph"
 alias gdc="git diff --cached"
 alias gcan="git commit --amend --no-edit"
 
+# Batcat
+if command -v batcat >/dev/null 2>&1; then
+  alias cat='batcat'
+fi
+
 # ============================================================================
 # Key Bindings and Vi Mode
 # ============================================================================

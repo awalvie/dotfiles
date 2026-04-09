@@ -5,7 +5,9 @@ return {
 	config = function()
 		require("mini.pairs").setup()
 		require("mini.surround").setup()
+		require("mini.ai").setup()
 		require("mini.trailspace").setup()
+		require("mini.comment").setup()
 		require("mini.icons").setup({
 			mock_nvim_web_devicons = true,
 		})

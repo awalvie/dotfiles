@@ -3,7 +3,7 @@ return {
 	config = function()
 		require("conform").setup({
 			formatters_by_ft = {
-				python = { "isort", "ruff_format" },
+				python = { "ruff_fix", "ruff_format" },
 				yaml = { "prettierd" }
 			},
 			format_on_save = {

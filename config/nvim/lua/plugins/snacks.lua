@@ -47,6 +47,7 @@ return {
 		map("n", "<C-p>", function() Snacks.picker.files({ ignored = true, hidden = true }) end, { desc = "Find Files" })
 		map("n", "<C-_>", function() Snacks.picker.grep() end, { desc = "Live Grep" })
 		map("n", "<C-y>", function() Snacks.picker.buffers() end, { desc = "Buffers" })
+		map("n", "<leader>sk", function() Snacks.picker.keymaps() end, { desc = "Keymaps" })
 		map("n", "<leader>sn", function() Snacks.notifier.show_history() end, { desc = "Notification History" })
 	end,
 }

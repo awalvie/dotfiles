@@ -22,6 +22,7 @@ nmap('L', 'g_')
 
 -- disable highlighting
 nmap('<leader><space>', '<cmd>noh<CR>')
+nmap('<leader>sm', '<cmd>messages<CR>')
 
 -- Built-in Neovim 0.12 undo tree UI
 vim.keymap.set('n', '<leader>uu', function()

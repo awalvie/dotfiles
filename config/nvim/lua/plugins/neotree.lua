@@ -19,6 +19,12 @@ return {
 		require("neo-tree").setup({
 			close_if_last_window = true,
 			popup_border_style = "rounded",
+			git_status_scope_to_path = true,
+			git_status_async_options = {
+					batch_size = 1000,
+					batch_delay = 0,
+					max_lines = 2000,
+			},
 			window = {
 				width = 30,
 				position = "left",

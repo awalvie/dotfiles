@@ -33,9 +33,9 @@ end, { desc = 'Open Undotree' })
 -- Ex mode is fucking dumb
 nmap('Q', '<Nop>')
 
--- Easy window split; C-w v -> vv, C-w - s -> ss
-nmap('vv', '<C-w>v')
-nmap('ss', '<C-w>s')
+-- Easy window split; C-w v -> <leader>wv, C-w s -> <leader>ws
+nmap('<leader>wv', '<C-w>v')
+nmap('<leader>ws', '<C-w>s')
 vim.o.splitbelow = true -- when splitting horizontally, move coursor to lower pane
 vim.o.splitright = true -- when splitting vertically, mnove coursor to right pane
 

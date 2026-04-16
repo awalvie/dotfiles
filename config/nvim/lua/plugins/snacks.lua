@@ -9,6 +9,7 @@ return {
 			dashboard = { enabled = true },
 			notifier = { enabled = true },
 			bigfile = { enabled = true },
+			gh = { enabled = true },
 			indent = {
 				enabled = true,
 				indent = {
@@ -49,5 +50,9 @@ return {
 		map("n", "<C-y>", function() Snacks.picker.buffers() end, { desc = "Buffers" })
 		map("n", "<leader>sk", function() Snacks.picker.keymaps() end, { desc = "Keymaps" })
 		map("n", "<leader>sn", function() Snacks.notifier.show_history() end, { desc = "Notification History" })
+		map("n", "<leader>gi", function() Snacks.picker.gh_issue() end, { desc = "GitHub Issues (open)" })
+		map("n", "<leader>gI", function() Snacks.picker.gh_issue({ state = "all" }) end, { desc = "GitHub Issues (all)" })
+		map("n", "<leader>gp", function() Snacks.picker.gh_pr() end, { desc = "GitHub Pull Requests (open)" })
+		map("n", "<leader>gP", function() Snacks.picker.gh_pr({ state = "all" }) end, { desc = "GitHub Pull Requests (all)" })
 	end,
 }

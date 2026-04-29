@@ -32,6 +32,8 @@ return {
 						exclude = { ".venv", ".venv/**", "**/.venv/**", ".cache", ".cache/**", "**/.cache/**" },
 						include = { ".github/workflows/**", "**/.github/workflows/**" },
 					},
+					gh_issue = { layout = { preset = "default" } },
+					gh_pr = { layout = { preset = "default" } },
 				},
 				layout = {
 					preset = "telescope",
@@ -53,6 +55,7 @@ return {
 		map("n", "<leader>gi", function() Snacks.picker.gh_issue() end, { desc = "GitHub Issues (open)" })
 		map("n", "<leader>gI", function() Snacks.picker.gh_issue({ state = "all" }) end, { desc = "GitHub Issues (all)" })
 		map("n", "<leader>gp", function() Snacks.picker.gh_pr() end, { desc = "GitHub Pull Requests (open)" })
-		map("n", "<leader>gP", function() Snacks.picker.gh_pr({ state = "all" }) end, { desc = "GitHub Pull Requests (all)" })
+		map("n", "<leader>gP", function() Snacks.picker.gh_pr({ state = "all" }) end,
+			{ desc = "GitHub Pull Requests (all)" })
 	end,
 }

@@ -28,6 +28,19 @@ return {
 			window = {
 				width = 30,
 				position = "left",
+				mappings = {
+					["q"] = function()
+						local listed = vim.tbl_filter(function(buf)
+							return vim.bo[buf].buflisted and vim.api.nvim_buf_is_valid(buf)
+								and vim.bo[buf].filetype ~= 'neo-tree'
+						end, vim.api.nvim_list_bufs())
+						if #listed == 0 then
+							vim.cmd('qa')
+						else
+							vim.cmd('Neotree close')
+						end
+					end,
+				},
 			},
 			filesystem = {
 				hijack_netrw_behavior = "open_current",

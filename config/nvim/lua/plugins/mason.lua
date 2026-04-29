@@ -5,8 +5,20 @@ return {
     require("mason").setup(opts)
 
     local ensure_installed = {
+      -- formatters
       "ruff",
       "prettierd",
+      "stylua",
+      -- lsp servers
+      "gopls",
+      "rust-analyzer",
+      "clangd",
+      "yaml-language-server",
+      "terraform-ls",
+      "lua-language-server",
+      "html-lsp",
+      "bash-language-server",
+      "ansible-language-server",
     }
 
     local function install_if_missing()

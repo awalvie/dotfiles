@@ -4,7 +4,8 @@ return {
 		require("conform").setup({
 			formatters_by_ft = {
 				python = { "ruff_fix", "ruff_format" },
-				yaml = { "prettierd" }
+				yaml = { "prettierd" },
+				lua = { "stylua" },
 			},
 			format_on_save = {
 				lsp_format = "fallback",

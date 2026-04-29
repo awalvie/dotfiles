@@ -1,9 +1,9 @@
 return {
-  'github/copilot.vim',
-  config = function()
-    vim.cmd([[
+	"github/copilot.vim",
+	config = function()
+		vim.cmd([[
   imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
 ]])
-    vim.g.copilot_no_tab_map = true
-  end,
+		vim.g.copilot_no_tab_map = true
+	end,
 }

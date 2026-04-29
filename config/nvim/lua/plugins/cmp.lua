@@ -1,18 +1,18 @@
 return {
-	'hrsh7th/nvim-cmp',
+	"hrsh7th/nvim-cmp",
 	dependencies = {
-		'folke/lazydev.nvim',
-		'hrsh7th/cmp-nvim-lsp',
-		'hrsh7th/cmp-buffer',
-		'hrsh7th/cmp-path',
-		'hrsh7th/cmp-cmdline',
-		'hrsh7th/cmp-nvim-lsp-signature-help',
-		'L3MON4D3/LuaSnip',
-		'saadparwaiz1/cmp_luasnip',
+		"folke/lazydev.nvim",
+		"hrsh7th/cmp-nvim-lsp",
+		"hrsh7th/cmp-buffer",
+		"hrsh7th/cmp-path",
+		"hrsh7th/cmp-cmdline",
+		"hrsh7th/cmp-nvim-lsp-signature-help",
+		"L3MON4D3/LuaSnip",
+		"saadparwaiz1/cmp_luasnip",
 	},
 	config = function()
-		local cmp = require 'cmp'
-		local luasnip = require 'luasnip'
+		local cmp = require("cmp")
+		local luasnip = require("luasnip")
 
 		local has_words_before = function()
 			local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -23,19 +23,19 @@ return {
 			preselect = cmp.PreselectMode.None,
 			snippet = {
 				expand = function(args)
-					require('luasnip').lsp_expand(args.body)
-				end
+					require("luasnip").lsp_expand(args.body)
+				end,
 			},
 			window = {
 				completion = cmp.config.window.bordered(),
 				documentation = cmp.config.window.bordered(),
 			},
 			mapping = cmp.mapping.preset.insert({
-				['<C-b>'] = cmp.mapping.scroll_docs(-4),
-				['<C-f>'] = cmp.mapping.scroll_docs(4),
-				['<C-Space>'] = cmp.mapping.complete(),
-				['<C-e>'] = cmp.mapping.abort(),
-				['<CR>'] = cmp.mapping.confirm({ select = false }),
+				["<C-b>"] = cmp.mapping.scroll_docs(-4),
+				["<C-f>"] = cmp.mapping.scroll_docs(4),
+				["<C-Space>"] = cmp.mapping.complete(),
+				["<C-e>"] = cmp.mapping.abort(),
+				["<CR>"] = cmp.mapping.confirm({ select = false }),
 
 				["<Tab>"] = cmp.mapping(function(fallback)
 					if cmp.visible() then
@@ -58,31 +58,30 @@ return {
 						fallback()
 					end
 				end, { "i", "s" }),
-
 			}),
 			sources = cmp.config.sources({
-				{ name = 'lazydev', group_index = 0 },
+				{ name = "lazydev", group_index = 0 },
 				{
-					name = 'nvim_lsp',
+					name = "nvim_lsp",
 					entry_filter = function(entry)
-						return require('cmp.types').lsp.CompletionItemKind[entry:get_kind()] ~= 'Text'
-					end
+						return require("cmp.types").lsp.CompletionItemKind[entry:get_kind()] ~= "Text"
+					end,
 				},
-				{ name = 'buffer' },
-				{ name = 'luasnip' },
-				{ name = 'path' },
-				{ name = 'nvim_lsp_signature_help' }
-			})
+				{ name = "buffer" },
+				{ name = "luasnip" },
+				{ name = "path" },
+				{ name = "nvim_lsp_signature_help" },
+			}),
 		})
 
-		cmp.setup.cmdline('/', {
+		cmp.setup.cmdline("/", {
 			mapping = cmp.mapping.preset.cmdline(),
-			sources = { { name = 'buffer' } }
+			sources = { { name = "buffer" } },
 		})
 
-		cmp.setup.cmdline(':', {
+		cmp.setup.cmdline(":", {
 			mapping = cmp.mapping.preset.cmdline(),
-			sources = cmp.config.sources({ { name = 'path' } }, { { name = 'cmdline' } })
+			sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } }),
 		})
 	end,
 }

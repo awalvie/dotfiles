@@ -21,7 +21,9 @@ autocmd({ "BufReadPost" }, {
 -- Equalize splits on terminal resize
 autocmd("VimResized", {
 	group = augroup("EqualizeOnResize", { clear = true }),
-	callback = function() vim.cmd("wincmd =") end,
+	callback = function()
+		vim.cmd("wincmd =")
+	end,
 })
 
 -- Close Undotree with q

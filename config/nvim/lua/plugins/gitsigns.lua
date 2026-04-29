@@ -1,5 +1,5 @@
 return {
-	'lewis6991/gitsigns.nvim',
+	"lewis6991/gitsigns.nvim",
 	config = function()
 		require("gitsigns").setup({
 			signs = {
@@ -27,7 +27,9 @@ return {
 				map("n", "<leader>gU", gs.undo_stage_hunk, "Undo Stage Hunk")
 				map("n", "<leader>gR", gs.reset_buffer, "Reset Buffer")
 				map("n", "<leader>gd", gs.preview_hunk_inline, "Preview Hunk Inline")
-				map("n", "<leader>gbl", function() gs.blame_line({ full = true }) end, "Blame Line")
+				map("n", "<leader>gbl", function()
+					gs.blame_line({ full = true })
+				end, "Blame Line")
 				map("n", "<leader>gD", gs.diffthis, "Diff This")
 			end,
 		})

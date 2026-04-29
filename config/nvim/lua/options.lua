@@ -21,9 +21,9 @@ o.ttimeoutlen = 100
 -- Display
 o.relativenumber = true
 o.sidescroll = 3
-o.wrap = false  -- do not wrap lines even if very long
+o.wrap = false -- do not wrap lines even if very long
 o.scrolloff = 3 -- always show 3 rows from edge of the screen
-o.eol = false   -- show if there's no eol char
+o.eol = false -- show if there's no eol char
 o.updatetime = 100
 vim.opt.foldcolumn = "0"
 vim.opt.foldmethod = "expr"
@@ -34,37 +34,37 @@ vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 o.foldenable = false
 o.listchars = {
-	tab = '│ ',
-	nbsp = '␣',
-	trail = '·',
-	extends = '>',
-	precedes = '<',
+	tab = "│ ",
+	nbsp = "␣",
+	trail = "·",
+	extends = ">",
+	precedes = "<",
 }
 o.list = true
-o.winborder = 'rounded' -- border for floating windows
-o.lazyredraw = true     -- redraw only when needed, not after every command
-o.hlsearch = true       -- highlight search results
+o.winborder = "rounded" -- border for floating windows
+o.lazyredraw = true -- redraw only when needed, not after every command
+o.hlsearch = true -- highlight search results
 
 -- Search
-o.incsearch = true  -- starts searching as soon as typing, without enter needed
+o.incsearch = true -- starts searching as soon as typing, without enter needed
 o.ignorecase = true -- ignore letter case when searching
-o.smartcase = true  -- case insentive unless capitals used in search
+o.smartcase = true -- case insentive unless capitals used in search
 
 -- White characters
-o.tabstop = 4    -- 1 tab = 4 spaces
+o.tabstop = 4 -- 1 tab = 4 spaces
 o.shiftwidth = 4 -- indentation rule
 o.autoindent = true
 
 -- Editing
-o.clipboard = 'unnamedplus'
+o.clipboard = "unnamedplus"
 
 -- Backup files
-o.backup = true                        -- use backup files
+o.backup = true -- use backup files
 o.writebackup = false
-o.swapfile = false                     -- do not use swap file
-o.undodir = HOME .. '/.tmp/undo//'     -- undo files
-o.backupdir = HOME .. '/.tmp/backup//' -- backups
-o.directory = '/.tmp/swap//'           -- swap files
+o.swapfile = false -- do not use swap file
+o.undodir = HOME .. "/.tmp/undo//" -- undo files
+o.backupdir = HOME .. "/.tmp/backup//" -- backups
+o.directory = "/.tmp/swap//" -- swap files
 o.hidden = true
 
 -- Themeing
@@ -76,9 +76,9 @@ o.termguicolors = true
 -- Commands mode
 o.wildmenu = true -- on TAB, complete options for system command
 o.wildignore =
-'deps,.svn,CVS,.git,.hg,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,.DS_Store,*.aux,*.out,*.toc'
-o.completeopt = { 'menu', 'menuone', 'noselect' }
+	"deps,.svn,CVS,.git,.hg,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,.DS_Store,*.aux,*.out,*.toc"
+o.completeopt = { "menu", "menuone", "noselect" }
 
 -- Python config
-g.python3_host_prog = HOME .. '/.pyenv/versions/vim/bin/python3'
-g.python_host_prog = HOME .. '/.pyenv/versions/vim/bin/python'
+g.python3_host_prog = HOME .. "/.pyenv/versions/vim/bin/python3"
+g.python_host_prog = HOME .. "/.pyenv/versions/vim/bin/python"

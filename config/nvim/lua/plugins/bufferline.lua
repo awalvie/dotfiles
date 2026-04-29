@@ -1,10 +1,10 @@
 return {
-	'akinsho/bufferline.nvim',
-	version = '*',
-	dependencies = 'nvim-tree/nvim-web-devicons',
+	"akinsho/bufferline.nvim",
+	version = "*",
+	dependencies = "nvim-tree/nvim-web-devicons",
 	config = function()
-		local bufferline = require('bufferline')
-		bufferline.setup {
+		local bufferline = require("bufferline")
+		bufferline.setup({
 			options = {
 				always_show_bufferline = true,
 				style_preset = bufferline.style_preset.minimal,
@@ -16,9 +16,9 @@ return {
 						text = "Neotree",
 						text_align = "center",
 						separator = true,
-					}
-				}
-			}
-		}
+					},
+				},
+			},
+		})
 	end,
 }

@@ -1,13 +1,13 @@
 return {
-	'NeogitOrg/neogit',
-	cmd = 'Neogit',
+	"NeogitOrg/neogit",
+	cmd = "Neogit",
 	keys = {
-		{ '<leader>gg', '<cmd>Neogit<cr>',      desc = 'Neogit' },
-		{ '<leader>gl', '<cmd>NeogitLog %<cr>', desc = 'Git log (current file)' },
+		{ "<leader>gg", "<cmd>Neogit<cr>", desc = "Neogit" },
+		{ "<leader>gl", "<cmd>NeogitLog %<cr>", desc = "Git log (current file)" },
 	},
 	dependencies = {
-		'nvim-lua/plenary.nvim',
-		'sindrets/diffview.nvim',
+		"nvim-lua/plenary.nvim",
+		"sindrets/diffview.nvim",
 	},
 	config = function()
 		require("neogit").setup({

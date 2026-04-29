@@ -21,6 +21,7 @@ return {
 		require("mini.ai").setup()
 		require("mini.trailspace").setup()
 		require("mini.comment").setup()
+		require("mini.pick").setup()
 		require("mini.icons").setup({
 			mock_nvim_web_devicons = true,
 		})

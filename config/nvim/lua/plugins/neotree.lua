@@ -29,6 +29,12 @@ return {
 				width = 30,
 				position = "left",
 				mappings = {
+					["gd"] = function(state)
+						local path = state.tree:get_node().path
+						local git_root = vim.fn.systemlist("git -C " .. vim.fn.shellescape(path) .. " rev-parse --show-toplevel")[1]
+						require("diffview")
+						vim.cmd("DiffviewFileHistory " .. vim.fn.fnameescape(path:sub(#git_root + 2)))
+					end,
 					["q"] = function()
 						local listed = vim.tbl_filter(function(buf)
 							return vim.bo[buf].buflisted

@@ -11,9 +11,12 @@
 
     # nixGL: wraps GUI apps so nix-built binaries find the host GPU driver on
     # non-NixOS Linux. Required for GL/EGL apps (alacritty) on the NVIDIA host.
-    # Not used on darwin. Intentionally NOT following our nixpkgs — its own pin
-    # is what the confirmed `nix run github:nix-community/nixGL` used.
-    nixgl.url = "github:nix-community/nixGL";
+    # Not used on darwin. Follows our nixpkgs so we don't fetch/eval a second,
+    # stale nixpkgs just for the wrapper (nixGL detects the driver at runtime).
+    nixgl = {
+      url = "github:nix-community/nixGL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { nixpkgs, home-manager, nixgl, ... }:
@@ -22,7 +25,13 @@
 
       mkHome = { system, modules, extraArgs ? { } }:
         home-manager.lib.homeManagerConfiguration {
-          pkgs             = nixpkgs.legacyPackages.${system};
+          # import (not legacyPackages) so we can scope the unfree allowance to
+          # just the nixGL NVIDIA driver instead of a blanket NIXPKGS_ALLOW_UNFREE.
+          pkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfreePredicate = p:
+              nixpkgs.lib.hasPrefix "nvidia" (nixpkgs.lib.getName p);
+          };
           extraSpecialArgs = { inherit user; } // extraArgs;
           inherit modules;
         };

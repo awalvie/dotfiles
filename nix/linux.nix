@@ -27,6 +27,7 @@ in
     wl-clipboard
     xclip
     fontconfig
+    xdg-utils      # xdg-open, used by the `o` alias
   ];
 
   fonts.fontconfig.enable = true;
@@ -38,7 +39,7 @@ in
   # allowance for the nixGL NVIDIA driver.
   programs.zsh.shellAliases = {
     xclip = "xclip -selection clipboard";
-    hms   = "NIXPKGS_ALLOW_UNFREE=1 home-manager switch --flake ~/dotfiles#default --impure";
+    hms   = "home-manager switch --flake ~/dotfiles#default --impure";
   };
 
   # Per-program setup for things nix/home-manager can't manage declaratively on

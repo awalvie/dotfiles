@@ -40,23 +40,19 @@ long-term clock on it.
 
 ```bash
 # from anywhere — `hms` is an OS-specific alias defined per platform:
-hms                # linux  -> NIXPKGS_ALLOW_UNFREE=1 home-manager switch \
-                   #             --flake ~/dotfiles#default --impure
-                   # darwin ->                         home-manager switch \
-                   #             --flake ~/dotfiles#darwin  --impure
+hms                # linux  -> home-manager switch --flake ~/dotfiles#default --impure
+                   # darwin -> home-manager switch --flake ~/dotfiles#darwin  --impure
 
 # or the full form, e.g. from a fresh shell before zshrc is in place:
-NIXPKGS_ALLOW_UNFREE=1 nix run home-manager/master -- \
-  switch --flake ~/dotfiles#default --impure          # linux
-nix run home-manager/master -- \
-  switch --flake ~/dotfiles#darwin --impure           # darwin
+nix run home-manager/master -- switch --flake ~/dotfiles#default --impure  # linux
+nix run home-manager/master -- switch --flake ~/dotfiles#darwin  --impure  # darwin
 ```
 
 The `--impure` is required on both OSes because the flake reads `$USER` via
 `builtins.getEnv` (and on Linux, because nixGL's NVIDIA wrapper detects the
-host driver version at eval time). `NIXPKGS_ALLOW_UNFREE=1` is Linux-only —
-it's there for the unfree NVIDIA driver pulled in by nixGL (see the nixGL note
-under "What nix manages"); darwin has nothing unfree.
+host driver version at eval time). The unfree NVIDIA driver pulled in by nixGL
+is allowed via a scoped `config.allowUnfreePredicate` in `flake.nix` (matches
+only `nvidia*`), so no blanket `NIXPKGS_ALLOW_UNFREE` env var is needed.
 
 Anything added to the repo must be `git add`ed (not necessarily committed)
 before `hms` will see it — flakes only operate on tracked files.
@@ -68,8 +64,14 @@ before `hms` will see it — flakes only operate on tracked files.
   stylua, iosevka-term nerd font, etc.). `stylua` is the lua formatter the
   repo's `Makefile fmt` target calls — now nix-managed rather than via Mason.
   OS-specific packages are added in the per-OS modules: `alacrittyGL`, `keyd`,
-  `wl-clipboard`, `xclip`, `fontconfig` in `linux.nix`; plain `alacritty` in
-  `darwin.nix`.
+  `wl-clipboard`, `xclip`, `fontconfig`, `xdg-utils` in `linux.nix`; plain
+  `alacritty` in `darwin.nix`.
+- neovim language servers + formatters (gopls, clangd, lua/yaml/bash/terraform/
+  ansible LSPs, vscode-langservers-extracted, ruff, prettierd, stylua) live in
+  `common.nix` `home.packages` and are invoked off PATH by the nvim lsp/conform
+  configs — Mason was removed, so these are pinned by nix. (rust-analyzer is the
+  exception: it comes from rustup's proxy — `rustup component add rust-analyzer`
+  — to avoid a bin collision with rustup.)
 - zsh config (in `common.nix`): history, aliases, vi-mode bindings, pure prompt
   (via `pkgs.pure-prompt`), zsh-z (via `pkgs.zsh-z`), autosuggestion, syntax
   highlighting. The clipboard command and `o` alias are OS-conditional
@@ -137,22 +139,18 @@ before `hms` will see it — flakes only operate on tracked files.
 
 ## What nix does NOT manage (and why)
 
-- **Neovim plugins** — `lazy.nvim` manages those, pinned via `lazy-lock.json`
-- **Neovim LSPs/formatters** — Mason auto-installs them at nvim startup. See
-  `config/nvim/lua/plugins/mason.lua` for the `ensure_installed` list. This is
-  a known soft spot — Mason binaries aren't pinned by the flake. Migration to
-  nix-managed LSPs is on the list but not done.
-- **gpg, yt-dlp, xdg-utils** — referenced in zshrc aliases/usage but not
-  currently in `home.packages`. Add when needed. (kubectl/k8s tooling was
-  dropped — no longer used.)
+- **Neovim plugins** — `lazy.nvim` manages those. `lazy-lock.json` is
+  deliberately gitignored (NOT pinned) — plugins float to upstream HEAD by
+  choice. (LSPs/formatters, by contrast, ARE pinned now — they moved from Mason
+  into `home.packages`; Mason was removed entirely.)
+- **gpg, yt-dlp** — referenced in zshrc (`GPG_TTY` is exported) but not in
+  `home.packages` yet. Add when actually used. (kubectl/k8s tooling was dropped
+  — no longer used; `xdg-utils` is now declared on linux.)
 
 ## Known gotchas
 
 - **First `hms` on a new machine** is slow (10–20 min) because nix downloads
   everything into `/nix/store`. Subsequent runs are seconds.
-- **Mason on NixOS** (if you ever migrate) — Mason's prebuilt binaries aren't
-  patchelf'd for NixOS's dynamic linker and will fail. Not an issue on PopOS
-  but worth knowing.
 - **Activation scripts have a stripped PATH**. The `setup-*.sh` scripts are
   invoked with `export PATH=/usr/bin:/bin:$PATH` prepended to find `sudo`,
   `systemctl`, `update-desktop-database`, etc.
@@ -189,19 +187,14 @@ start feeling like friction.
 
 ## Follow-up TODOs
 
-- **Narrow the unfree allowance**. `hms` currently exports a blanket
-  `NIXPKGS_ALLOW_UNFREE=1` for the nixGL NVIDIA driver. Tighten to an
-  `allowUnfreePredicate` that permits only the nvidia driver, so the rest of
-  the config stays unfree-clean.
 - **Replace `setup-alacritty.sh` with `xdg.desktopEntries`**. Now that
   alacritty is a wrapped derivation, home-manager's native `xdg.desktopEntries`
-  could generate the launcher entry declaratively and drop the script.
-- **Pin Neovim LSPs/formatters via nix** instead of Mason (the known soft
-  spot) — would also fix the eventual NixOS-Mason patchelf problem.
-- **Move `gpg`/`yt-dlp`/`xdg-utils` into `home.packages`** — referenced in zsh
-  usage but not yet declared.
-- **`setup-zsh.sh` leaves stale `/etc/shells` entries** across profile-path
-  changes (it only appends). Harmless, but a cleanup pass would be tidy.
+  could generate the launcher entry declaratively and drop the script + its
+  brittle `sed` rewrite.
+- **Move `gpg`/`yt-dlp` into `home.packages`** if you start using them
+  (`GPG_TTY` is exported but gnupg isn't installed).
+- **Shell-script linting** — add `shellcheck`/`shfmt` (+ Makefile targets) for
+  `scripts/*.sh` and `home/bin/*`; nothing lints them today.
 
 ## File map
 

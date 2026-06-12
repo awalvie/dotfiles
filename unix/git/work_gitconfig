@@ -1,9 +1,0 @@
-[user]
-       name = Vishesh agrawal
-       email = agrawal.vishesh.178@gmail.com
-       signingkey = 6C9FD8250E1B2757
-[commit]
-       gpgsign = true
-       verbose = true
-[gpg]
-       program = gpg

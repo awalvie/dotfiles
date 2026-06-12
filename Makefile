@@ -1,4 +1,4 @@
-STYLUA := $(shell command -v stylua 2>/dev/null || echo ~/.local/share/nvim/mason/bin/stylua)
+STYLUA := stylua
 LUA_FILES := $(shell find config/nvim -name "*.lua")
 
 .PHONY: fmt

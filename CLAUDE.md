@@ -125,8 +125,9 @@ before `hms` will see it — flakes only operate on tracked files.
   a known soft spot — Mason binaries aren't pinned by the flake. Migration to
   nix-managed LSPs is on the list but not done.
 - **Docker** — daemon-based, install via apt/official installer
-- **kubectl, helm, gpg, yt-dlp, xdg-utils** — referenced in zshrc aliases but
-  not currently in `home.packages`. Add when needed.
+- **gpg, yt-dlp, xdg-utils** — referenced in zshrc aliases/usage but not
+  currently in `home.packages`. Add when needed. (kubectl/k8s tooling was
+  dropped — no longer used.)
 
 ## Known gotchas
 
@@ -180,8 +181,8 @@ start feeling like friction.
   could generate the launcher entry declaratively and drop the script.
 - **Pin Neovim LSPs/formatters via nix** instead of Mason (the known soft
   spot) — would also fix the eventual NixOS-Mason patchelf problem.
-- **Move `kubectl`/`helm`/`gpg`/`yt-dlp`/`xdg-utils` into `home.packages`** —
-  referenced in zsh aliases but not yet declared.
+- **Move `gpg`/`yt-dlp`/`xdg-utils` into `home.packages`** — referenced in zsh
+  usage but not yet declared.
 - **`setup-zsh.sh` leaves stale `/etc/shells` entries** across profile-path
   changes (it only appends). Harmless, but a cleanup pass would be tidy.
 

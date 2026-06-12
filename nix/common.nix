@@ -134,11 +134,6 @@ in
       tl = "tmux ls";
       ta = "tmux attach";
 
-      k   = "kubectl";
-      kd  = "kubectl describe";
-      kg  = "kubectl get";
-      kgy = "kubectl get -o yaml";
-
       dps = "docker ps --format 'table {{ .ID }}\\t{{.Names}}\\t{{.Status}}'";
 
       gc   = "git commit -v -s";

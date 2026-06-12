@@ -8,6 +8,8 @@ let
   # split via if-shell in .tmux.conf.
   clip     = if isDarwin then "pbcopy" else "wl-copy";
   openCmd  = if isDarwin then "open"   else "xdg-open";
+  # macOS ships BSD ls (no --color=auto); use -G there.
+  lsCmd    = if isDarwin then "ls -G"  else "ls --color=auto";
 in
 {
   home.username      = user;
@@ -44,6 +46,21 @@ in
     delta
     direnv
     nerd-fonts.iosevka-term
+
+    # language servers + formatters for neovim — pinned by nix, replacing Mason.
+    # the nvim lsp/conform configs invoke these by name off PATH.
+    lua-language-server
+    gopls
+    # rust-analyzer comes from rustup's proxy (`rustup component add rust-analyzer`);
+    # don't add pkgs.rust-analyzer — it collides with rustup's bin/rust-analyzer.
+    clang-tools                  # clangd
+    yaml-language-server
+    terraform-ls
+    bash-language-server
+    ansible-language-server
+    vscode-langservers-extracted # vscode-html-language-server (+css/json/eslint)
+    ruff
+    prettierd
   ];
 
   programs.home-manager.enable = true;
@@ -156,7 +173,7 @@ in
       cat   = "bat";
       o     = openCmd;
 
-      ls = "ls --color=auto";
+      ls = lsCmd;
       ll = "ls -alF";
       la = "ls -A";
       l  = "ls -CF";

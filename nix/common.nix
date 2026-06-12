@@ -46,21 +46,6 @@ in
     delta
     direnv
     nerd-fonts.iosevka-term
-
-    # language servers + formatters for neovim — pinned by nix, replacing Mason.
-    # the nvim lsp/conform configs invoke these by name off PATH.
-    lua-language-server
-    gopls
-    # rust-analyzer comes from rustup's proxy (`rustup component add rust-analyzer`);
-    # don't add pkgs.rust-analyzer — it collides with rustup's bin/rust-analyzer.
-    clang-tools                  # clangd
-    yaml-language-server
-    terraform-ls
-    bash-language-server
-    ansible-language-server
-    vscode-langservers-extracted # vscode-html-language-server (+css/json/eslint)
-    ruff
-    prettierd
   ];
 
   programs.home-manager.enable = true;

@@ -66,12 +66,6 @@ before `hms` will see it — flakes only operate on tracked files.
   OS-specific packages are added in the per-OS modules: `alacrittyGL`, `keyd`,
   `wl-clipboard`, `xclip`, `fontconfig`, `xdg-utils` in `linux.nix`; plain
   `alacritty` in `darwin.nix`.
-- neovim language servers + formatters (gopls, clangd, lua/yaml/bash/terraform/
-  ansible LSPs, vscode-langservers-extracted, ruff, prettierd, stylua) live in
-  `common.nix` `home.packages` and are invoked off PATH by the nvim lsp/conform
-  configs — Mason was removed, so these are pinned by nix. (rust-analyzer is the
-  exception: it comes from rustup's proxy — `rustup component add rust-analyzer`
-  — to avoid a bin collision with rustup.)
 - zsh config (in `common.nix`): history, aliases, vi-mode bindings, pure prompt
   (via `pkgs.pure-prompt`), zsh-z (via `pkgs.zsh-z`), autosuggestion, syntax
   highlighting. The clipboard command and `o` alias are OS-conditional
@@ -141,8 +135,10 @@ before `hms` will see it — flakes only operate on tracked files.
 
 - **Neovim plugins** — `lazy.nvim` manages those. `lazy-lock.json` is
   deliberately gitignored (NOT pinned) — plugins float to upstream HEAD by
-  choice. (LSPs/formatters, by contrast, ARE pinned now — they moved from Mason
-  into `home.packages`; Mason was removed entirely.)
+  choice.
+- **Neovim LSPs/formatters** — Mason auto-installs them at nvim startup. See
+  `config/nvim/lua/plugins/mason.lua` for the `ensure_installed` list. This is
+  a known soft spot — Mason binaries aren't pinned by the flake.
 - **gpg, yt-dlp** — referenced in zshrc (`GPG_TTY` is exported) but not in
   `home.packages` yet. Add when actually used. (kubectl/k8s tooling was dropped
   — no longer used; `xdg-utils` is now declared on linux.)
@@ -151,6 +147,9 @@ before `hms` will see it — flakes only operate on tracked files.
 
 - **First `hms` on a new machine** is slow (10–20 min) because nix downloads
   everything into `/nix/store`. Subsequent runs are seconds.
+- **Mason on NixOS** (if you ever migrate) — Mason's prebuilt binaries aren't
+  patchelf'd for NixOS's dynamic linker and will fail. Not an issue on PopOS
+  but worth knowing.
 - **Activation scripts have a stripped PATH**. The `setup-*.sh` scripts are
   invoked with `export PATH=/usr/bin:/bin:$PATH` prepended to find `sudo`,
   `systemctl`, `update-desktop-database`, etc.
@@ -191,6 +190,8 @@ start feeling like friction.
   alacritty is a wrapped derivation, home-manager's native `xdg.desktopEntries`
   could generate the launcher entry declaratively and drop the script + its
   brittle `sed` rewrite.
+- **Pin Neovim LSPs/formatters via nix** instead of Mason (the known soft
+  spot) — would also fix the eventual NixOS-Mason patchelf problem.
 - **Move `gpg`/`yt-dlp` into `home.packages`** if you start using them
   (`GPG_TTY` is exported but gnupg isn't installed).
 - **Shell-script linting** — add `shellcheck`/`shfmt` (+ Makefile targets) for

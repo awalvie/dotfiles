@@ -70,6 +70,15 @@ in
     includes = [
       { path = "~/dotfiles/config/delta/themes.gitconfig"; }
     ];
+
+    # global gitignore (~/.config/git/ignore). keeps direnv/venv artifacts out
+    # of every repo's status — esp. the monorepo, where venvs are centralized
+    # in ~/venvs via the direnv layout_uv above.
+    ignores = [
+      ".envrc"
+      ".venv"
+      ".direnv"
+    ];
   };
 
   programs.fzf = {
@@ -95,6 +104,32 @@ in
     enable               = true;
     enableZshIntegration = true;
     nix-direnv.enable    = true;
+
+    # layout_uv: keep python venvs centralized in ~/venvs/<name> (out of the
+    # repo, so they don't pollute the monorepo) and auto-activate on cd via
+    # direnv. Usage in a project's .envrc:
+    #   layout uv [name] [python-version]
+    # `name` defaults to the basename of the .envrc's directory; for a monorepo
+    # drop one .envrc at the root and it covers every subdir.
+    stdlib = ''
+      layout_uv() {
+        local venv_name="''${1:-$(basename "$PWD")}"
+        local py="''${2:-}"
+        export UV_PROJECT_ENVIRONMENT="$HOME/venvs/$venv_name"
+
+        if [[ ! -d "$UV_PROJECT_ENVIRONMENT" ]]; then
+          log_status "uv: creating venv '$venv_name' at $UV_PROJECT_ENVIRONMENT"
+          if [[ -n "$py" ]]; then
+            uv venv --python "$py" "$UV_PROJECT_ENVIRONMENT"
+          else
+            uv venv "$UV_PROJECT_ENVIRONMENT"
+          fi
+        fi
+
+        export VIRTUAL_ENV="$UV_PROJECT_ENVIRONMENT"
+        PATH_add "$VIRTUAL_ENV/bin"
+      }
+    '';
   };
 
   programs.zsh = {
@@ -169,8 +204,6 @@ in
       prompt pure
 
       source ${pkgs.zsh-z}/share/zsh-z/zsh-z.plugin.zsh
-
-      [[ -f "$HOME/bin/uvenv" ]] && source "$HOME/bin/uvenv"
 
       export EDITOR='nvim'
       export GOPATH=$HOME/go

@@ -72,7 +72,15 @@ before `hms` will see it — flakes only operate on tracked files.
   highlighting. The clipboard command and `o` alias are OS-conditional
   (`pbcopy`/`open` on darwin, `wl-copy`/`xdg-open` on linux); the `hms` alias
   is defined per-OS in `linux.nix`/`darwin.nix` (different `--flake` target).
-- git config (delta integration, includes for theme, settings.user.{name,email})
+- git config (delta integration, includes for theme, settings.user.{name,email}).
+  Also a global gitignore (`programs.git.ignores` → `~/.config/git/ignore`) for
+  `.envrc`/`.venv`/`.direnv` so venv/direnv artifacts never show up in any
+  repo's status — important for the monorepo.
+- python venvs via direnv: `programs.direnv.stdlib` defines a `layout_uv` that
+  keeps venvs centralized in `~/venvs/<name>` (out of the repo) and
+  auto-activates them on cd. Drop `layout uv [name] [python]` in a project's
+  `.envrc` (one at a monorepo root covers all subdirs), then `direnv allow`.
+  Replaced the old hand-rolled `uvenv` shell wrapper.
 - Config file symlinks via `xdg.configFile` and `home.file`:
   - `~/.config/nvim` ← `config/nvim/`
   - `~/.config/alacritty` ← `config/alacritty/` (shared; macOS alacritty reads
@@ -84,7 +92,7 @@ before `hms` will see it — flakes only operate on tracked files.
     `IdentityFile`s are per-machine, not in the repo)
   - `~/.Xmodmap` ← `home/.Xmodmap` (linux-only; dead on COSMIC/Wayland, kept
     for parity)
-  - `~/bin` ← `home/bin/` (battery, hublink, uvenv scripts)
+  - `~/bin` ← `home/bin/` (battery, hublink scripts)
 - keyd (linux-only), indirectly: nix installs the binary, `setup-keyd.sh` writes
   `/etc/keyd/default.conf` and a generated `/etc/systemd/system/keyd.service`
   pointing to the nix-store keyd binary, then enables+restarts the service.
@@ -198,5 +206,5 @@ scripts/setup-alacritty.sh      # no sudo: alacritty desktop entry (hm activatio
 scripts/setup-zsh.sh            # sudo: set nix zsh as login shell (hm activation, linux)
 config/                         # configs symlinked into ~/.config/
 home/                           # configs symlinked into ~/
-home/bin/                       # custom shell scripts (battery, hublink, uvenv)
+home/bin/                       # custom shell scripts (battery, hublink)
 ```

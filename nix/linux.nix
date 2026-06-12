@@ -62,4 +62,13 @@ in
       ${config.home.profileDirectory}/bin/zsh \
       ${user}
   '';
+
+  # docker installed from Docker's official apt repo (not nix — the daemon
+  # needs root/systemd/networking that's painful to run from /nix/store on a
+  # non-NixOS host). /usr/sbin is on PATH for usermod/groupadd.
+  home.activation.setupDocker = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    export PATH=/usr/sbin:/sbin:/usr/bin:/bin:$PATH
+    ${../scripts/setup-docker.sh} \
+      ${user}
+  '';
 }

@@ -32,6 +32,9 @@ long-term clock on it.
     into `/etc`.
   - `setup-alacritty.sh` — no sudo; installs a desktop entry into
     `~/.local/share/applications` with absolute nix-store paths.
+  - `setup-zsh.sh` — sudo; sets the nix zsh as the login shell.
+  - `setup-docker.sh` — sudo; installs Docker Engine from Docker's official
+    apt repo, enables the daemon, adds the user to the docker group.
 
 ## How to apply changes
 
@@ -124,6 +127,13 @@ before `hms` will see it — flakes only operate on tracked files.
 - `~/code/{origin,lamp,work}` workspace dirs — created by the
   `setupCodeDirs` activation block (inline `mkdir -p`, no sudo, no script —
   too trivial to warrant one).
+- docker (linux-only), indirectly: `setup-docker.sh` installs Docker Engine
+  from Docker's official apt repo (CLI + daemon + compose plugin), enables the
+  systemd unit, and adds the user to the `docker` group. NOT nix-managed — a
+  nix-store dockerd is painful on non-NixOS, and apt is what Docker supports on
+  Ubuntu/PopOS. Sudo prompt + apt work only fire on first run; idempotent
+  after. Group membership needs a re-login to take effect. (macOS uses Docker
+  Desktop, installed separately.)
 
 ## What nix does NOT manage (and why)
 
@@ -132,7 +142,6 @@ before `hms` will see it — flakes only operate on tracked files.
   `config/nvim/lua/plugins/mason.lua` for the `ensure_installed` list. This is
   a known soft spot — Mason binaries aren't pinned by the flake. Migration to
   nix-managed LSPs is on the list but not done.
-- **Docker** — daemon-based, install via apt/official installer
 - **gpg, yt-dlp, xdg-utils** — referenced in zshrc aliases/usage but not
   currently in `home.packages`. Add when needed. (kubectl/k8s tooling was
   dropped — no longer used.)
@@ -204,6 +213,7 @@ nix/darwin.nix                  # imports common + macOS bits (plain alacritty)
 scripts/setup-keyd.sh           # sudo: keyd /etc config + systemd unit (hm activation, linux)
 scripts/setup-alacritty.sh      # no sudo: alacritty desktop entry (hm activation, linux)
 scripts/setup-zsh.sh            # sudo: set nix zsh as login shell (hm activation, linux)
+scripts/setup-docker.sh         # sudo: install docker engine via apt (hm activation, linux)
 config/                         # configs symlinked into ~/.config/
 home/                           # configs symlinked into ~/
 home/bin/                       # custom shell scripts (battery, hublink)

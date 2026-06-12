@@ -1,5 +1,5 @@
 {
-  description = "awalvie's boomer dotfiles (Linux)";
+  description = "awalvie's boomer dotfiles (Linux + macOS)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -10,23 +10,37 @@
     };
 
     # nixGL: wraps GUI apps so nix-built binaries find the host GPU driver on
-    # non-NixOS. Required for GL/EGL apps (alacritty) on this NVIDIA host.
-    # Intentionally NOT following our nixpkgs — its own pin is what the
-    # confirmed `nix run github:nix-community/nixGL` used.
+    # non-NixOS Linux. Required for GL/EGL apps (alacritty) on the NVIDIA host.
+    # Not used on darwin. Intentionally NOT following our nixpkgs — its own pin
+    # is what the confirmed `nix run github:nix-community/nixGL` used.
     nixgl.url = "github:nix-community/nixGL";
   };
 
   outputs = { nixpkgs, home-manager, nixgl, ... }:
     let
-      system = "x86_64-linux";
-      pkgs   = nixpkgs.legacyPackages.${system};
-      user   = builtins.getEnv "USER";
+      user = builtins.getEnv "USER";
+
+      mkHome = { system, modules, extraArgs ? { } }:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs             = nixpkgs.legacyPackages.${system};
+          extraSpecialArgs = { inherit user; } // extraArgs;
+          inherit modules;
+        };
     in
     {
-      homeConfigurations.default = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        extraSpecialArgs = { inherit user nixgl; };
-        modules = [ ./nix/home.nix ];
+      homeConfigurations = {
+        # Linux (COSMIC/PopOS, NVIDIA). `hms` -> #default
+        default = mkHome {
+          system    = "x86_64-linux";
+          modules   = [ ./nix/linux.nix ];
+          extraArgs = { inherit nixgl; };
+        };
+
+        # Intel macOS. `hms` -> #darwin
+        darwin = mkHome {
+          system  = "x86_64-darwin";
+          modules = [ ./nix/darwin.nix ];
+        };
       };
     };
 }

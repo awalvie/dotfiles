@@ -1,28 +1,21 @@
-{ config, pkgs, lib, user, nixgl, ... }:
+{ config, pkgs, lib, user, ... }:
 
 let
-  # nixGL wrapper that injects the host NVIDIA driver paths at runtime.
-  nixGL = nixgl.packages.${pkgs.stdenv.hostPlatform.system}.nixGLDefault;
+  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
 
-  # alacritty, but with its `bin/alacritty` wrapped through nixGL. symlinkJoin
-  # keeps the original /share (desktop entry + icon) intact, so the launcher
-  # entry that setup-alacritty.sh generates points at the GL-correct binary.
-  alacrittyGL = pkgs.symlinkJoin {
-    name               = "alacritty-nixgl";
-    paths              = [ pkgs.alacritty ];
-    nativeBuildInputs  = [ pkgs.makeWrapper ];
-    postBuild = ''
-      rm $out/bin/alacritty
-      makeWrapper ${nixGL}/bin/nixGL $out/bin/alacritty \
-        --add-flags ${pkgs.alacritty}/bin/alacritty
-    '';
-  };
+  # clipboard + open commands differ per OS. wl-copy on linux/wayland,
+  # pbcopy/open on macos. injected into zsh below; tmux handles its own
+  # split via if-shell in .tmux.conf.
+  clip     = if isDarwin then "pbcopy" else "wl-copy";
+  openCmd  = if isDarwin then "open"   else "xdg-open";
 in
 {
   home.username      = user;
-  home.homeDirectory = "/home/${user}";
+  home.homeDirectory = if isDarwin then "/Users/${user}" else "/home/${user}";
   home.stateVersion  = "24.05";
 
+  # cross-platform CLI surface. OS-specific packages (nixGL-wrapped alacritty,
+  # keyd, clipboard tools, fontconfig) live in linux.nix / darwin.nix.
   home.packages = with pkgs; [
     neovim
     tmux
@@ -36,8 +29,6 @@ in
     curl
     wget
     unzip
-    xclip
-    wl-clipboard
     go
     rustup
     nodejs_22
@@ -51,14 +42,9 @@ in
     stylua
     git
     delta
-    alacrittyGL
     direnv
-    fontconfig
     nerd-fonts.iosevka-term
-    keyd
   ];
-
-  fonts.fontconfig.enable = true;
 
   programs.home-manager.enable = true;
 
@@ -133,8 +119,7 @@ in
       untar = "tar xvzf";
       sjson = "tr -d '\\n'";
       cat   = "bat";
-      o     = "xdg-open";
-      xclip = "xclip -selection clipboard";
+      o     = openCmd;
 
       ls = "ls --color=auto";
       ll = "ls -alF";
@@ -163,20 +148,18 @@ in
       gl   = "git log --oneline --decorate --graph";
       gdc  = "git diff --cached";
       gcan = "git commit --amend --no-edit";
-
-      hms = "NIXPKGS_ALLOW_UNFREE=1 home-manager switch --flake ~/dotfiles#default --impure";
     };
 
     initContent = ''
       export KEYTIMEOUT=1
       bindkey -v '^?' backward-delete-char
 
-      function vi-yank-xclip {
+      function vi-yank-clip {
         zle vi-yank
-        echo "$CUTBUFFER" | xclip -selection clipboard
+        echo "$CUTBUFFER" | ${clip}
       }
-      zle -N vi-yank-xclip
-      bindkey -M vicmd 'y' vi-yank-xclip
+      zle -N vi-yank-clip
+      bindkey -M vicmd 'y' vi-yank-clip
 
       autoload -Uz edit-command-line
       zle -N edit-command-line
@@ -207,6 +190,8 @@ in
     '';
   };
 
+  # config-file symlinks shared by both OSes. alacritty reads ~/.config/alacritty
+  # on macos too, so the config symlink is shared; only the package differs.
   xdg.configFile = {
     "nvim"      = { source = ../config/nvim;      recursive = true; };
     "alacritty" = { source = ../config/alacritty; recursive = true; };
@@ -215,35 +200,16 @@ in
 
   home.file = {
     ".tmux.conf".source = ../home/.tmux.conf;
-    ".Xmodmap".source   = ../home/.Xmodmap;
+
+    # ssh host aliases (github accounts + a few servers). The referenced
+    # IdentityFiles (~/.ssh/<name>) are per-machine and NOT in the repo.
+    ".ssh/config".source = ../config/ssh/config;
 
     "bin" = {
       source    = ../home/bin;
       recursive = true;
     };
   };
-
-  # Per-program setup for things nix/home-manager can't manage declaratively on
-  # a non-NixOS host. Each program gets its own script in scripts/.
-  home.activation.setupKeyd = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    export PATH=/usr/bin:/bin:$PATH
-    ${../scripts/setup-keyd.sh} \
-      ${pkgs.keyd}/bin/keyd \
-      ${../home/keyd/default.conf}
-  '';
-
-  home.activation.setupAlacritty = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    export PATH=/usr/bin:/bin:$PATH
-    ${../scripts/setup-alacritty.sh} \
-      ${alacrittyGL}
-  '';
-
-  home.activation.setupZsh = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    export PATH=/usr/bin:/bin:$PATH
-    ${../scripts/setup-zsh.sh} \
-      ${config.home.profileDirectory}/bin/zsh \
-      ${user}
-  '';
 
   # Project workspace dirs. No sudo, no script — just ensure they exist.
   home.activation.setupCodeDirs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

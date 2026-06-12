@@ -37,8 +37,8 @@ return {
 			capabilities = capabilities,
 		}
 
-		vim.lsp.config.terraform_lsp = {
-			cmd = { "terraform-lsp" },
+		vim.lsp.config.terraformls = {
+			cmd = { "terraform-ls", "serve" },
 			filetypes = { "terraform" },
 			root_markers = { ".terraform", ".git" },
 			capabilities = capabilities,
@@ -85,7 +85,7 @@ return {
 			"clangd",
 			"gopls",
 			"yamlls",
-			"terraform_lsp",
+			"terraformls",
 			"rust_analyzer",
 			"lua_ls",
 			"html",

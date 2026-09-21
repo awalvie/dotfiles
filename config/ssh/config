@@ -9,7 +9,7 @@ Host lamp
     IdentityFile ~/.ssh/lamp
 
 Host stone
-    Hostname 152.67.172.85
+    Hostname 140.245.198.72
     User ubuntu
     IdentityFile ~/.ssh/stone
 

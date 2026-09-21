@@ -63,6 +63,9 @@ in
 
   programs.git = {
     enable = true;
+
+    lfs.enable = true;
+
     settings = {
       user.name  = "awalvie";
       user.email = "agrawal.vishesh.178@gmail.com";

@@ -43,6 +43,7 @@ in
     tree-sitter
     stylua
     git
+    gh
     delta
     direnv
     nerd-fonts.iosevka-term

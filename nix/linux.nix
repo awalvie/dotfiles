@@ -28,6 +28,7 @@ in
     xclip
     fontconfig
     xdg-utils      # xdg-open, used by the `o` alias
+    safeeyes       # break reminder (RSI), GTK tray app — linux-only
   ];
 
   fonts.fontconfig.enable = true;

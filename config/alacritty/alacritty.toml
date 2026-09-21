@@ -78,6 +78,9 @@ foreground = "#d8dee9"
 background = "#88c0d0"
 foreground = "CellBackground"
 
+[selection]
+save_to_clipboard = true
+
 [colors.selection]
 background = "#4c566a"
 text = "CellForeground"

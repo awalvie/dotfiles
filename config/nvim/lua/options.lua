@@ -58,6 +58,16 @@ o.autoindent = true
 -- Editing
 o.clipboard = "unnamedplus"
 
+-- over ssh, yank to the local clipboard via OSC 52, not the remote host's
+if os.getenv("SSH_TTY") then
+	local osc52 = require("vim.ui.clipboard.osc52")
+	vim.g.clipboard = {
+		name = "OSC 52",
+		copy = { ["+"] = osc52.copy("+"), ["*"] = osc52.copy("*") },
+		paste = { ["+"] = osc52.paste("+"), ["*"] = osc52.paste("*") },
+	}
+end
+
 -- Backup files
 o.backup = true -- use backup files
 o.writebackup = false

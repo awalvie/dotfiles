@@ -67,8 +67,11 @@ before `hms` will see it — flakes only operate on tracked files.
   `wl-clipboard`, `xclip`, `fontconfig`, `xdg-utils` in `linux.nix`; plain
   `alacritty` in `darwin.nix`.
 - zsh config (in `common.nix`): history, aliases, vi-mode bindings, pure prompt
-  (via `pkgs.pure-prompt`), zsh-z (via `pkgs.zsh-z`), autosuggestion, syntax
-  highlighting. The clipboard command and `o` alias are OS-conditional
+  (via `pkgs.pure-prompt`), zoxide (`programs.zoxide`, the `z`/`zi` jump
+  commands — replaced the older `zsh-z`), navigation setopts (AUTO_CD,
+  AUTO_PUSHD), completion zstyles (highlighted menu, case-insensitive matching,
+  ls-colors), autosuggestion, syntax highlighting. The clipboard command and
+  `o` alias are OS-conditional
   (`pbcopy`/`open` on darwin, `wl-copy`/`xdg-open` on linux); the `hms` alias
   is defined per-OS in `linux.nix`/`darwin.nix` (different `--flake` target).
 - git config (delta integration, includes for theme, settings.user.{name,email}).
@@ -85,6 +88,9 @@ before `hms` will see it — flakes only operate on tracked files.
   - `~/.config/alacritty` ← `config/alacritty/` (shared; macOS alacritty reads
     `~/.config/alacritty` too)
   - `~/.config/lazygit` ← `config/lazygit/`
+  - `~/.config/nix/nix.conf` ← `config/nix/nix.conf` (enables flakes + the new
+    nix CLI; a flat symlink on purpose, not the HM `nix.*` module — see the
+    gotcha below)
   - `~/.tmux.conf` ← `home/.tmux.conf` (clipboard `copy-command` is split via
     `if-shell uname` — `pbcopy` on darwin, `wl-copy` on linux)
   - `~/.ssh/config` ← `config/ssh/config` (host aliases; the referenced
@@ -147,6 +153,16 @@ before `hms` will see it — flakes only operate on tracked files.
 
 - **First `hms` on a new machine** is slow (10–20 min) because nix downloads
   everything into `/nix/store`. Subsequent runs are seconds.
+- **Flakes must be enabled by hand on a fresh machine.** We own
+  `~/.config/nix/nix.conf` as a plain symlink, but that only holds once
+  home-manager has run — and the first run needs `nix-command`/`flakes`
+  already on. Before the first `hms`, write it yourself:
+  ```bash
+  mkdir -p ~/.config/nix
+  echo 'experimental-features = nix-command flakes' > ~/.config/nix/nix.conf
+  ```
+  The HM `nix.*` module can't do this: it shells out to `nix` during
+  activation, which needs the very feature the file enables.
 - **Mason on NixOS** (if you ever migrate) — Mason's prebuilt binaries aren't
   patchelf'd for NixOS's dynamic linker and will fail. Not an issue on PopOS
   but worth knowing.

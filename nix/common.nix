@@ -87,6 +87,13 @@ in
     ];
   };
 
+  programs.zoxide = {
+    enable               = true;
+    enableZshIntegration = true;
+    # keeps the `z`/`zi` commands (zoxide's defaults) — same muscle memory as
+    # the zsh-z it replaced.
+  };
+
   programs.fzf = {
     enable               = true;
     enableZshIntegration = true;
@@ -190,6 +197,33 @@ in
       export KEYTIMEOUT=1
       bindkey -v '^?' backward-delete-char
 
+      # Navigation QoL (HM sets the history setopts for us, not these):
+      #   AUTO_CD            — `dir` instead of `cd dir`
+      #   AUTO_PUSHD + dups  — every cd builds a stack; `cd -<Tab>` to jump back
+      #   INTERACTIVE_COMMENTS — allow `#` comments when pasting/typing
+      setopt AUTO_CD AUTO_PUSHD PUSHD_IGNORE_DUPS PUSHD_SILENT INTERACTIVE_COMMENTS
+
+      # Nord-themed file colors, shared by `ls --color` and the completion menu
+      # (the list-colors zstyle below reads $LS_COLORS). Uses ANSI slot numbers
+      # rather than raw hex, so it renders in true Nord via alacritty's palette
+      # (config/alacritty/colors/nord.toml maps 34->#81a1c1, 36->#88c0d0,
+      # 32->#a3be8c, 35->#b48ead, 33->#ebcb8b, 31->#bf616a) and tracks any
+      # future tweaks to that palette automatically.
+      export LS_COLORS="di=34:ln=36:so=35:pi=33:ex=32:bd=33:cd=33:su=31:sg=31:tw=34:ow=34:or=31:mi=31:*.tar=35:*.tgz=35:*.gz=35:*.zip=35:*.7z=35:*.jpg=35:*.jpeg=35:*.png=35:*.gif=35:*.mp4=35:*.mkv=35:*.mp3=35"
+
+      # Tab completion: navigable, highlighted menu + ls-style colors. HM's
+      # generated zshrc runs `compinit` but sets no completion zstyles, so the
+      # default (plain, non-navigable) listing applies; restore the menu here.
+      zstyle ':completion:*' menu select
+      # candidates use $LS_COLORS (above); ma= is the selected-item highlight
+      # bar — Nord blue bg (slot 34) with the Nord-dark fg (slot 0).
+      zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}" 'ma=48;5;4;38;5;0'
+      # case-insensitive, then substring matching (`cd dwn` -> `Downloads`).
+      zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'l:|=* r:|=*'
+      # cache slow completions (e.g. apt/dpkg) under XDG.
+      zstyle ':completion:*' use-cache on
+      zstyle ':completion:*' cache-path "''${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompcache"
+
       function vi-yank-clip {
         zle vi-yank
         echo "$CUTBUFFER" | ${clip}
@@ -208,8 +242,6 @@ in
       fpath+=(${pkgs.pure-prompt}/share/zsh/site-functions)
       autoload -U promptinit; promptinit
       prompt pure
-
-      source ${pkgs.zsh-z}/share/zsh-z/zsh-z.plugin.zsh
 
       export EDITOR='nvim'
       export GOPATH=$HOME/go
@@ -230,6 +262,15 @@ in
     "nvim"      = { source = ../config/nvim;      recursive = true; };
     "alacritty" = { source = ../config/alacritty; recursive = true; };
     "lazygit"   = { source = ../config/lazygit;   recursive = true; };
+
+    # ~/.config/nix/nix.conf — enables flakes + the new nix CLI. Managed as a
+    # plain symlink rather than via the HM `nix.*` module on purpose: that
+    # module shells out to `nix` (needing nix-command) during activation, which
+    # deadlocks on a non-NixOS host where this very file is what enables the
+    # feature. A flat symlink has no activation-time nix invocation. Note this
+    # is only the *steady-state* owner — the first `home-manager switch` on a
+    # fresh machine still needs the feature enabled by hand (see CLAUDE.md).
+    "nix/nix.conf".source = ../config/nix/nix.conf;
   };
 
   home.file = {

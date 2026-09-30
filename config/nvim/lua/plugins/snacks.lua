@@ -35,6 +35,8 @@ return {
 						include = { ".github/workflows/**", "**/.github/workflows/**" },
 					},
 					explorer = {
+						-- the tabline offset in mini.lua shows the "Explorer" label instead
+						title = "",
 						-- undo the global bottom layout below; keep the sidebar preset's values
 						layout = { layout = { position = "left", height = 0 } },
 						-- let the global <C-p> file picker work from the explorer

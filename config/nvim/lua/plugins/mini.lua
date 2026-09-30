@@ -39,7 +39,10 @@ return {
 			if not (root and vim.api.nvim_win_is_valid(root)) then
 				return make_tabline()
 			end
-			local pad = string.rep(" ", vim.api.nvim_win_get_width(root) + 1)
+			local width = vim.api.nvim_win_get_width(root) + 1
+			local label = "Explorer"
+			local left = math.floor((width - #label) / 2)
+			local pad = string.rep(" ", left) .. label .. string.rep(" ", width - left - #label)
 			return "%#SnacksPickerList#" .. pad .. make_tabline()
 		end
 	end,

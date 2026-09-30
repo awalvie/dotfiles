@@ -3,7 +3,6 @@ HOME = os.getenv("HOME")
 -- Skips having to prepend "vim." every time
 local o = vim.opt
 local g = vim.g
-local cmd = vim.cmd
 
 -- Global Options --
 --------------------

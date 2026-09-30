@@ -16,6 +16,9 @@ return {
 				hl.MiniTablineFill = { bg = bg }
 				hl.MiniTablineTrunc = { fg = c.frost.artic_water, bg = bg }
 				hl.MiniTablineTabpagesection = { fg = bg, bg = c.frost.ice, bold = true }
+
+				-- nord sets this from c.polar_night.ice, which doesn't exist, so matches get no color
+				hl.BlinkCmpLabelMatch = { fg = c.frost.ice, bold = true }
 			end,
 		})
 		vim.cmd.colorscheme("nord")

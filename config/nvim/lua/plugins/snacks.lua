@@ -12,6 +12,7 @@ return {
 			bigfile = { enabled = true },
 			explorer = { enabled = true },
 			indent = { enabled = true },
+			lazygit = { config = { gui = { nerdFontsVersion = "" } } }, -- no icons
 			picker = {
 				enabled = true,
 				sources = {
@@ -38,6 +39,9 @@ return {
 			},
 		})
 
+		map("n", "<leader>lg", function()
+			Snacks.lazygit()
+		end, { desc = "LazyGit" })
 		map("n", "<leader>n", function()
 			Snacks.explorer()
 		end, { desc = "Explorer" })

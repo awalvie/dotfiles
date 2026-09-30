@@ -79,7 +79,3 @@ o.termguicolors = true
 o.wildignore =
 	"deps,.svn,CVS,.git,.hg,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,.DS_Store,*.aux,*.out,*.toc"
 o.completeopt = { "menu", "menuone", "noselect" }
-
--- Python config
-g.python3_host_prog = HOME .. "/.pyenv/versions/vim/bin/python3"
-g.python_host_prog = HOME .. "/.pyenv/versions/vim/bin/python"

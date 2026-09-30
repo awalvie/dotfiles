@@ -22,5 +22,16 @@ return {
 		require("mini.trailspace").setup()
 		require("mini.pick").setup()
 		require("mini.tabline").setup({ show_icons = false })
+
+		-- start the tabs after the snacks explorer sidebar instead of over it
+		local make_tabline = MiniTabline.make_tabline_string
+		MiniTabline.make_tabline_string = function()
+			local explorer = Snacks.picker.get({ source = "explorer" })[1]
+			local root = explorer and not explorer.layout.closed and explorer.layout.root.win
+			if not (root and vim.api.nvim_win_is_valid(root)) then
+				return make_tabline()
+			end
+			return string.rep(" ", vim.api.nvim_win_get_width(root) + 1) .. make_tabline()
+		end
 	end,
 }

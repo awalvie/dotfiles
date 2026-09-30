@@ -3,68 +3,7 @@ local hover_opts = {
 	border = "rounded",
 }
 
--- Configure servers using vim.lsp.config (the official way)
-vim.lsp.config.ty = {
-	cmd = { "ty", "server" },
-	filetypes = { "python" },
-	root_markers = { "pyproject.toml", "setup.py", ".git" },
-}
-
-vim.lsp.config.clangd = {
-	cmd = { "clangd" },
-	filetypes = { "c", "cpp" },
-	root_markers = { "compile_commands.json", ".clangd", ".git" },
-}
-
-vim.lsp.config.gopls = {
-	cmd = { "gopls" },
-	filetypes = { "go", "gomod" },
-	root_markers = { "go.mod", ".git" },
-}
-
-vim.lsp.config.yamlls = {
-	cmd = { "yaml-language-server", "--stdio" },
-	filetypes = { "yaml", "yml" },
-	root_markers = { ".git" },
-}
-
-vim.lsp.config.terraformls = {
-	cmd = { "terraform-ls", "serve" },
-	filetypes = { "terraform" },
-	root_markers = { ".terraform", ".git" },
-}
-
-vim.lsp.config.rust_analyzer = {
-	cmd = { "rust-analyzer" },
-	filetypes = { "rust" },
-	root_markers = { "Cargo.toml", ".git" },
-}
-
-vim.lsp.config.lua_ls = {
-	cmd = { "lua-language-server" },
-	filetypes = { "lua" },
-	root_markers = { ".luarc.json", ".luarc.jsonc", ".git" },
-}
-
-vim.lsp.config.html = {
-	cmd = { "vscode-html-language-server", "--stdio" },
-	filetypes = { "html" },
-	root_markers = { ".git" },
-}
-
-vim.lsp.config.bashls = {
-	cmd = { "bash-language-server", "start" },
-	filetypes = { "bash", "sh" },
-	root_markers = { ".git" },
-}
-
-vim.lsp.config.ansiblels = {
-	cmd = { "ansible-language-server", "--stdio" },
-	filetypes = { "ansible" },
-	root_markers = { "ansible.cfg", ".git" },
-}
-
--- Enable the configured servers
+-- Enable the servers; their configs come from nvim-lspconfig's lsp/<name>.lua files
 vim.lsp.enable({
 	"ty",
 	"clangd",

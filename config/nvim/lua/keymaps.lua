@@ -10,7 +10,9 @@ nmap("N", "Nzzzv")
 -- buffer navigation and management
 nmap("<leader>l", "<cmd>bnext<CR>") -- Move to the next buffer
 nmap("<leader>h", "<cmd>bprevious<CR>") -- Move to the previous buffer
-nmap("<leader>bq", "<cmd>bp <BAR> bd #<CR>") -- Delete current buffer
+vim.keymap.set("n", "<leader>bq", function()
+	Snacks.bufdelete()
+end) -- Delete current buffer
 vim.keymap.set("n", "<leader>bd", function()
 	Snacks.bufdelete.other()
 end) -- Delete all buffers but the current one

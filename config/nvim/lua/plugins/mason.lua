@@ -10,6 +10,7 @@ return {
 			"prettierd",
 			"stylua",
 			-- lsp servers
+			"ty",
 			"gopls",
 			"rust-analyzer",
 			"clangd",

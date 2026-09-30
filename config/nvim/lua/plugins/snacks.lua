@@ -37,22 +37,15 @@ return {
 					explorer = {
 						-- the tabline offset in mini.lua shows the "Explorer" label instead
 						title = "",
-						-- undo the global bottom layout below; keep the sidebar preset's values
-						layout = { layout = { position = "left", height = 0 } },
 						-- let the global <C-p> file picker work from the explorer
 						win = { list = { keys = { ["<c-p>"] = false } } },
 					},
 					gh_issue = { layout = { preset = "default" } },
 					gh_pr = { layout = { preset = "default" } },
 				},
-				layout = {
-					preset = "telescope",
-					layout = {
-						position = "bottom",
-						height = 0.45,
-						backdrop = false,
-					},
-				},
+				-- tweak the preset itself, so sidebar pickers (the explorer) keep their own layout
+				layouts = { telescope = { layout = { position = "bottom", height = 0.45 } } },
+				layout = { preset = "telescope" },
 			},
 		})
 

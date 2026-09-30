@@ -29,6 +29,13 @@ return {
 		completion = {
 			-- nothing is selected until <Tab>, so <CR> only accepts an item you picked
 			list = { selection = { preselect = false } },
+			menu = {
+				draw = {
+					-- kind names instead of icons, colored per kind
+					columns = { { "label", "label_description", gap = 1 }, { "kind" } },
+					treesitter = { "lsp" },
+				},
+			},
 			documentation = { auto_show = true },
 		},
 		signature = { enabled = true },

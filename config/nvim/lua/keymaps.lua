@@ -11,7 +11,9 @@ nmap("N", "Nzzzv")
 nmap("<leader>l", "<cmd>bnext<CR>") -- Move to the next buffer
 nmap("<leader>h", "<cmd>bprevious<CR>") -- Move to the previous buffer
 nmap("<leader>bq", "<cmd>bp <BAR> bd #<CR>") -- Delete current buffer
-nmap("<leader>bd", "<cmd>BufferLineCloseOthers<CR>") -- Delete all buffers but the last one
+vim.keymap.set("n", "<leader>bd", function()
+	Snacks.bufdelete.other()
+end) -- Delete all buffers but the current one
 
 -- tab navigation
 vim.keymap.set("n", "<leader>dq", ":diffoff! | only<CR>") -- Close all diff windows when using Gitsigns.diffthis()

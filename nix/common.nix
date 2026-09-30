@@ -47,6 +47,7 @@ in
     kubectl
     argocd
     yt-dlp
+    ffmpeg
     delta
     direnv
     nerd-fonts.iosevka-term

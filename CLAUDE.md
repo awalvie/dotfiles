@@ -61,7 +61,7 @@ before `hms` will see it — flakes only operate on tracked files.
 
 - Cross-platform CLI packages in `common.nix`'s `home.packages` (neovim, tmux,
   lazygit, ripgrep, go, rustup, nodejs, python3, uv, delta, fzf, bat, direnv,
-  stylua, yt-dlp, iosevka-term nerd font, etc.). `stylua` is the lua formatter the
+  stylua, yt-dlp, ffmpeg, iosevka-term nerd font, etc.). `stylua` is the lua formatter the
   repo's `Makefile fmt` target calls — now nix-managed rather than via Mason.
   OS-specific packages are added in the per-OS modules: `alacrittyGL`, `keyd`,
   `wl-clipboard`, `xclip`, `fontconfig`, `xdg-utils` in `linux.nix`; plain

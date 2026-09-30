@@ -6,9 +6,11 @@ return {
 		local map = vim.keymap.set
 
 		require("snacks").setup({
-			dashboard = { enabled = true },
+			-- only on a bare `nvim`; snacks also opens it for `nvim <dir>` when the explorer is on
+			dashboard = { enabled = vim.fn.argc(-1) == 0 },
 			notifier = { enabled = true },
 			bigfile = { enabled = true },
+			explorer = { enabled = true },
 			gh = { enabled = true },
 			indent = {
 				enabled = true,
@@ -32,6 +34,12 @@ return {
 						exclude = { ".venv", ".venv/**", "**/.venv/**", ".cache", ".cache/**", "**/.cache/**" },
 						include = { ".github/workflows/**", "**/.github/workflows/**" },
 					},
+					explorer = {
+						-- undo the global bottom layout below; keep the sidebar preset's values
+						layout = { layout = { position = "left", height = 0 } },
+						-- let the global <C-p> file picker work from the explorer
+						win = { list = { keys = { ["<c-p>"] = false } } },
+					},
 					gh_issue = { layout = { preset = "default" } },
 					gh_pr = { layout = { preset = "default" } },
 				},
@@ -46,6 +54,9 @@ return {
 			},
 		})
 
+		map("n", "<leader>n", function()
+			Snacks.explorer()
+		end, { desc = "Explorer" })
 		map("n", "<C-;>", function()
 			Snacks.picker.registers()
 		end, { desc = "Registers" })

@@ -13,6 +13,7 @@ return {
 			explorer = { enabled = true },
 			indent = { enabled = true },
 			lazygit = { config = { gui = { nerdFontsVersion = "" } } }, -- no icons
+			styles = { lazygit = { border = "rounded" } },
 			picker = {
 				enabled = true,
 				sources = {

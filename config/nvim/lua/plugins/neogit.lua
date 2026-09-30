@@ -14,8 +14,7 @@ return {
 			kind = "tab",
 			integrations = {
 				diffview = true,
-				mini_pick = true,
-				snacks = false,
+				snacks = true,
 			},
 		})
 	end,

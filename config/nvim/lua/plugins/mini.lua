@@ -20,7 +20,6 @@ return {
 		})
 		require("mini.ai").setup()
 		require("mini.trailspace").setup()
-		require("mini.pick").setup()
 		require("mini.tabline").setup({
 			show_icons = false,
 			format = function(buf_id, label)

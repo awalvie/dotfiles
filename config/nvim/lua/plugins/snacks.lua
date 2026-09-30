@@ -11,18 +11,7 @@ return {
 			notifier = { enabled = true },
 			bigfile = { enabled = true },
 			explorer = { enabled = true },
-			gh = { enabled = true },
-			indent = {
-				enabled = true,
-				indent = {
-					enabled = true,
-					char = "│",
-				},
-				scope = {
-					enabled = true,
-					char = "│",
-				},
-			},
+			indent = { enabled = true },
 			picker = {
 				enabled = true,
 				sources = {

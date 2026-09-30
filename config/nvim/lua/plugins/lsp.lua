@@ -95,13 +95,9 @@ return {
 
 		map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>")
 		map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
-		map("n", "ga", "<cmd>lua vim.lsp.buf.code_action()<CR>")
-		map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>")
-		map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>")
 		map("n", "K", function()
 			vim.lsp.buf.hover(hover_opts)
 		end, { silent = true })
-		map("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
 		map("n", "<leader>wd", "<cmd>lua vim.lsp.buf.workspace_diagnostics()<CR>")
 	end,
 }

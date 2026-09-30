@@ -26,6 +26,21 @@ autocmd("VimResized", {
 	end,
 })
 
+-- Quit when a tab closes (e.g. neogit) and no file buffers are left to go back to
+autocmd("TabClosed", {
+	group = augroup("QuitWhenNothingLeft", { clear = true }),
+	callback = function()
+		vim.schedule(function()
+			for _, buf in ipairs(api.nvim_list_bufs()) do
+				if vim.bo[buf].buflisted or vim.bo[buf].modified then
+					return
+				end
+			end
+			vim.cmd("qa")
+		end)
+	end,
+})
+
 -- Close Undotree with q
 autocmd("FileType", {
 	group = augroup("UndotreeKeymaps", { clear = true }),

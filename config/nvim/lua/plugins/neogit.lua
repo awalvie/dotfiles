@@ -7,14 +7,14 @@ return {
 	},
 	dependencies = {
 		"nvim-lua/plenary.nvim",
-		"esmuellert/codediff.nvim",
 	},
 	config = function()
 		require("neogit").setup({
 			kind = "tab",
-			diff_viewer = "codediff",
 			integrations = {
-				codediff = true,
+				-- codediff >= 2.67.2 crashes neogit's diff views; turn back on when
+				-- https://github.com/NeogitOrg/neogit/issues/2008 is fixed. Use :CodeDiff directly.
+				codediff = false,
 				snacks = true,
 			},
 		})

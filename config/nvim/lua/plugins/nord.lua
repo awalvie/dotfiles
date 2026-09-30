@@ -19,6 +19,11 @@ return {
 
 				-- nord sets this from c.polar_night.ice, which doesn't exist, so matches get no color
 				hl.BlinkCmpLabelMatch = { fg = c.frost.ice, bold = true }
+				-- nord1 borders barely show against the nord0 background
+				hl.BlinkCmpMenuBorder = { fg = c.polar_night.brightest }
+				hl.BlinkCmpDocBorder = { fg = c.polar_night.brightest }
+				hl.BlinkCmpSignatureHelpBorder = { fg = c.polar_night.brightest }
+				hl.BlinkCmpLabelDescription = { fg = c.polar_night.light }
 			end,
 		})
 		vim.cmd.colorscheme("nord")

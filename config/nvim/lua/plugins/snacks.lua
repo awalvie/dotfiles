@@ -40,6 +40,16 @@ return {
 			},
 		})
 
+		-- snacks opens folder buffers (e.g. <CR> on a folder in neogit) with explorer.open,
+		-- which toggles an already open explorer closed; reveal the folder in it instead
+		local explorer_open = Snacks.explorer.open
+		Snacks.explorer.open = function(opts)
+			if opts and opts.cwd and Snacks.picker.get({ source = "explorer" })[1] then
+				return Snacks.explorer.reveal({ file = opts.cwd })
+			end
+			return explorer_open(opts)
+		end
+
 		map("n", "<leader>lg", function()
 			Snacks.lazygit()
 		end, { desc = "LazyGit" })

@@ -29,4 +29,4 @@ require("keymaps")
 require("autocmds")
 require("filetype")
 require("lazy_setup")
-require("lsp") -- after lazy_setup: uses cmp_nvim_lsp and Snacks
+require("lsp") -- after lazy_setup: the keymaps use Snacks

@@ -37,8 +37,8 @@ o.listchars = {
 }
 o.list = true
 o.winborder = "rounded" -- border for floating windows
-o.splitbelow = true -- when splitting horizontally, move coursor to lower pane
-o.splitright = true -- when splitting vertically, mnove coursor to right pane
+o.splitbelow = true -- when splitting horizontally, move cursor to lower pane
+o.splitright = true -- when splitting vertically, move cursor to right pane
 o.lazyredraw = true -- redraw only when needed, not after every command
 
 -- Search

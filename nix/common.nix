@@ -45,6 +45,7 @@ in
     git
     gh
     kubectl
+    argocd
     delta
     direnv
     nerd-fonts.iosevka-term

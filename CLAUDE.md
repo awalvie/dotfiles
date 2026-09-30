@@ -146,8 +146,8 @@ before `hms` will see it — flakes only operate on tracked files.
   `config/nvim/lua/plugins/mason.lua` for the `ensure_installed` list. This is
   a known soft spot — Mason binaries aren't pinned by the flake.
 - **gpg, yt-dlp** — referenced in zshrc (`GPG_TTY` is exported) but not in
-  `home.packages` yet. Add when actually used. (kubectl/k8s tooling was dropped
-  — no longer used; `xdg-utils` is now declared on linux.)
+  `home.packages` yet. Add when actually used. (`xdg-utils` is now declared on
+  linux.)
 
 ## Known gotchas
 

@@ -44,6 +44,7 @@ in
     stylua
     git
     gh
+    kubectl
     delta
     direnv
     nerd-fonts.iosevka-term
@@ -181,6 +182,11 @@ in
       tn = "tmux new -s";
       tl = "tmux ls";
       ta = "tmux attach";
+
+      k   = "kubectl";
+      kd  = "kubectl describe";
+      kg  = "kubectl get";
+      kgy = "kubectl get -o yaml";
 
       dps = "docker ps --format 'table {{ .ID }}\\t{{.Names}}\\t{{.Status}}'";
 

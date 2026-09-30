@@ -7,13 +7,14 @@ return {
 	},
 	dependencies = {
 		"nvim-lua/plenary.nvim",
-		"sindrets/diffview.nvim",
+		"esmuellert/codediff.nvim",
 	},
 	config = function()
 		require("neogit").setup({
 			kind = "tab",
+			diff_viewer = "codediff",
 			integrations = {
-				diffview = true,
+				codediff = true,
 				snacks = true,
 			},
 		})

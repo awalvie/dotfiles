@@ -21,7 +21,13 @@ return {
 		require("mini.ai").setup()
 		require("mini.trailspace").setup()
 		require("mini.pick").setup()
-		require("mini.tabline").setup({ show_icons = false })
+		require("mini.tabline").setup({
+			show_icons = false,
+			format = function(buf_id, label)
+				local modified = vim.bo[buf_id].modified and " ●" or ""
+				return string.format("  %s%s  ", label, modified)
+			end,
+		})
 
 		-- hide the empty startup buffer (`nvim .` leaves one behind) so it doesn't show as a "*" tab
 		for _, buf in ipairs(vim.api.nvim_list_bufs()) do

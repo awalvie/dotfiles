@@ -103,7 +103,5 @@ return {
 		end, { silent = true })
 		map("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
 		map("n", "<leader>wd", "<cmd>lua vim.lsp.buf.workspace_diagnostics()<CR>")
-		map("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end)
-		map("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end)
 	end,
 }

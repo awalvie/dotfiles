@@ -23,6 +23,14 @@ return {
 		require("mini.pick").setup()
 		require("mini.tabline").setup({ show_icons = false })
 
+		-- hide the empty startup buffer (`nvim .` leaves one behind) so it doesn't show as a "*" tab
+		for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+			local empty = vim.api.nvim_buf_line_count(buf) == 1 and vim.api.nvim_buf_get_lines(buf, 0, 1, false)[1] == ""
+			if vim.bo[buf].buflisted and vim.api.nvim_buf_get_name(buf) == "" and not vim.bo[buf].modified and empty then
+				vim.bo[buf].buflisted = false
+			end
+		end
+
 		-- start the tabs after the snacks explorer sidebar instead of over it
 		local make_tabline = MiniTabline.make_tabline_string
 		MiniTabline.make_tabline_string = function()

@@ -61,7 +61,7 @@ before `hms` will see it — flakes only operate on tracked files.
 
 - Cross-platform CLI packages in `common.nix`'s `home.packages` (neovim, tmux,
   lazygit, ripgrep, go, rustup, nodejs, python3, uv, delta, fzf, bat, direnv,
-  stylua, iosevka-term nerd font, etc.). `stylua` is the lua formatter the
+  stylua, yt-dlp, iosevka-term nerd font, etc.). `stylua` is the lua formatter the
   repo's `Makefile fmt` target calls — now nix-managed rather than via Mason.
   OS-specific packages are added in the per-OS modules: `alacrittyGL`, `keyd`,
   `wl-clipboard`, `xclip`, `fontconfig`, `xdg-utils` in `linux.nix`; plain
@@ -145,7 +145,7 @@ before `hms` will see it — flakes only operate on tracked files.
 - **Neovim LSPs/formatters** — Mason auto-installs them at nvim startup. See
   `config/nvim/lua/plugins/mason.lua` for the `ensure_installed` list. This is
   a known soft spot — Mason binaries aren't pinned by the flake.
-- **gpg, yt-dlp** — referenced in zshrc (`GPG_TTY` is exported) but not in
+- **gpg** — referenced in zshrc (`GPG_TTY` is exported) but not in
   `home.packages` yet. Add when actually used. (`xdg-utils` is now declared on
   linux.)
 
@@ -208,7 +208,7 @@ start feeling like friction.
   brittle `sed` rewrite.
 - **Pin Neovim LSPs/formatters via nix** instead of Mason (the known soft
   spot) — would also fix the eventual NixOS-Mason patchelf problem.
-- **Move `gpg`/`yt-dlp` into `home.packages`** if you start using them
+- **Move `gpg` into `home.packages`** if you start using it
   (`GPG_TTY` is exported but gnupg isn't installed).
 - **Shell-script linting** — add `shellcheck`/`shfmt` (+ Makefile targets) for
   `scripts/*.sh` and `home/bin/*`; nothing lints them today.

@@ -46,6 +46,7 @@ in
     gh
     kubectl
     argocd
+    yt-dlp
     delta
     direnv
     nerd-fonts.iosevka-term

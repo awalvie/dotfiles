@@ -75,11 +75,49 @@
         "type": "github"
       }
     },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1790450978,
+        "narHash": "sha256-/eLCD/X9kaWJqPR47+fDozEC87Hjmm3i8gJbYmDAD7g=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "5e2305d577ca00acbba631b05cb1094d172b29f3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-26.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
         "nixgl": "nixgl",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "sofka": "sofka"
+      }
+    },
+    "sofka": {
+      "inputs": {
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1790587680,
+        "narHash": "sha256-CmrgDNV5xTyJYhE9GuUyQtRuabQlpanK3cZ3O8LHOts=",
+        "owner": "nklmilojevic",
+        "repo": "sofka",
+        "rev": "6a9814dd9a254dcd5e04c22f6fccf09693668ab8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nklmilojevic",
+        "repo": "sofka",
+        "type": "github"
       }
     },
     "systems": {

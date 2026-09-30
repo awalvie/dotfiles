@@ -53,6 +53,12 @@ in
 
   programs.home-manager.enable = true;
 
+  # module comes from the sofka flake input (see flake.nix)
+  programs.sofka = {
+    enable = true;
+    skin.name = "nord";
+  };
+
   programs.delta = {
     enable = true;
     enableGitIntegration = true;
@@ -188,6 +194,7 @@ in
       kd  = "kubectl describe";
       kg  = "kubectl get";
       kgy = "kubectl get -o yaml";
+      kui = "sofka";
 
       dps = "docker ps --format 'table {{ .ID }}\\t{{.Names}}\\t{{.Status}}'";
 

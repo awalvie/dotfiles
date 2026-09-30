@@ -17,9 +17,16 @@
       url = "github:nix-community/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # sofka: kubernetes TUI, not in nixpkgs. Ships its own home-manager module.
+    # Keeps its own nixpkgs (stable) so we build the same binary upstream tests.
+    sofka = {
+      url = "github:nklmilojevic/sofka";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, nixgl, ... }:
+  outputs = { nixpkgs, home-manager, nixgl, sofka, ... }:
     let
       user = builtins.getEnv "USER";
 
@@ -33,7 +40,7 @@
               nixpkgs.lib.hasPrefix "nvidia" (nixpkgs.lib.getName p);
           };
           extraSpecialArgs = { inherit user; } // extraArgs;
-          inherit modules;
+          modules = [ sofka.homeManagerModules.default ] ++ modules;
         };
     in
     {

@@ -73,4 +73,11 @@ in
     ${../scripts/setup-docker.sh} \
       ${user}
   '';
+
+  # Tailscale: apt repo + tailscaled + operator. Login stays manual (browser).
+  home.activation.setupTailscale = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    export PATH=/usr/sbin:/sbin:/usr/bin:/bin:$PATH
+    ${../scripts/setup-tailscale.sh} \
+      ${user}
+  '';
 }

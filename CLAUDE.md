@@ -136,6 +136,12 @@ before `hms` will see it — flakes only operate on tracked files.
   Ubuntu/PopOS. Sudo prompt + apt work only fire on first run; idempotent
   after. Group membership needs a re-login to take effect. (macOS uses Docker
   Desktop, installed separately.)
+- tailscale (linux-only), indirectly: `setup-tailscale.sh` installs Tailscale
+  from its official apt repo, enables `tailscaled`, and sets the user as the
+  operator (CLI without sudo; per-profile, so re-run `hms` after adding a
+  profile). NOT nix-managed — root daemon on non-NixOS, same
+  reason as docker. Login is manual, once: `tailscale up`. (macOS uses the
+  Tailscale app, installed separately.)
 
 ## What nix does NOT manage (and why)
 
@@ -224,6 +230,7 @@ scripts/setup-keyd.sh           # sudo: keyd /etc config + systemd unit (hm acti
 scripts/setup-alacritty.sh      # no sudo: alacritty desktop entry (hm activation, linux)
 scripts/setup-zsh.sh            # sudo: set nix zsh as login shell (hm activation, linux)
 scripts/setup-docker.sh         # sudo: install docker engine via apt (hm activation, linux)
+scripts/setup-tailscale.sh      # sudo: install tailscale via apt (hm activation, linux)
 config/                         # configs symlinked into ~/.config/
 home/                           # configs symlinked into ~/
 home/bin/                       # custom shell scripts (battery, hublink)

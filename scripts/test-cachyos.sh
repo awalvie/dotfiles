@@ -92,7 +92,10 @@ docker exec "$ct" chown -R "$user:$user" "$home/dotfiles"
 
 # The nix installer cannot start its systemd unit here: start nix-daemon by
 # hand as soon as the installer has put it in place.
-docker exec -d -e NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt "$ct" bash -c '
+# Match nix's parallelism to the container caps: with all host cores it runs
+# out of memory and builds get killed (signal 9).
+docker exec -d -e NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt \
+    -e NIX_CONFIG=$'max-jobs = 2\ncores = 2' "$ct" bash -c '
   until [ -x /nix/var/nix/profiles/default/bin/nix-daemon ]; do sleep 1; done
   exec /nix/var/nix/profiles/default/bin/nix-daemon'
 

@@ -122,5 +122,16 @@ check "login zsh has nix share in XDG_DATA_DIRS" bash -c "$home/.nix-profile/bin
 check "safeeyes unit is wanted by graphical-session.target" test -e .config/systemd/user/graphical-session.target.wants/safeeyes.service
 check "safeeyes unit exists" test -e .config/systemd/user/safeeyes.service
 
+echo "== setup script"
+check "setup script installed the packages" pacman -Q keyd alacritty docker docker-compose docker-buildx tailscale
+check "keyd config matches the repo file" cmp dotfiles/home/keyd/default.conf /etc/keyd/default.conf
+check "user is in the docker group" bash -c 'id -nG | tr " " "\n" | grep -qx docker'
+# Second run by hand with a sudo that always fails: it must not need sudo.
+as_user bash -c 'mkdir -p stub && printf "#!/bin/sh\necho sudo called >&2\nexit 1\n" > stub/sudo && chmod +x stub/sudo'
+check "second setup run needs no sudo" env PATH="$home/stub:/usr/bin:/bin" \
+  dotfiles/scripts/setup-cachyos.sh "$user" "$home/dotfiles/home/keyd/default.conf"
+check "cachyos generation has no nix keyd, alacritty or nixGL" bash -c \
+  '! grep -rEq "keyd|alacritty-wrapped|nixGL" .local/state/nix/profiles/home-manager/home-path/bin 2>/dev/null'
+
 # Add further asserts above this line (setup script, niri desktop checks).
 if [ "$fails" -eq 0 ]; then echo "ALL PASS"; else echo "$fails FAILED"; exit 1; fi

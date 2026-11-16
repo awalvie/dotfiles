@@ -188,6 +188,9 @@ in
       vimconfig = "vim ~/.config/nvim/init.lua";
       dotfiles  = "cd ~/dotfiles";
 
+      # Personal Claude account; plain `claude` stays on ~/.claude (work).
+      claude-personal = "CLAUDE_CONFIG_DIR=$HOME/.claude-personal claude";
+
       tn = "tmux new -s";
       tl = "tmux ls";
       ta = "tmux attach";

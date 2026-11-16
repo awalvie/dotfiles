@@ -39,6 +39,17 @@ long-term clock on it.
   - `setup-zsh.sh` — sudo; sets the nix zsh as the login shell.
   - `setup-docker.sh` — sudo; installs Docker Engine from Docker's official
     apt repo, enables the daemon, adds the user to the docker group.
+  - `setup-cachyos.sh` — sudo, CachyOS only (wired in `nix/hosts/cachyos.nix`);
+    one `pacman -S --needed` for keyd, alacritty, docker (+ compose, buildx)
+    and tailscale, installs `home/keyd/default.conf` to `/etc/keyd`, enables
+    + starts keyd, docker and `tailscaled` (shipped units; only on a booted
+    systemd host), adds the user to the docker group, sets the Tailscale
+    operator once `tailscaled` runs. Silent and sudo-free when nothing changed.
+    The cachyos generation has no nix keyd, no nix Alacritty and no nixGL.
+
+CachyOS post-install checks (not covered by the container test): after `hms`,
+`systemctl is-active keyd docker tailscaled` should say active x3; log out and
+back in so the `docker` group applies; run `tailscale up` once to log in.
 
 ## Bootstrap (fresh host)
 
@@ -64,7 +75,9 @@ remaining manual steps.
 `cachyos-niri-noctalia` installed, so the real skel files are present. It
 archives the committed `HEAD` (commit first), runs the bootstrap twice as a
 sudo-capable user, and asserts: the switch succeeds, replaced skel files have
-`.backup` copies, and the second run skips the nix install and `nix.conf`.
+`.backup` copies, the second run skips the nix install and `nix.conf`, the setup
+script installed its packages, the keyd config and the docker group, and a
+second setup run with a failing `sudo` stub still succeeds (needs no sudo).
 Containers are capped at `--cpus=4 --memory=6g`. The base image (packages +
 user) is cached as `dotfiles-test-cachyos-base` (`--rebuild` redoes it) and
 `/nix` lives in the named volume `dotfiles-test-nix`, so source builds happen
@@ -312,6 +325,7 @@ scripts/setup-alacritty.sh      # no sudo: alacritty desktop entry (hm activatio
 scripts/setup-zsh.sh            # sudo: set nix zsh as login shell (hm activation, linux)
 scripts/setup-docker.sh         # sudo: install docker engine via apt (hm activation, linux)
 scripts/setup-tailscale.sh      # sudo: install tailscale via apt (hm activation, linux)
+scripts/setup-cachyos.sh        # sudo: pacman packages, keyd conf, services (hm activation, cachyos)
 config/                         # configs symlinked into ~/.config/
 home/                           # configs symlinked into ~/
 home/bin/                       # custom shell scripts (hublink)

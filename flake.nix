@@ -48,14 +48,14 @@
         # Pop!_OS laptop (COSMIC, NVIDIA). `hms` -> #pop
         pop = mkHome {
           system    = "x86_64-linux";
-          modules   = [ ./nix/pop.nix ];
+          modules   = [ ./nix/hosts/pop.nix ];
           extraArgs = { inherit nixgl; };
         };
 
         # CachyOS work PC (niri + Noctalia). `hms` -> #cachyos
         cachyos = mkHome {
           system  = "x86_64-linux";
-          modules = [ ./nix/cachyos.nix ];
+          modules = [ ./nix/hosts/cachyos.nix ];
         };
 
         # Intel macOS. `hms` -> #darwin

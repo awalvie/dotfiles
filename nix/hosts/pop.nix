@@ -20,7 +20,7 @@ let
   };
 in
 {
-  imports = [ ./linux.nix ];
+  imports = [ ../linux.nix ];
 
   home.packages = with pkgs; [
     alacrittyGL
@@ -36,14 +36,14 @@ in
   # a non-NixOS host. Each program gets its own script in scripts/.
   home.activation.setupKeyd = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     export PATH=/usr/bin:/bin:$PATH
-    ${../scripts/setup-keyd.sh} \
+    ${../../scripts/setup-keyd.sh} \
       ${pkgs.keyd}/bin/keyd \
-      ${../home/keyd/default.conf}
+      ${../../home/keyd/default.conf}
   '';
 
   home.activation.setupAlacritty = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     export PATH=/usr/bin:/bin:$PATH
-    ${../scripts/setup-alacritty.sh} \
+    ${../../scripts/setup-alacritty.sh} \
       ${alacrittyGL}
   '';
 
@@ -52,14 +52,14 @@ in
   # non-NixOS host). /usr/sbin is on PATH for usermod/groupadd.
   home.activation.setupDocker = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     export PATH=/usr/sbin:/sbin:/usr/bin:/bin:$PATH
-    ${../scripts/setup-docker.sh} \
+    ${../../scripts/setup-docker.sh} \
       ${user}
   '';
 
   # Tailscale: apt repo + tailscaled + operator. Login stays manual (browser).
   home.activation.setupTailscale = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     export PATH=/usr/sbin:/sbin:/usr/bin:/bin:$PATH
-    ${../scripts/setup-tailscale.sh} \
+    ${../../scripts/setup-tailscale.sh} \
       ${user}
   '';
 }

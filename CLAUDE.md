@@ -5,8 +5,8 @@ home-manager. Hosts: a Pop!_OS laptop (COSMIC, NVIDIA), a CachyOS work PC
 (niri + Noctalia; minimal so far: shared config plus its alias), and an Intel
 MacBook (`x86_64-darwin`). One home-manager output per host:
 
-- `#pop`     → `x86_64-linux` (`nix/pop.nix`)
-- `#cachyos` → `x86_64-linux` (`nix/cachyos.nix`)
+- `#pop`     → `x86_64-linux` (`nix/hosts/pop.nix`)
+- `#cachyos` → `x86_64-linux` (`nix/hosts/cachyos.nix`)
 - `#darwin`  → `x86_64-darwin` (`nix/darwin.nix`)
 
 `pop` and `cachyos` import `nix/linux.nix` (shared Linux config), which imports
@@ -29,7 +29,7 @@ long-term clock on it.
   own packages, activations, and `hms` alias.
 - **Per-program glue**: `scripts/setup-*.sh` — one script per program for
   setup nix can't do declaratively on a non-NixOS host. Each is wired to its
-  own `home.activation.setup<Program>` block in `nix/pop.nix` (all current
+  own `home.activation.setup<Program>` block in `nix/hosts/pop.nix` (all current
   ones are Pop!_OS-only, except `setup-zsh.sh`, wired in `nix/linux.nix`), runs standalone too, and is idempotent (only acts when
   something changed). Currently:
   - `setup-keyd.sh` — sudo; installs keyd config + a generated systemd unit
@@ -247,8 +247,8 @@ start feeling like friction.
 flake.nix                       # flake inputs + entry points (#pop, #cachyos, #darwin)
 nix/common.nix                  # OS-agnostic config (packages, programs, symlinks)
 nix/linux.nix                   # imports common + bits shared by both Linux hosts
-nix/pop.nix                     # Pop!_OS host: nixGL, keyd, setup scripts, hms alias
-nix/cachyos.nix                 # CachyOS host: shared Linux config + hms alias
+nix/hosts/pop.nix               # Pop!_OS host: nixGL, keyd, setup scripts, hms alias
+nix/hosts/cachyos.nix           # CachyOS host: shared Linux config + hms alias
 nix/darwin.nix                  # imports common + macOS bits (plain alacritty)
 scripts/setup-keyd.sh           # sudo: keyd /etc config + systemd unit (hm activation, linux)
 scripts/setup-alacritty.sh      # no sudo: alacritty desktop entry (hm activation, linux)

@@ -56,4 +56,5 @@ cat <<'MSG'
 bootstrap: done. Remaining manual steps:
   - log out and back in so the session picks up the new shell and environment
   - tailscale up   (once, if this host uses tailscale)
+  - on cachyos, do the post-install desktop checks listed in CLAUDE.md
 MSG

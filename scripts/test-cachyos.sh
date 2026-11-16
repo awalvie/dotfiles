@@ -113,5 +113,14 @@ fi
 check "second run skips the nix install" grep -q "nix already installed" second.log
 check "second run skips the nix.conf step" grep -q "nix.conf already exists" second.log
 
+echo "== niri desktop"
+for d in niri noctalia; do
+  check "~/.config/$d links into the checkout" bash -c "[ \"\$(readlink -f .config/$d)\" = $home/dotfiles/config/$d ]"
+done
+check "login zsh has ~/.nix-profile/bin on PATH" bash -c "$home/.nix-profile/bin/zsh -l -c 'echo \$PATH' | grep -q '\.nix-profile/bin'"
+check "login zsh has nix share in XDG_DATA_DIRS" bash -c "$home/.nix-profile/bin/zsh -l -c 'echo \$XDG_DATA_DIRS' | grep -q '\.nix-profile/share'"
+check "safeeyes unit is wanted by graphical-session.target" test -e .config/systemd/user/graphical-session.target.wants/safeeyes.service
+check "safeeyes unit exists" test -e .config/systemd/user/safeeyes.service
+
 # Add further asserts above this line (setup script, niri desktop checks).
 if [ "$fails" -eq 0 ]; then echo "ALL PASS"; else echo "$fails FAILED"; exit 1; fi

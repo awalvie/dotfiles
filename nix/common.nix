@@ -91,6 +91,14 @@ in
       line-numbers-zero-style  = "brightblack";
       zero-style          = "syntax";
       whitespace-error-style = "black bold";
+      blame-code-style    = "syntax";
+      blame-format        = "{author:<18} {commit:<6} {timestamp:<15}";
+      merge-conflict-begin-symbol = "~";
+      merge-conflict-end-symbol   = "~";
+      merge-conflict-ours-diff-header-style   = "yellow bold";
+      merge-conflict-ours-diff-header-decoration-style   = "blue box";
+      merge-conflict-theirs-diff-header-style = "yellow bold";
+      merge-conflict-theirs-diff-header-decoration-style = "blue box";
     };
   };
 

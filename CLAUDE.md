@@ -2,7 +2,7 @@
 
 Cross-platform dotfiles, declaratively managed via a Nix flake and
 home-manager. Hosts: a Pop!_OS laptop (COSMIC, NVIDIA), a CachyOS work PC
-(niri + Noctalia; minimal so far: shared config plus its alias), and an Intel
+(niri + Noctalia), and an Intel
 MacBook (`x86_64-darwin`). One home-manager output per host:
 
 - `#pop`     → `x86_64-linux` (`nix/hosts/pop.nix`)
@@ -22,16 +22,17 @@ long-term clock on it.
   the flake. The old darwin zsh/git were superseded by the flake, its ssh
   config moved to `config/ssh/config`, and its k9s config was dropped as
   unused.)
-- **Nix lives in**: `flake.nix` (root) + `nix/{common,linux,pop,cachyos,darwin}.nix`.
+- **Nix lives in**: `flake.nix` (root) + `nix/{common,linux,darwin}.nix` + host modules `nix/hosts/{pop,cachyos}.nix`.
   `common.nix` holds everything shared; `linux.nix` holds what both Linux hosts
   share (clipboard tools, fontconfig, xdg-utils, `xclip` alias, zsh setup
   activation); each host module (`pop`/`cachyos`/`darwin`) adds its
   own packages, activations, and `hms` alias.
 - **Per-program glue**: `scripts/setup-*.sh` — one script per program for
   setup nix can't do declaratively on a non-NixOS host. Each is wired to its
-  own `home.activation.setup<Program>` block in `nix/hosts/pop.nix` (all current
-  ones are Pop!_OS-only, except `setup-zsh.sh`, wired in `nix/linux.nix`), runs standalone too, and is idempotent (only acts when
-  something changed). Currently:
+  own `home.activation.setup<Program>` block: `setup-zsh.sh` in `nix/linux.nix`
+  (both Linux hosts), `setup-cachyos.sh` in `nix/hosts/cachyos.nix`, the rest in
+  `nix/hosts/pop.nix` (Pop!_OS only). Each runs standalone too and is idempotent
+  (only acts when something changed). Currently:
   - `setup-keyd.sh` — sudo; installs keyd config + a generated systemd unit
     into `/etc`.
   - `setup-alacritty.sh` — no sudo; installs a desktop entry into
@@ -167,15 +168,15 @@ before `hms` will see it — flakes only operate on tracked files.
   - `~/.ssh/config` ← `config/ssh/config` (host aliases; the referenced
     `IdentityFile`s are per-machine, not in the repo)
   - `~/bin` ← `home/bin/` (hublink script)
-- keyd (linux-only), indirectly: nix installs the binary, `setup-keyd.sh` writes
+- keyd (Pop!_OS only; CachyOS uses pacman, see `setup-cachyos.sh`), indirectly: nix installs the binary, `setup-keyd.sh` writes
   `/etc/keyd/default.conf` and a generated `/etc/systemd/system/keyd.service`
   pointing to the nix-store keyd binary, then enables+restarts the service.
   Sudo prompt only fires when config or unit file actually changed.
-- alacritty desktop entry (linux-only), indirectly: `setup-alacritty.sh` rewrites nixpkgs'
+- alacritty desktop entry (Pop!_OS only), indirectly: `setup-alacritty.sh` rewrites nixpkgs'
   `Alacritty.desktop` (which uses bare `Exec=alacritty`/`Icon=Alacritty` that
   COSMIC can't resolve) to absolute store paths and drops it in
   `~/.local/share/applications`. No sudo.
-- **nixGL** (`nixgl` flake input, linux-only): nix-built GUI apps can't find
+- **nixGL** (`nixgl` flake input, Pop!_OS only): nix-built GUI apps can't find
   this NVIDIA host's GL/EGL driver (it lives in PopOS FHS paths, version-locked
   to the kernel module). Without it, alacritty dies with
   `NotSupported("provided display handle is not supported")`. `pop.nix`
@@ -183,11 +184,12 @@ before `hms` will see it — flakes only operate on tracked files.
   whose `bin/alacritty` runs through `nixGLDefault` while keeping the original
   `/share` (so the launcher entry inherits the GL-correct binary). The activation
   block passes `alacrittyGL` (not `pkgs.alacritty`) to `setup-alacritty.sh`.
-  Any future nix-installed GUI/GL app on linux needs the same `nixGL` wrap.
+  Per ADR 0001, GPU apps normally come from the host OS; nixGL is the Pop!_OS
+  exception, and a GPU app nix-installed on `pop` needs the same wrap.
   macOS (`darwin.nix`) uses plain `pkgs.alacritty` — no wrap needed. The
   `nixgl` input is only passed to the `pop` config's `extraSpecialArgs`, so the
   darwin config never evaluates it.
-- login shell (linux-only), indirectly: `setup-zsh.sh` adds the nix zsh to `/etc/shells` and
+- login shell (both Linux hosts), indirectly: `setup-zsh.sh` adds the nix zsh to `/etc/shells` and
   `sudo chsh`es the user to it. It targets the stable
   `~/.nix-profile/bin/zsh` symlink (passed as `config.home.profileDirectory`),
   NOT a `/nix/store` path, so it survives GC/rebuilds and doesn't re-run on
@@ -198,14 +200,14 @@ before `hms` will see it — flakes only operate on tracked files.
 - `~/code/{origin,lamp,work}` workspace dirs — created by the
   `setupCodeDirs` activation block (inline `mkdir -p`, no sudo, no script —
   too trivial to warrant one).
-- docker (linux-only), indirectly: `setup-docker.sh` installs Docker Engine
+- docker (Pop!_OS only; CachyOS uses pacman), indirectly: `setup-docker.sh` installs Docker Engine
   from Docker's official apt repo (CLI + daemon + compose plugin), enables the
   systemd unit, and adds the user to the `docker` group. NOT nix-managed — a
   nix-store dockerd is painful on non-NixOS, and apt is what Docker supports on
   Ubuntu/PopOS. Sudo prompt + apt work only fire on first run; idempotent
   after. Group membership needs a re-login to take effect. (macOS uses Docker
   Desktop, installed separately.)
-- tailscale (linux-only), indirectly: `setup-tailscale.sh` installs Tailscale
+- tailscale (Pop!_OS only; CachyOS uses pacman), indirectly: `setup-tailscale.sh` installs Tailscale
   from its official apt repo, enables `tailscaled`, and sets the user as the
   operator (CLI without sudo; per-profile, so re-run `hms` after adding a
   profile). NOT nix-managed — root daemon on non-NixOS, same
@@ -253,18 +255,19 @@ before `hms` will see it — flakes only operate on tracked files.
 
 ## Known gotchas
 
-- **First `hms` on a new machine** is slow (10–20 min) because nix downloads
+- **The first switch on a new host** is slow (10–20 min) because nix downloads
   everything into `/nix/store`. Subsequent runs are seconds. Use the
-  `bootstrap.sh` script (above) for the first run: it installs nix and enables
+  `bootstrap.sh` script (above) for it: it installs nix and enables
   flakes itself. The HM `nix.*` module can't manage `nix.conf` because it
   shells out to `nix` during activation, which needs the very feature the file
   enables; `~/.config/nix/nix.conf` is a plain symlink once HM has run.
 - **Mason on NixOS** (if you ever migrate) — Mason's prebuilt binaries aren't
   patchelf'd for NixOS's dynamic linker and will fail. Not an issue on PopOS
   but worth knowing.
-- **Activation scripts have a stripped PATH**. The `setup-*.sh` scripts are
+- **Activation scripts have a stripped PATH**. The Setup scripts are
   invoked with `export PATH=/usr/bin:/bin:$PATH` prepended to find `sudo`,
-  `systemctl`, `update-desktop-database`, etc.
+  `systemctl`, `update-desktop-database`, etc. The docker, tailscale and
+  cachyos blocks also prepend `/usr/sbin:/sbin` (for `usermod`, `groupadd`).
 - **home-manager API moves fast**. We're tracking `home-manager/master`. If
   you hit `option 'X' has been renamed to 'Y'` warnings, follow the rename.
   We already migrated:
@@ -320,11 +323,11 @@ nix/linux.nix                   # imports common + bits shared by both Linux hos
 nix/hosts/pop.nix               # Pop!_OS host: nixGL, keyd, setup scripts, hms alias
 nix/hosts/cachyos.nix           # CachyOS host: shared Linux config + niri/Noctalia links, genericLinux, safeeyes, hms alias
 nix/darwin.nix                  # imports common + macOS bits (plain alacritty)
-scripts/setup-keyd.sh           # sudo: keyd /etc config + systemd unit (hm activation, linux)
-scripts/setup-alacritty.sh      # no sudo: alacritty desktop entry (hm activation, linux)
-scripts/setup-zsh.sh            # sudo: set nix zsh as login shell (hm activation, linux)
-scripts/setup-docker.sh         # sudo: install docker engine via apt (hm activation, linux)
-scripts/setup-tailscale.sh      # sudo: install tailscale via apt (hm activation, linux)
+scripts/setup-keyd.sh           # sudo: keyd /etc config + systemd unit (hm activation, pop)
+scripts/setup-alacritty.sh      # no sudo: alacritty desktop entry (hm activation, pop)
+scripts/setup-zsh.sh            # sudo: set nix zsh as login shell (hm activation, both Linux hosts)
+scripts/setup-docker.sh         # sudo: install docker engine via apt (hm activation, pop)
+scripts/setup-tailscale.sh      # sudo: install tailscale via apt (hm activation, pop)
 scripts/setup-cachyos.sh        # sudo: pacman packages, keyd conf, services (hm activation, cachyos)
 config/                         # configs symlinked into ~/.config/
 home/                           # configs symlinked into ~/

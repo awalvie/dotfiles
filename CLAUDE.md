@@ -40,6 +40,39 @@ long-term clock on it.
   - `setup-docker.sh` — sudo; installs Docker Engine from Docker's official
     apt repo, enables the daemon, adds the user to the docker group.
 
+## Bootstrap (fresh host)
+
+```bash
+git clone <repo> ~/dotfiles && ~/dotfiles/bootstrap   # works from any shell, incl. fish
+~/dotfiles/bootstrap cachyos                          # an argument overrides detection
+~/dotfiles/bootstrap --detect                         # just print the detected host
+```
+
+`bootstrap` (repo root, bash) detects the host (macOS -> `darwin`, `pacman` ->
+`cachyos`, `apt-get` -> `pop`), installs nix with the upstream multi-user
+installer if missing, writes `~/.config/nix/nix.conf` (flakes on) only if it
+does not exist, then runs `nix run home-manager/master -- switch -b backup
+--flake <repo>#<host> --impure`. Existing files the switch replaces (e.g. the
+CachyOS skel `~/.config/alacritty`) are kept as `*.backup`. Re-running it is
+safe: it skips the nix install and the `nix.conf` step. It ends by printing the
+remaining manual steps.
+
+### Container test
+
+`scripts/test-cachyos.sh` runs the bootstrap in a plain unprivileged
+`cachyos/cachyos` container (never `--privileged`, never systemd as init) with
+`cachyos-niri-noctalia` installed, so the real skel files are present. It
+archives the committed `HEAD` (commit first), runs the bootstrap twice as a
+sudo-capable user, and asserts: the switch succeeds, replaced skel files have
+`.backup` copies, and the second run skips the nix install and `nix.conf`.
+The base image (packages + user) is cached as `dotfiles-test-cachyos-base`;
+`--rebuild` redoes it. The container is always removed on exit. Add new asserts
+with `check "description" cmd...` near the end of the script.
+
+It does NOT cover: systemd services (the installer cannot start `nix-daemon`
+there, so the test starts it by hand; enabling/starting keyd, docker, tailscale
+etc. are manual checks), SDDM, and the real niri/noctalia desktop.
+
 ## How to apply changes
 
 ```bash
@@ -178,17 +211,11 @@ before `hms` will see it — flakes only operate on tracked files.
 ## Known gotchas
 
 - **First `hms` on a new machine** is slow (10–20 min) because nix downloads
-  everything into `/nix/store`. Subsequent runs are seconds.
-- **Flakes must be enabled by hand on a fresh machine.** We own
-  `~/.config/nix/nix.conf` as a plain symlink, but that only holds once
-  home-manager has run — and the first run needs `nix-command`/`flakes`
-  already on. Before the first `hms`, write it yourself:
-  ```bash
-  mkdir -p ~/.config/nix
-  echo 'experimental-features = nix-command flakes' > ~/.config/nix/nix.conf
-  ```
-  The HM `nix.*` module can't do this: it shells out to `nix` during
-  activation, which needs the very feature the file enables.
+  everything into `/nix/store`. Subsequent runs are seconds. Use the
+  `bootstrap` script (above) for the first run: it installs nix and enables
+  flakes itself. The HM `nix.*` module can't manage `nix.conf` because it
+  shells out to `nix` during activation, which needs the very feature the file
+  enables; `~/.config/nix/nix.conf` is a plain symlink once HM has run.
 - **Mason on NixOS** (if you ever migrate) — Mason's prebuilt binaries aren't
   patchelf'd for NixOS's dynamic linker and will fail. Not an issue on PopOS
   but worth knowing.
@@ -242,6 +269,8 @@ start feeling like friction.
 ## File map
 
 ```
+bootstrap                       # fresh-host bootstrap: nix install + first switch
+scripts/test-cachyos.sh         # container test of the bootstrap on CachyOS
 flake.nix                       # flake inputs + entry points (#pop, #cachyos, #darwin)
 nix/common.nix                  # OS-agnostic config (packages, programs, symlinks)
 nix/linux.nix                   # imports common + bits shared by both Linux hosts

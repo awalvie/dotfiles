@@ -1,9 +1,23 @@
 # CachyOS (niri + Noctalia) work PC. Shared Linux config lives in linux.nix.
-{ ... }:
+{ config, ... }:
 
+let
+  link = name: config.lib.file.mkOutOfStoreSymlink
+    "${config.home.homeDirectory}/dotfiles/config/${name}";
+in
 {
   imports = [ ../linux.nix ];
 
   programs.zsh.shellAliases.hms =
     "home-manager switch --flake ~/dotfiles#cachyos --impure";
+
+  # Nix zsh does not read Arch's /etc/zsh/zprofile, so session env (PATH,
+  # XDG_DATA_DIRS) must come from home-manager. CachyOS drivers cover the GPU.
+  targets.genericLinux.enable = true;
+  targets.genericLinux.gpu.enable = false;
+
+  xdg.configFile."niri".source = link "niri";
+  xdg.configFile."noctalia".source = link "noctalia";
+
+  services.safeeyes.enable = true;
 }

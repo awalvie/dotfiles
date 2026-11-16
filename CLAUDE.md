@@ -199,6 +199,33 @@ before `hms` will see it — flakes only operate on tracked files.
   reason as docker. Login is manual, once: `tailscale up`. (macOS uses the
   Tailscale app, installed separately.)
 
+### CachyOS desktop (niri + Noctalia)
+
+`nix/hosts/cachyos.nix` only. The desktop itself comes from the pacman package
+`cachyos-niri-noctalia` (version 1.4.0-1 when these files were copied).
+- `config/niri/` and `config/noctalia/` are copies of that package's
+  `/etc/skel/.config/{niri,noctalia}`. `~/.config/niri` and
+  `~/.config/noctalia` are out-of-store symlinks
+  (`mkOutOfStoreSymlink`) to `~/dotfiles/config/...`, so edits reload at once
+  without `hms`. Put your own keybinds, input and display settings in
+  `config/niri/cfg/*.kdl`. Noctalia's GUI writes its settings to
+  `~/.local/state/noctalia/settings.toml`; that state is not managed.
+- `targets.genericLinux.enable = true` (GPU part off: CachyOS ships the
+  drivers). Why: the nix zsh does not read Arch's `/etc/zsh/zprofile`, so
+  nothing sources `/etc/profile.d`. Home-manager's session vars then put
+  `~/.nix-profile/bin` on `PATH` and `~/.nix-profile/share` in
+  `XDG_DATA_DIRS` (also via `environment.d`), so apps started by niri and the
+  launcher find nix tools and desktop entries.
+- `services.safeeyes.enable = true`: a user unit wanted by
+  `graphical-session.target` (Pop!_OS keeps the plain package in `pop.nix`).
+- NVIDIA VRAM: niri's wiki asks for a driver profile limiting VRAM use.
+  CachyOS `nvidia-utils` already ships it
+  (`/etc/nvidia/nvidia-application-profiles-rc.d/limit-vram-usage`), so
+  nothing to do.
+- Post-install checks (not in the container test): log in to niri from SDDM;
+  the Noctalia bar appears; the launcher lists nix apps; `systemctl --user
+  status safeeyes` is running.
+
 ## What nix does NOT manage (and why)
 
 - **Neovim plugins** — `lazy.nvim` manages those. `lazy-lock.json` is
@@ -278,7 +305,7 @@ flake.nix                       # flake inputs + entry points (#pop, #cachyos, #
 nix/common.nix                  # OS-agnostic config (packages, programs, symlinks)
 nix/linux.nix                   # imports common + bits shared by both Linux hosts
 nix/hosts/pop.nix               # Pop!_OS host: nixGL, keyd, setup scripts, hms alias
-nix/hosts/cachyos.nix           # CachyOS host: shared Linux config + hms alias
+nix/hosts/cachyos.nix           # CachyOS host: shared Linux config + niri/Noctalia links, genericLinux, safeeyes, hms alias
 nix/darwin.nix                  # imports common + macOS bits (plain alacritty)
 scripts/setup-keyd.sh           # sudo: keyd /etc config + systemd unit (hm activation, linux)
 scripts/setup-alacritty.sh      # no sudo: alacritty desktop entry (hm activation, linux)

@@ -1,5 +1,5 @@
 # CachyOS (niri + Noctalia) work PC. Shared Linux config lives in linux.nix.
-{ config, ... }:
+{ config, lib, user, ... }:
 
 let
   link = name: config.lib.file.mkOutOfStoreSymlink
@@ -20,4 +20,13 @@ in
   xdg.configFile."noctalia".source = link "noctalia";
 
   services.safeeyes.enable = true;
+
+  # keyd, Alacritty, Docker and Tailscale come from pacman (no nix keyd, no
+  # nix Alacritty, no nixGL); see scripts/setup-cachyos.sh.
+  home.activation.setupCachyos = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    export PATH=/usr/sbin:/sbin:/usr/bin:/bin:$PATH
+    ${../../scripts/setup-cachyos.sh} \
+      ${user} \
+      ${../../home/keyd/default.conf}
+  '';
 }

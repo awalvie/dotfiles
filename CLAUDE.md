@@ -74,7 +74,12 @@ before `hms` will see it — flakes only operate on tracked files.
   `o` alias are OS-conditional
   (`pbcopy`/`open` on darwin, `wl-copy`/`xdg-open` on linux); the `hms` alias
   is defined per-OS in `linux.nix`/`darwin.nix` (different `--flake` target).
-- git config (delta integration, includes for theme, settings.user.{name,email}).
+- git config (delta integration, settings.user.{name,email}). delta's layout
+  (line numbers, file labels, hunk headers) is inline in `programs.delta.options`.
+- Terminal-palette colours: fzf (no colour options), bat (`ansi` theme), delta
+  (terminal colour names, `syntax-theme = ansi`), lazygit's delta pager and tmux
+  (colour names) all use the terminal's ANSI colours, so a terminal theme change
+  reaches them with no edits. No hex colours live in their config.
   Also a global gitignore (`programs.git.ignores` → `~/.config/git/ignore`) for
   `.envrc`/`.venv`/`.direnv` so venv/direnv artifacts never show up in any
   repo's status — important for the monorepo.

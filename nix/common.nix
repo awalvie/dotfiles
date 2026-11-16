@@ -67,7 +67,30 @@ in
     options = {
       navigate   = true;
       true-color = "always";
-      features   = "arctic-fox";
+      dark       = true;
+      syntax-theme = "ansi";
+      file-added-label    = "[+]";
+      file-copied-label   = "[==]";
+      file-modified-label = "[*]";
+      file-removed-label  = "[-]";
+      file-renamed-label  = "[->]";
+      file-style = "omit";
+      hunk-header-decoration-style    = "blue ul";
+      hunk-header-file-style          = "blue ul bold";
+      hunk-header-line-number-style   = "yellow box bold";
+      hunk-header-style               = "file line-number syntax bold italic";
+      plus-style          = "brightgreen";
+      plus-emph-style     = "black green";
+      minus-style         = "brightred";
+      minus-emph-style    = "black red";
+      line-numbers        = true;
+      line-numbers-minus-style = "brightred";
+      line-numbers-plus-style  = "brightgreen";
+      line-numbers-left-style  = "blue";
+      line-numbers-right-style = "blue";
+      line-numbers-zero-style  = "brightblack";
+      zero-style          = "syntax";
+      whitespace-error-style = "black bold";
     };
   };
 
@@ -82,10 +105,6 @@ in
       merge.conflictstyle = "diff3";
       diff.colorMoved     = "default";
     };
-
-    includes = [
-      { path = "~/dotfiles/config/delta/themes.gitconfig"; }
-    ];
 
     # global gitignore (~/.config/git/ignore). keeps direnv/venv artifacts out
     # of every repo's status — esp. the monorepo, where venvs are centralized
@@ -108,19 +127,13 @@ in
     enable               = true;
     enableZshIntegration = true;
     defaultOptions = [
-      "--color=bg:#2E3440,bg+:#434C5E"
-      "--color=spinner:#88C0D0,hl:#81A1C1"
-      "--color=fg:#D8DEE9,header:#81A1C1"
-      "--color=info:#EBCB8B,pointer:#88C0D0"
-      "--color=marker:#A3BE8C,fg+:#ECEFF4"
-      "--color=prompt:#8FBCBB,hl+:#5E81AC"
       "--layout=reverse"
     ];
   };
 
   programs.bat = {
     enable = true;
-    config.theme = "Nord";
+    config.theme = "ansi";
   };
 
   programs.direnv = {
@@ -222,12 +235,11 @@ in
       #   INTERACTIVE_COMMENTS — allow `#` comments when pasting/typing
       setopt AUTO_CD AUTO_PUSHD PUSHD_IGNORE_DUPS PUSHD_SILENT INTERACTIVE_COMMENTS
 
-      # Nord-themed file colors, shared by `ls --color` and the completion menu
-      # (the list-colors zstyle below reads $LS_COLORS). Uses ANSI slot numbers
-      # rather than raw hex, so it renders in true Nord via alacritty's palette
-      # (config/alacritty/colors/nord.toml maps 34->#81a1c1, 36->#88c0d0,
-      # 32->#a3be8c, 35->#b48ead, 33->#ebcb8b, 31->#bf616a) and tracks any
-      # future tweaks to that palette automatically.
+      # File colors, shared by `ls --color` and the completion menu (the
+      # list-colors zstyle below reads $LS_COLORS). Uses ANSI slot numbers
+      # rather than raw hex, so they render in whatever the terminal palette
+      # maps those slots to (34 blue, 36 cyan, 32 green, 35 magenta, 33 yellow,
+      # 31 red) and follow a terminal theme change automatically.
       export LS_COLORS="di=34:ln=36:so=35:pi=33:ex=32:bd=33:cd=33:su=31:sg=31:tw=34:ow=34:or=31:mi=31:*.tar=35:*.tgz=35:*.gz=35:*.zip=35:*.7z=35:*.jpg=35:*.jpeg=35:*.png=35:*.gif=35:*.mp4=35:*.mkv=35:*.mp3=35"
 
       # Tab completion: navigable, highlighted menu + ls-style colors. HM's
@@ -235,7 +247,7 @@ in
       # default (plain, non-navigable) listing applies; restore the menu here.
       zstyle ':completion:*' menu select
       # candidates use $LS_COLORS (above); ma= is the selected-item highlight
-      # bar — Nord blue bg (slot 34) with the Nord-dark fg (slot 0).
+      # bar — palette blue bg (slot 4) with the palette black fg (slot 0).
       zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}" 'ma=48;5;4;38;5;0'
       # case-insensitive, then substring matching (`cd dwn` -> `Downloads`).
       zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'l:|=* r:|=*'

@@ -70,9 +70,6 @@ o.undodir = HOME .. "/.tmp/undo//" -- undo files
 o.backupdir = HOME .. "/.tmp/backup//" -- backups
 
 -- Themeing
-g.nord_underline = 1
-g.nord_italic = 1
-g.nord_italic_comments = 1
 o.termguicolors = true
 
 -- Commands mode

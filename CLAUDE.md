@@ -74,8 +74,13 @@ before `hms` will see it — flakes only operate on tracked files.
   `o` alias are OS-conditional
   (`pbcopy`/`open` on darwin, `wl-copy`/`xdg-open` on linux); the `hms` alias
   is defined per-OS in `linux.nix`/`darwin.nix` (different `--flake` target).
+- Theme: Rosé Pine (main) is set in three places only: Alacritty (inline
+  colours), Neovim (`rose-pine/neovim` in `config/nvim/lua/plugins/rose-pine.lua`,
+  with MiniTabline and BlinkCmp highlight tweaks) and sofka
+  (`skin.name = "rose-pine"`). Everything else follows the terminal palette.
 - git config (delta integration, settings.user.{name,email}). delta's layout
-  (line numbers, file labels, hunk headers) is inline in `programs.delta.options`.
+  (line numbers, file labels, hunk headers, blame, merge conflicts) is inline in
+  `programs.delta.options`.
 - Terminal-palette colours: fzf (no colour options), bat (`ansi` theme), delta
   (terminal colour names, `syntax-theme = ansi`), lazygit's delta pager and tmux
   (colour names) all use the terminal's ANSI colours, so a terminal theme change
@@ -92,6 +97,7 @@ before `hms` will see it — flakes only operate on tracked files.
   - `~/.config/nvim` ← `config/nvim/`
   - `~/.config/alacritty` ← `config/alacritty/` (shared; macOS alacritty reads
     `~/.config/alacritty` too)
+    Colours are the official Rosé Pine (main) palette, inline in `alacritty.toml`.
   - `~/.config/lazygit` ← `config/lazygit/`
   - `~/.config/nix/nix.conf` ← `config/nix/nix.conf` (enables flakes + the new
     nix CLI; a flat symlink on purpose, not the HM `nix.*` module — see the

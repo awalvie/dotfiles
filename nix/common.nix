@@ -58,7 +58,7 @@ in
   # module comes from the sofka flake input (see flake.nix)
   programs.sofka = {
     enable = true;
-    skin.name = "nord";
+    skin.name = "rose-pine";
   };
 
   programs.delta = {

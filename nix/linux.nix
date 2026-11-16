@@ -13,9 +13,6 @@
 
   fonts.fontconfig.enable = true;
 
-  # X11-only, dead on Wayland.
-  home.file.".Xmodmap".source = ../home/.Xmodmap;
-
   programs.zsh.shellAliases.xclip = "xclip -selection clipboard";
 
   home.activation.setupZsh = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

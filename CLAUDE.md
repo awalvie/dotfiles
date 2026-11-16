@@ -25,7 +25,7 @@ long-term clock on it.
 - **Nix lives in**: `flake.nix` (root) + `nix/{common,linux,pop,cachyos,darwin}.nix`.
   `common.nix` holds everything shared; `linux.nix` holds what both Linux hosts
   share (clipboard tools, fontconfig, xdg-utils, `xclip` alias, zsh setup
-  activation, `.Xmodmap`); each host module (`pop`/`cachyos`/`darwin`) adds its
+  activation); each host module (`pop`/`cachyos`/`darwin`) adds its
   own packages, activations, and `hms` alias.
 - **Per-program glue**: `scripts/setup-*.sh` — one script per program for
   setup nix can't do declaratively on a non-NixOS host. Each is wired to its
@@ -117,9 +117,7 @@ before `hms` will see it — flakes only operate on tracked files.
     `if-shell uname` — `pbcopy` on darwin, `wl-copy` on linux)
   - `~/.ssh/config` ← `config/ssh/config` (host aliases; the referenced
     `IdentityFile`s are per-machine, not in the repo)
-  - `~/.Xmodmap` ← `home/.Xmodmap` (linux-only; dead on COSMIC/Wayland, kept
-    for parity)
-  - `~/bin` ← `home/bin/` (battery, hublink scripts)
+  - `~/bin` ← `home/bin/` (hublink script)
 - keyd (linux-only), indirectly: nix installs the binary, `setup-keyd.sh` writes
   `/etc/keyd/default.conf` and a generated `/etc/systemd/system/keyd.service`
   pointing to the nix-store keyd binary, then enables+restarts the service.
@@ -257,7 +255,7 @@ scripts/setup-docker.sh         # sudo: install docker engine via apt (hm activa
 scripts/setup-tailscale.sh      # sudo: install tailscale via apt (hm activation, linux)
 config/                         # configs symlinked into ~/.config/
 home/                           # configs symlinked into ~/
-home/bin/                       # custom shell scripts (battery, hublink)
+home/bin/                       # custom shell scripts (hublink)
 ```
 
 ## Agent skills

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Take a fresh clone to a working host: install nix if missing, enable flakes,
-# run the first home-manager switch. Usage: ./bootstrap [pop|cachyos|darwin|--detect]
+# run the first home-manager switch. Usage: ./bootstrap.sh [pop|cachyos|darwin|--detect]
 set -euo pipefail
 
 repo=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)

@@ -90,7 +90,7 @@ docker exec -d -e NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt "$ct" bas
   until [ -x /nix/var/nix/profiles/default/bin/nix-daemon ]; do sleep 1; done
   exec /nix/var/nix/profiles/default/bin/nix-daemon'
 
-run_bootstrap() { as_user bash -c "./dotfiles/bootstrap cachyos > $1 2>&1"; }
+run_bootstrap() { as_user bash -c "./dotfiles/bootstrap.sh cachyos > $1 2>&1"; }
 
 echo "== first bootstrap run"
 if run_bootstrap first.log; then

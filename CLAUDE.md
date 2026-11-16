@@ -43,12 +43,12 @@ long-term clock on it.
 ## Bootstrap (fresh host)
 
 ```bash
-git clone <repo> ~/dotfiles && ~/dotfiles/bootstrap   # works from any shell, incl. fish
-~/dotfiles/bootstrap cachyos                          # an argument overrides detection
-~/dotfiles/bootstrap --detect                         # just print the detected host
+git clone <repo> ~/dotfiles && ~/dotfiles/bootstrap.sh   # works from any shell, incl. fish
+~/dotfiles/bootstrap.sh cachyos                          # an argument overrides detection
+~/dotfiles/bootstrap.sh --detect                         # just print the detected host
 ```
 
-`bootstrap` (repo root, bash) detects the host (macOS -> `darwin`, `pacman` ->
+`bootstrap.sh` (repo root, bash) detects the host (macOS -> `darwin`, `pacman` ->
 `cachyos`, `apt-get` -> `pop`), installs nix with the upstream multi-user
 installer if missing, writes `~/.config/nix/nix.conf` (flakes on) only if it
 does not exist, then runs `nix run home-manager/master -- switch -b backup
@@ -215,7 +215,7 @@ before `hms` will see it — flakes only operate on tracked files.
 
 - **First `hms` on a new machine** is slow (10–20 min) because nix downloads
   everything into `/nix/store`. Subsequent runs are seconds. Use the
-  `bootstrap` script (above) for the first run: it installs nix and enables
+  `bootstrap.sh` script (above) for the first run: it installs nix and enables
   flakes itself. The HM `nix.*` module can't manage `nix.conf` because it
   shells out to `nix` during activation, which needs the very feature the file
   enables; `~/.config/nix/nix.conf` is a plain symlink once HM has run.
@@ -272,7 +272,7 @@ start feeling like friction.
 ## File map
 
 ```
-bootstrap                       # fresh-host bootstrap: nix install + first switch
+bootstrap.sh                    # fresh-host bootstrap: nix install + first switch
 scripts/test-cachyos.sh         # container test of the bootstrap on CachyOS
 flake.nix                       # flake inputs + entry points (#pop, #cachyos, #darwin)
 nix/common.nix                  # OS-agnostic config (packages, programs, symlinks)

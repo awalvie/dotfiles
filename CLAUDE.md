@@ -1,14 +1,16 @@
 # Dotfiles — Nix Flake + Home Manager
 
 Cross-platform dotfiles, declaratively managed via a Nix flake and
-home-manager. The primary host is Linux on COSMIC (PopOS-based, NVIDIA); an
-Intel MacBook (`x86_64-darwin`) is also supported by the same flake. Two
-home-manager outputs share a common module:
+home-manager. Hosts: a Pop!_OS laptop (COSMIC, NVIDIA), a CachyOS work PC
+(niri + Noctalia; minimal so far: shared config plus its alias), and an Intel
+MacBook (`x86_64-darwin`). One home-manager output per host:
 
-- `#default` → `x86_64-linux` (`nix/linux.nix`)
+- `#pop`     → `x86_64-linux` (`nix/pop.nix`)
+- `#cachyos` → `x86_64-linux` (`nix/cachyos.nix`)
 - `#darwin`  → `x86_64-darwin` (`nix/darwin.nix`)
 
-Both import `nix/common.nix` (the OS-agnostic bulk). Note: nixpkgs is
+`pop` and `cachyos` import `nix/linux.nix` (shared Linux config), which imports
+`nix/common.nix` (the OS-agnostic bulk); `darwin` imports `common.nix` directly. Note: nixpkgs is
 deprecating `x86_64-darwin` after the 26.05 release, so Intel-mac support has a
 long-term clock on it.
 
@@ -20,13 +22,15 @@ long-term clock on it.
   the flake. The old darwin zsh/git were superseded by the flake, its ssh
   config moved to `config/ssh/config`, and its k9s config was dropped as
   unused.)
-- **Nix lives in**: `flake.nix` (root) + `nix/{common,linux,darwin}.nix`.
-  `common.nix` holds everything shared; `linux.nix`/`darwin.nix` each
-  `import` it and add OS-specific packages, activations, and the `hms` alias.
+- **Nix lives in**: `flake.nix` (root) + `nix/{common,linux,pop,cachyos,darwin}.nix`.
+  `common.nix` holds everything shared; `linux.nix` holds what both Linux hosts
+  share (clipboard tools, fontconfig, xdg-utils, `xclip` alias, zsh setup
+  activation, `.Xmodmap`); each host module (`pop`/`cachyos`/`darwin`) adds its
+  own packages, activations, and `hms` alias.
 - **Per-program glue**: `scripts/setup-*.sh` — one script per program for
   setup nix can't do declaratively on a non-NixOS host. Each is wired to its
-  own `home.activation.setup<Program>` block in `nix/linux.nix` (all current
-  ones are Linux-only), runs standalone too, and is idempotent (only acts when
+  own `home.activation.setup<Program>` block in `nix/pop.nix` (all current
+  ones are Pop!_OS-only, except `setup-zsh.sh`, wired in `nix/linux.nix`), runs standalone too, and is idempotent (only acts when
   something changed). Currently:
   - `setup-keyd.sh` — sudo; installs keyd config + a generated systemd unit
     into `/etc`.
@@ -39,14 +43,20 @@ long-term clock on it.
 ## How to apply changes
 
 ```bash
-# from anywhere — `hms` is an OS-specific alias defined per platform:
-hms                # linux  -> home-manager switch --flake ~/dotfiles#default --impure
+# from anywhere — `hms` is a per-host alias:
+hms                # pop     -> home-manager switch --flake ~/dotfiles#pop     --impure
+                   # cachyos -> home-manager switch --flake ~/dotfiles#cachyos --impure
                    # darwin -> home-manager switch --flake ~/dotfiles#darwin  --impure
 
 # or the full form, e.g. from a fresh shell before zshrc is in place:
-nix run home-manager/master -- switch --flake ~/dotfiles#default --impure  # linux
+nix run home-manager/master -- switch --flake ~/dotfiles#pop     --impure  # pop
+nix run home-manager/master -- switch --flake ~/dotfiles#cachyos --impure  # cachyos
 nix run home-manager/master -- switch --flake ~/dotfiles#darwin  --impure  # darwin
 ```
+
+The laptop's output was renamed `default` → `pop`, so its old `hms` alias
+points at a missing output until it switches once with the full form above
+(`#pop`); after that `hms` works again.
 
 The `--impure` is required on both OSes because the flake reads `$USER` via
 `builtins.getEnv` (and on Linux, because nixGL's NVIDIA wrapper detects the
@@ -64,7 +74,8 @@ before `hms` will see it — flakes only operate on tracked files.
   stylua, yt-dlp, ffmpeg, iosevka-term nerd font, etc.). `stylua` is the lua formatter the
   repo's `Makefile fmt` target calls — now nix-managed rather than via Mason.
   OS-specific packages are added in the per-OS modules: `alacrittyGL`, `keyd`,
-  `wl-clipboard`, `xclip`, `fontconfig`, `xdg-utils` in `linux.nix`; plain
+  `safeeyes` in `pop.nix`; `wl-clipboard`, `xclip`, `fontconfig`, `xdg-utils`
+  in `linux.nix` (both Linux hosts); plain
   `alacritty` in `darwin.nix`.
 - zsh config (in `common.nix`): history, aliases, vi-mode bindings, pure prompt
   (via `pkgs.pure-prompt`), zoxide (`programs.zoxide`, the `z`/`zi` jump
@@ -73,7 +84,7 @@ before `hms` will see it — flakes only operate on tracked files.
   ls-colors), autosuggestion, syntax highlighting. The clipboard command and
   `o` alias are OS-conditional
   (`pbcopy`/`open` on darwin, `wl-copy`/`xdg-open` on linux); the `hms` alias
-  is defined per-OS in `linux.nix`/`darwin.nix` (different `--flake` target).
+  is defined per host in `pop.nix`/`cachyos.nix`/`darwin.nix` (different `--flake` target).
 - Theme: Rosé Pine (main) is set in three places only: Alacritty (inline
   colours), Neovim (`rose-pine/neovim` in `config/nvim/lua/plugins/rose-pine.lua`,
   with MiniTabline and BlinkCmp highlight tweaks) and sofka
@@ -120,14 +131,14 @@ before `hms` will see it — flakes only operate on tracked files.
 - **nixGL** (`nixgl` flake input, linux-only): nix-built GUI apps can't find
   this NVIDIA host's GL/EGL driver (it lives in PopOS FHS paths, version-locked
   to the kernel module). Without it, alacritty dies with
-  `NotSupported("provided display handle is not supported")`. `linux.nix`
+  `NotSupported("provided display handle is not supported")`. `pop.nix`
   wraps `pkgs.alacritty` via `symlinkJoin` + `makeWrapper` into `alacrittyGL`,
   whose `bin/alacritty` runs through `nixGLDefault` while keeping the original
   `/share` (so the launcher entry inherits the GL-correct binary). The activation
   block passes `alacrittyGL` (not `pkgs.alacritty`) to `setup-alacritty.sh`.
   Any future nix-installed GUI/GL app on linux needs the same `nixGL` wrap.
   macOS (`darwin.nix`) uses plain `pkgs.alacritty` — no wrap needed. The
-  `nixgl` input is only passed to the linux config's `extraSpecialArgs`, so the
+  `nixgl` input is only passed to the `pop` config's `extraSpecialArgs`, so the
   darwin config never evaluates it.
 - login shell (linux-only), indirectly: `setup-zsh.sh` adds the nix zsh to `/etc/shells` and
   `sudo chsh`es the user to it. It targets the stable
@@ -208,8 +219,8 @@ git add flake.lock           # commit the lock so other machines match
 
 ## Migration to NixOS
 
-Not done, but the structure ports cleanly: `nix/common.nix` (+ the linux bits
-of `nix/linux.nix`) becomes a home-manager module imported from a NixOS
+Not done, but the structure ports cleanly: `nix/common.nix` (+ `nix/linux.nix` and
+the relevant host module) becomes a home-manager module imported from a NixOS
 `configuration.nix`. The
 `setup-keyd.sh` script and the keyd activation block both go away in favor
 of `services.keyd.enable = true;` (the alacritty entry can stay as a
@@ -233,9 +244,11 @@ start feeling like friction.
 ## File map
 
 ```
-flake.nix                       # flake inputs + entry points (#default linux, #darwin mac)
+flake.nix                       # flake inputs + entry points (#pop, #cachyos, #darwin)
 nix/common.nix                  # OS-agnostic config (packages, programs, symlinks)
-nix/linux.nix                   # imports common + linux bits (nixGL, keyd, setup scripts)
+nix/linux.nix                   # imports common + bits shared by both Linux hosts
+nix/pop.nix                     # Pop!_OS host: nixGL, keyd, setup scripts, hms alias
+nix/cachyos.nix                 # CachyOS host: shared Linux config + hms alias
 nix/darwin.nix                  # imports common + macOS bits (plain alacritty)
 scripts/setup-keyd.sh           # sudo: keyd /etc config + systemd unit (hm activation, linux)
 scripts/setup-alacritty.sh      # no sudo: alacritty desktop entry (hm activation, linux)

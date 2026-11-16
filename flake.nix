@@ -45,11 +45,17 @@
     in
     {
       homeConfigurations = {
-        # Linux (COSMIC/PopOS, NVIDIA). `hms` -> #default
-        default = mkHome {
+        # Pop!_OS laptop (COSMIC, NVIDIA). `hms` -> #pop
+        pop = mkHome {
           system    = "x86_64-linux";
-          modules   = [ ./nix/linux.nix ];
+          modules   = [ ./nix/pop.nix ];
           extraArgs = { inherit nixgl; };
+        };
+
+        # CachyOS work PC (niri + Noctalia). `hms` -> #cachyos
+        cachyos = mkHome {
+          system  = "x86_64-linux";
+          modules = [ ./nix/cachyos.nix ];
         };
 
         # Intel macOS. `hms` -> #darwin

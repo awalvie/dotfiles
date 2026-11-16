@@ -7,14 +7,32 @@
 # cannot start its unit here), the setup script's enable/start steps, SDDM,
 # and the niri desktop itself. Those are manual checks (see CLAUDE.md).
 #
-# Usage: scripts/test-cachyos.sh [--rebuild]   (--rebuild redoes the cached base image)
+# Containers are capped (--cpus, --memory). /nix lives in a named volume that
+# survives between runs so source builds happen once. A warm volume skips the
+# nix installer (the bootstrap sees nix is present), so only a cold run
+# (--fresh) exercises it.
+#
+# Usage: scripts/test-cachyos.sh [--rebuild] [--fresh]
+#   --rebuild  redo the cached base image
+#   --fresh    delete the /nix volume first (clean run, slow)
 set -euo pipefail
 
 repo=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 base_image=dotfiles-test-cachyos-base
+nix_volume=dotfiles-test-nix
+limits=(--cpus=4 --memory=6g)
 ct=dotfiles-test-cachyos-$$
 user=tester
 home=/home/$user
+
+rebuild=0
+for arg in "$@"; do
+  case $arg in
+    --rebuild) rebuild=1 ;;
+    --fresh) docker volume rm -f "$nix_volume" >/dev/null ;;
+    *) echo "unknown argument: $arg" >&2; exit 2 ;;
+  esac
+done
 
 cleanup() { docker rm -f "$ct" >/dev/null 2>&1 || true; }
 trap cleanup EXIT
@@ -35,9 +53,9 @@ check() {
 }
 
 # Base image: packages + user, built once and cached.
-if [ "${1:-}" = "--rebuild" ] || ! docker image inspect "$base_image" >/dev/null 2>&1; then
+if [ "$rebuild" = 1 ] || ! docker image inspect "$base_image" >/dev/null 2>&1; then
   echo "building $base_image"
-  docker run --name "$ct" cachyos/cachyos bash -euc "
+  docker run "${limits[@]}" --name "$ct" cachyos/cachyos bash -euc "
     sed -i '/^\[options\]/a DisableSandbox' /etc/pacman.conf
     pacman -Syu --noconfirm cachyos-niri-noctalia sudo git curl xz
     useradd -m -k /etc/skel -s /bin/bash $user
@@ -47,7 +65,20 @@ if [ "${1:-}" = "--rebuild" ] || ! docker image inspect "$base_image" >/dev/null
   cleanup
 fi
 
-docker run -d --name "$ct" "$base_image" sleep infinity >/dev/null
+docker run -d "${limits[@]}" -v "$nix_volume:/nix" --name "$ct" "$base_image" sleep infinity >/dev/null
+
+# Warm volume: /nix is already populated but this fresh container has no
+# nixbld users, which the installer would have created. Recreate them.
+if docker exec "$ct" test -e /nix/var/nix/profiles/default/bin/nix-daemon; then
+  echo "warm /nix volume: skipping the nix installer, recreating nixbld users"
+  docker exec "$ct" bash -euc '
+    groupadd -g 30000 nixbld
+    for i in $(seq 1 32); do
+      useradd -u $((30000 + i)) -g nixbld -G nixbld -M -N -s /usr/bin/nologin "nixbld$i"
+    done
+    mkdir -p /etc/nix
+    echo "build-users-group = nixbld" > /etc/nix/nix.conf'
+fi
 
 # The repo's committed files only.
 git -C "$repo" archive --prefix=dotfiles/ HEAD | docker cp - "$ct:$home/"
@@ -68,7 +99,7 @@ else
   fail "first bootstrap run succeeds"
   as_user tail -n 40 first.log || true
 fi
-check "alacritty skel config backed up" bash -c 'ls .config/alacritty*.backup .config/alacritty/*.backup'
+check "alacritty skel config backed up" test -e .config/alacritty/alacritty.toml.backup
 check "nix.conf written" grep -q "experimental-features = nix-command flakes" .config/nix/nix.conf
 check "home-manager generation exists" test -e .local/state/nix/profiles/home-manager
 

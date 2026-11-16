@@ -65,8 +65,11 @@ remaining manual steps.
 archives the committed `HEAD` (commit first), runs the bootstrap twice as a
 sudo-capable user, and asserts: the switch succeeds, replaced skel files have
 `.backup` copies, and the second run skips the nix install and `nix.conf`.
-The base image (packages + user) is cached as `dotfiles-test-cachyos-base`;
-`--rebuild` redoes it. The container is always removed on exit. Add new asserts
+Containers are capped at `--cpus=4 --memory=6g`. The base image (packages +
+user) is cached as `dotfiles-test-cachyos-base` (`--rebuild` redoes it) and
+`/nix` lives in the named volume `dotfiles-test-nix`, so source builds happen
+once. A warm volume skips the nix installer, so only a cold run (`--fresh`
+deletes the volume) exercises it. The container is always removed on exit. Add new asserts
 with `check "description" cmd...` near the end of the script.
 
 It does NOT cover: systemd services (the installer cannot start `nix-daemon`

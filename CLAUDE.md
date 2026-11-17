@@ -40,55 +40,26 @@ long-term clock on it.
   - `setup-zsh.sh` — sudo; sets the nix zsh as the login shell.
   - `setup-docker.sh` — sudo; installs Docker Engine from Docker's official
     apt repo, enables the daemon, adds the user to the docker group.
-  - `setup-cachyos.sh` — sudo, CachyOS only (wired in `nix/hosts/cachyos.nix`);
-    one `pacman -S --needed` for keyd, alacritty, docker (+ compose, buildx)
-    and tailscale, installs `home/keyd/default.conf` to `/etc/keyd`, enables
-    + starts keyd, docker and `tailscaled` (shipped units; only on a booted
-    systemd host), adds the user to the docker group, sets the Tailscale
-    operator once `tailscaled` runs. Silent and sudo-free when nothing changed.
-    The cachyos generation has no nix keyd, no nix Alacritty and no nixGL.
-
-CachyOS post-install checks (not covered by the container test): after `hms`,
-`systemctl is-active keyd docker tailscaled` should say active x3; log out and
-back in so the `docker` group applies; run `tailscale up` once to log in.
+  - `setup-cachyos.sh` — sudo, CachyOS only; installs keyd, alacritty, docker
+    and tailscale with pacman, installs the keyd config, enables the services,
+    adds the docker group and sets the Tailscale operator.
 
 ## Bootstrap (fresh host)
 
 ```bash
-git clone <repo> ~/dotfiles && ~/dotfiles/bootstrap.sh   # works from any shell, incl. fish
-~/dotfiles/bootstrap.sh cachyos                          # an argument overrides detection
-~/dotfiles/bootstrap.sh --detect                         # just print the detected host
+git clone <repo> ~/dotfiles && ~/dotfiles/bootstrap.sh   # or: bootstrap.sh cachyos
 ```
 
-`bootstrap.sh` (repo root, bash) detects the host (macOS -> `darwin`, `pacman` ->
-`cachyos`, `apt-get` -> `pop`), installs nix with the upstream multi-user
-installer if missing, writes `~/.config/nix/nix.conf` (flakes on) only if it
-does not exist, then runs `nix run home-manager/master -- switch -b backup
---flake <repo>#<host> --impure`. Existing files the switch replaces (e.g. the
-CachyOS skel `~/.config/alacritty`) are kept as `*.backup`. Re-running it is
-safe: it skips the nix install and the `nix.conf` step. It ends by printing the
-remaining manual steps.
+`bootstrap.sh` picks the host (macOS -> `darwin`, `pacman` -> `cachyos`,
+`apt-get` -> `pop`), installs nix if missing, enables flakes in
+`~/.config/nix/nix.conf` if that file is missing, and runs the first switch
+with `-b backup`, so replaced files are kept as `*.backup`. It is safe to run
+again.
 
-### Container test
-
-`scripts/test-cachyos.sh` runs the bootstrap in a plain unprivileged
-`cachyos/cachyos` container (never `--privileged`, never systemd as init) with
-`cachyos-niri-noctalia` installed, so the real skel files are present. It
-archives the committed `HEAD` (commit first), runs the bootstrap twice as a
-sudo-capable user, and asserts: the switch succeeds, replaced skel files have
-`.backup` copies, the second run skips the nix install and `nix.conf`, the setup
-script installed its packages, the keyd config and the docker group, and a
-second setup run with a failing `sudo` stub still succeeds (needs no sudo).
-Containers are capped at `--cpus=4 --memory=6g`. The base image (packages +
-user) is cached as `dotfiles-test-cachyos-base` (`--rebuild` redoes it) and
-`/nix` lives in the named volume `dotfiles-test-nix`, so source builds happen
-once. A warm volume skips the nix installer, so only a cold run (`--fresh`
-deletes the volume) exercises it. The container is always removed on exit. Add new asserts
-with `check "description" cmd...` near the end of the script.
-
-It does NOT cover: systemd services (the installer cannot start `nix-daemon`
-there, so the test starts it by hand; enabling/starting keyd, docker, tailscale
-etc. are manual checks), SDDM, and the real niri/noctalia desktop.
+`scripts/test-cachyos.sh` runs the bootstrap twice in an unprivileged
+`cachyos/cachyos` container (never `--privileged`, never systemd as init),
+capped at 4 CPUs and 6 GB. It tests the committed `HEAD`, so commit first.
+It cannot test services, SDDM or the desktop.
 
 ## How to apply changes
 
@@ -240,9 +211,10 @@ before `hms` will see it — flakes only operate on tracked files.
   CachyOS `nvidia-utils` already ships it
   (`/etc/nvidia/nvidia-application-profiles-rc.d/limit-vram-usage`), so
   nothing to do.
-- Post-install checks (not in the container test): log in to niri from SDDM;
-  the Noctalia bar appears; the launcher lists nix apps; `systemctl --user
-  status safeeyes` is running.
+- Post-install checks (not in the container test): `systemctl is-active keyd
+  docker tailscaled`; re-login for the docker group; `tailscale up`; SDDM logs
+  in to niri; the Noctalia bar and launcher work; `systemctl --user status
+  safeeyes`.
 
 ## What nix does NOT manage (and why)
 

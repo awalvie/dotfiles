@@ -26,6 +26,11 @@ chars = "\u001F"
 key = "Slash"
 mods = "Control|Shift"
 
+[[keyboard.bindings]]
+chars = "\u001B\r"
+key = "Return"
+mods = "Shift"
+
 [window]
 decorations = "none"
 dynamic_padding = false

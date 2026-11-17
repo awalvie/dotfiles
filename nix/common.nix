@@ -295,13 +295,27 @@ in
       autoload -U promptinit; promptinit
       prompt pure
 
+      # Gold `hms` on the right while the applied setup differs from the repo.
+      function _hms_marker {
+        if ${../scripts/hms-state.sh} check; then
+          RPROMPT='%F{yellow}hms%f'
+        else
+          RPROMPT=""
+        fi
+      }
+      autoload -Uz add-zsh-hook
+      add-zsh-hook precmd _hms_marker
+
       export EDITOR='nvim'
       export GOPATH=$HOME/go
       export GPG_TTY=$(tty)
+      # nix tools before the system's (CachyOS ships its own tmux, for one);
+      # typeset -U keeps the first copy of each entry.
       path=(
         $HOME/bin
         $GOPATH/bin
         $HOME/.local/bin
+        ${config.home.profileDirectory}/bin
         $path
       )
       typeset -U path
@@ -341,6 +355,12 @@ in
       recursive = true;
     };
   };
+
+  # Record the repo state this switch applied, for the prompt's `hms` marker.
+  home.activation.recordHmsState = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    export PATH=${pkgs.git}/bin:/usr/bin:/bin:$PATH
+    $DRY_RUN_CMD ${../scripts/hms-state.sh} record
+  '';
 
   # Project workspace dirs. No sudo, no script — just ensure they exist.
   home.activation.setupCodeDirs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

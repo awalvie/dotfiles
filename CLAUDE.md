@@ -173,6 +173,11 @@ before `hms` will see it — flakes only operate on tracked files.
   on next login. Not wired on macOS — macOS already defaults to zsh and sources
   the generated `~/.zshrc` regardless of which zsh binary is the login shell;
   add a darwin chsh path later if you want the nix zsh as the actual login bin.
+- `hms` marker in the zsh prompt: the `recordHmsState` activation block runs
+  `scripts/hms-state.sh record`, storing the repo's HEAD plus a checksum of
+  uncommitted tracked changes in `~/.local/state/dotfiles/applied`. A precmd
+  hook runs `hms-state.sh check` (local git only) and shows a gold `hms` in
+  `RPROMPT` while the repo differs. `scripts/test-hms-state.sh` tests it.
 - `~/code/{origin,lamp,work}` workspace dirs — created by the
   `setupCodeDirs` activation block (inline `mkdir -p`, no sudo, no script —
   too trivial to warrant one).
@@ -305,6 +310,8 @@ scripts/setup-alacritty.sh      # no sudo: alacritty desktop entry (hm activatio
 scripts/setup-zsh.sh            # sudo: set nix zsh as login shell (hm activation, both Linux hosts)
 scripts/setup-docker.sh         # sudo: install docker engine via apt (hm activation, pop)
 scripts/setup-tailscale.sh      # sudo: install tailscale via apt (hm activation, pop)
+scripts/hms-state.sh            # record/check the repo state hms applied (prompt marker)
+scripts/test-hms-state.sh       # test for hms-state.sh (temp repo)
 scripts/setup-cachyos.sh        # sudo: pacman packages, keyd conf, services (hm activation, cachyos)
 config/                         # configs symlinked into ~/.config/
 home/                           # configs symlinked into ~/

@@ -235,6 +235,10 @@ before `hms` will see it — flakes only operate on tracked files.
   profile). NOT nix-managed — root daemon on non-NixOS, same
   reason as docker. Login is manual, once: `tailscale up`. (macOS uses the
   Tailscale app, installed separately.)
+- `tsp` / `tsw` (both Linux hosts, `nix/linux.nix`): `tailscale switch` to the
+  account nicknamed `personal` / `work`; without that nickname they print the
+  setup steps (`sudo tailscale set --operator=$USER --nickname=<name>` on the
+  account).
 
 ### CachyOS desktop (niri + Noctalia)
 

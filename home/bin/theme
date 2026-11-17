@@ -125,6 +125,16 @@ reload_btop() {
     pkill -USR2 -x btop || true
 }
 
+# Claude Code has no automatic light/dark theme: set the mode in its
+# settings (work and personal config), keeping a daltonized or ansi choice.
+reload_claude() {
+    local mode=$1 f
+    for f in "$HOME/.claude/settings.json" "$HOME/.claude-personal/settings.json"; do
+        [ -f "$f" ] || continue
+        sed -Ei "s/(\"theme\": *\")(dark|light)(-daltonized|-ansi)?\"/\1$mode\3\"/" "$f"
+    done
+}
+
 apply() {
     local mode=$1 name variant old=
     case $mode in dark | light) ;; *)
@@ -144,6 +154,7 @@ apply() {
     reload_tmux
     reload_nvim
     reload_btop
+    reload_claude "$mode"
 }
 
 usage() {

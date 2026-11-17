@@ -141,7 +141,7 @@ before `hms` will see it — flakes only operate on tracked files.
   - `theme` (`home/bin/theme`, run `theme help`): with no argument it shows
     the state; `list`, `set <name>`, `toggle` (flips the desktop's mode),
     `apply dark|light` (moves the link and reloads Alacritty, tmux, nvim
-    through its sockets and btop), `init` (the `setupTheme` activation:
+    through its sockets, btop and Claude Code's `theme` setting), `init` (the `setupTheme` activation:
     creates the link only when it is missing).
   - Triggers: on `cachyos` Noctalia's `theme_mode_changed` hook
     (`config/noctalia/theme-hook.toml`); on `pop` the `theme-watch` user

@@ -65,7 +65,13 @@ old=$(readlink -f "$current/alacritty.toml")
 touch -d '2000-01-01' "$old"
 ref=$tmp/ref
 touch -d '2001-01-01' "$ref"
+mkdir -p "$HOME/.claude" "$HOME/.claude-personal"
+printf '{\n  "model": "opus",\n  "theme": "dark"\n}\n' >"$HOME/.claude/settings.json"
+printf '{"theme":"dark-daltonized"}\n' >"$HOME/.claude-personal/settings.json"
 "$theme" apply light
+check "apply light sets claude code's theme" has_text "$HOME/.claude/settings.json" '"theme": "light"'
+check "apply keeps claude code's other settings" has_text "$HOME/.claude/settings.json" '"model": "opus"'
+check "apply light keeps a daltonized claude theme" has_text "$HOME/.claude-personal/settings.json" '"theme":"light-daltonized"'
 check "apply light links dawn" resolves_to rose-pine/dawn
 check "alacritty colours resolve for dawn" has_text "$current/alacritty.toml" '#faf4ed'
 check "apply light marks light" has_text "$current/mode" '^light$'
@@ -77,6 +83,7 @@ check "sofka skin resolves for dawn" has_text "$current/sofka.toml" 'rose-pine-d
 check "apply signals btop to reload its theme" has_text "$tmp/pkill.log" '^-USR2 -x btop$'
 check "delta flag resolves for dawn" has_text "$current/delta.gitconfig" 'light = true'
 "$theme" apply dark
+check "apply dark sets claude code's theme" has_text "$HOME/.claude/settings.json" '"theme": "dark"'
 check "delta flag resolves for moon" has_text "$current/delta.gitconfig" 'dark = true'
 check "btop colours resolve for moon" has_text "$current/btop.theme" '#232136'
 check "sofka moon keeps its colour overrides" has_text "$current/sofka.toml" '#56526e'

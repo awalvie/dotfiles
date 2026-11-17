@@ -52,7 +52,8 @@ long-term clock on it.
     screen: greetd + ReGreet running inside niri (Wayland-native), with
     `home/greetd/` installed to `/etc/greetd` plus copies of
     `config/niri/cfg/{display,input}.kdl`, so the login screen has the same
-    screen layout (Dell portrait, Samsung focused) and keys as the desktop.
+    screen layout (Dell portrait, Samsung focused) and keys as the desktop;
+    a window rule opens ReGreet on the Samsung.
     ReGreet uses a Rosé Pine Moon CSS and a random dark painting (picked by
     the greetd command at each start) as background; Noctalia's lock screen
     (`config/noctalia/lockscreen.toml`) shows the current desktop painting. The
@@ -253,8 +254,9 @@ before `hms` will see it — flakes only operate on tracked files.
   `~/.local/state/noctalia/settings.toml`; that state is not managed and
   overrides our files.
 - Our changes to those copies: screens matched by make/model in
-  `cfg/display.kdl` (Dell portrait left of the Samsung; the Samsung over
-  DisplayPort reports no model, so it is matched by port), key repeat 150 ms
+  `cfg/display.kdl` (Dell portrait left of the Samsung; the Samsung's
+  DisplayPort and HDMI inputs report the same name, so it is matched by port:
+  DP-3 on, HDMI-A-1 off), key repeat 150 ms
   / 40/s in `cfg/input.kdl`, screenshots on Print (Ctrl: screen, Alt:
   window) in `cfg/keybinds.kdl`, animations off in niri and Noctalia, and a bare
   auto-hiding floating bar in `config/noctalia/bar.toml`.

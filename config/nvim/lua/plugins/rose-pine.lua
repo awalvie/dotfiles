@@ -5,7 +5,7 @@ return {
 	priority = 1000,
 	config = function()
 		require("rose-pine").setup({
-			variant = "main",
+			variant = "moon",
 			highlight_groups = {
 				-- rose-pine has no mini.tabline theme, so the tabs fall back to plain TabLine
 				MiniTablineCurrent = { fg = "text", bg = "overlay", bold = true },

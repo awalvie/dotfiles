@@ -106,10 +106,10 @@ before `hms` will see it — flakes only operate on tracked files.
   `o` alias are OS-conditional
   (`pbcopy`/`open` on darwin, `wl-copy`/`xdg-open` on linux); the `hms` alias
   is defined per host in `pop.nix`/`cachyos.nix`/`darwin.nix` (different `--flake` target).
-- Theme: Rosé Pine (main) is set in three places only: Alacritty (inline
+- Theme: Rosé Pine Moon is set in four places only: btop, Alacritty (inline
   colours), Neovim (`rose-pine/neovim` in `config/nvim/lua/plugins/rose-pine.lua`,
   with MiniTabline and BlinkCmp highlight tweaks) and sofka
-  (`skin.name = "rose-pine"`). Everything else follows the terminal palette.
+  (`rose-pine` skin with Moon colour overrides). Everything else follows the terminal palette.
 - git config (delta integration, settings.user.{name,email}). delta's layout
   (line numbers, file labels, hunk headers, blame, merge conflicts) is inline in
   `programs.delta.options`.
@@ -129,9 +129,9 @@ before `hms` will see it — flakes only operate on tracked files.
   - `~/.config/nvim` ← `config/nvim/`
   - `~/.config/alacritty` ← `config/alacritty/` (shared; macOS alacritty reads
     `~/.config/alacritty` too)
-    Colours are the official Rosé Pine (main) palette, inline in `alacritty.toml`.
+    Colours are the official Rosé Pine Moon palette, inline in `alacritty.toml`.
   - `~/.config/lazygit` ← `config/lazygit/`
-  - `~/.config/btop/themes` ← `config/btop/themes/` (Rosé Pine main)
+  - `~/.config/btop/themes` ← `config/btop/themes/` (Rosé Pine Moon)
   - `~/.config/btop/btop.conf` ← `config/btop/btop.conf`, an out-of-store
     symlink because btop rewrites the file when it exits
   - `~/.config/nix/nix.conf` ← `config/nix/nix.conf` (enables flakes + the new

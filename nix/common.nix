@@ -59,7 +59,14 @@ in
   # module comes from the sofka flake input (see flake.nix)
   programs.sofka = {
     enable = true;
+    # sofka has no Rosé Pine Moon skin: start from main and swap in the Moon colours.
     skin.name = "rose-pine";
+    skin.colors = {
+      rosewater = "#ea9a97"; flamingo = "#ea9a97"; pink = "#ea9a97";
+      green = "#3e8fb0"; teal = "#3e8fb0";
+      overlay0 = "#56526e"; surface2 = "#56526e"; surface1 = "#44415a";
+      surface0 = "#393552"; base = "#232136"; mantle = "#232136";
+    };
   };
 
   programs.delta = {

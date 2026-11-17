@@ -274,6 +274,10 @@ before `hms` will see it — flakes only operate on tracked files.
   the pick becomes the default and playing streams move to it.
 - `services.safeeyes.enable = true`: a user unit wanted by
   `graphical-session.target` (Pop!_OS keeps the plain package in `pop.nix`).
+- `services.wlsunset`: warmer screen (4000 K) from sunset to sunrise, a user
+  unit on `graphical-session.target`, Oslo's coordinates (from the system
+  timezone). Noctalia's own night light stays off, so the two do not fight
+  over the gamma. Check it with `journalctl --user -u wlsunset`.
 - NVIDIA VRAM: niri's wiki asks for a driver profile limiting VRAM use.
   CachyOS `nvidia-utils` already ships it
   (`/etc/nvidia/nvidia-application-profiles-rc.d/limit-vram-usage`), so

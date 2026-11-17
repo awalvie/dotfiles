@@ -21,6 +21,16 @@ in
 
   services.safeeyes.enable = true;
 
+  # Warmer screen from sunset to sunrise (a user unit on graphical-session).
+  # Oslo, from the system timezone. Noctalia's own night light stays off so
+  # the two do not fight over the gamma.
+  services.wlsunset = {
+    enable = true;
+    latitude = 59.9;
+    longitude = 10.75;
+    temperature = { day = 6500; night = 4000; };
+  };
+
   # Keyboard-first audio, Bluetooth and network tools on Mod+Shift+A/B/N
   # (config/niri/cfg/keybinds.kdl).
   home.packages = with pkgs; [ wiremix bluetui networkmanager_dmenu fuzzel ];

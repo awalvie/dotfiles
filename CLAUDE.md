@@ -118,7 +118,8 @@ before `hms` will see it — flakes only operate on tracked files.
   (via `pkgs.pure-prompt`), zoxide (`programs.zoxide`, the `z`/`zi` jump
   commands — replaced the older `zsh-z`), navigation setopts (AUTO_CD,
   AUTO_PUSHD), completion zstyles (highlighted menu, case-insensitive matching,
-  ls-colors), autosuggestion, syntax highlighting. The clipboard command and
+  ls-colors), autosuggestion, syntax highlighting, `nr <pkg> [args]` (`nix run
+  nixpkgs#<pkg>`) and `ns <pkg>...` (`nix shell` with them) to try programs. The clipboard command and
   `o` alias are OS-conditional
   (`pbcopy`/`open` on darwin, `wl-copy`/`xdg-open` on linux); the `hms` alias
   is defined per host in `pop.nix`/`cachyos.nix`/`darwin.nix` (different `--flake` target).

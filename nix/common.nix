@@ -315,6 +315,11 @@ in
       function .... { cd ../../.. }
       function d { [[ $1 =~ '^[0-9]+$' ]] && cd $(printf '../%.0s' {1..$1}) || cd .. }
 
+      # Try a program without installing it: `nr cmatrix`, `nr gping 1.1.1.1`
+      # (nix run), or `ns gping trippy` for a shell that has them (nix shell).
+      function nr { local p=$1; shift; nix run "nixpkgs#$p" -- "$@" }
+      function ns { nix shell "''${@/#/nixpkgs#}" }
+
       fpath+=(${pkgs.pure-prompt}/share/zsh/site-functions)
       autoload -U promptinit; promptinit
       prompt pure

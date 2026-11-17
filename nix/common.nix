@@ -10,6 +10,11 @@ let
   openCmd  = if isDarwin then "open"   else "xdg-open";
   # macOS ships BSD ls (no --color=auto); use -G there.
   lsCmd    = if isDarwin then "ls -G"  else "ls --color=auto";
+
+  # Out-of-store link to the checkout: edits apply at once, without `hms`, and
+  # the program can write the file back (btop rewrites btop.conf on exit).
+  link = path: config.lib.file.mkOutOfStoreSymlink
+    "${config.home.homeDirectory}/dotfiles/config/${path}";
 in
 {
   home.username      = user;
@@ -306,14 +311,13 @@ in
   # config-file symlinks shared by both OSes. alacritty reads ~/.config/alacritty
   # on macos too, so the config symlink is shared; only the package differs.
   xdg.configFile = {
-    "nvim"      = { source = ../config/nvim;      recursive = true; };
+    # nvim's byte-code cache misses edits to store files (same mtime), so link
+    # the checkout itself.
+    "nvim".source = link "nvim";
     "alacritty" = { source = ../config/alacritty; recursive = true; };
     "lazygit"   = { source = ../config/lazygit;   recursive = true; };
     "btop/themes" = { source = ../config/btop/themes; recursive = true; };
-    # btop rewrites btop.conf when it exits, so link it out of the store: the
-    # file stays writable and its changes land in the repo.
-    "btop/btop.conf".source = config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/dotfiles/config/btop/btop.conf";
+    "btop/btop.conf".source = link "btop/btop.conf";
 
     # ~/.config/nix/nix.conf — enables flakes + the new nix CLI. Managed as a
     # plain symlink rather than via the HM `nix.*` module on purpose: that

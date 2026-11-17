@@ -126,7 +126,9 @@ before `hms` will see it — flakes only operate on tracked files.
   `.envrc` (one at a monorepo root covers all subdirs), then `direnv allow`.
   Replaced the old hand-rolled `uvenv` shell wrapper.
 - Config file symlinks via `xdg.configFile` and `home.file`:
-  - `~/.config/nvim` ← `config/nvim/`
+  - `~/.config/nvim` ← `config/nvim/`, an out-of-store link to the checkout
+    (edits apply without `hms`; nvim's byte-code cache misses edits to store
+    files)
   - `~/.config/alacritty` ← `config/alacritty/` (shared; macOS alacritty reads
     `~/.config/alacritty` too)
     Colours are the official Rosé Pine Moon palette, inline in `alacritty.toml`.

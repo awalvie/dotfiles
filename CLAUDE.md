@@ -43,12 +43,15 @@ long-term clock on it.
   - `setup-cachyos.sh` — sudo, CachyOS only; installs keyd, alacritty, docker
     and tailscale with pacman, installs the keyd config, enables the services,
     adds the docker group, sets the Tailscale operator, and sets up the login
-    screen: `home/sddm/conf.d/*.conf` into `/etc/sddm.conf.d` (hide the nix
-    build users, select the theme, no on-screen keyboard, run
-    `home/sddm/xsetup.sh` to rotate the Dell and make the Samsung primary on
-    X11) and
-    sddm-astronaut-theme at a pinned commit with our Rosé Pine Moon config
-    (`home/sddm/astronaut-rose-pine.conf`) and the rain GIF as background.
+    screen: greetd + ReGreet running inside niri (Wayland-native), with
+    `home/greetd/` installed to `/etc/greetd` plus copies of
+    `config/niri/cfg/{display,input}.kdl`, so the login screen has the same
+    screen layout (Dell portrait, Samsung focused) and keys as the desktop.
+    ReGreet uses a Rosé Pine Moon CSS and the rain GIF as background; Noctalia's
+    lock screen (`config/noctalia/lockscreen.toml`) uses the same file. The
+    switch from SDDM happens at the next boot. To go back from a text console
+    (Ctrl+Alt+F3): `sudo systemctl disable greetd && sudo systemctl enable
+    sddm`, then reboot.
 
 ## Bootstrap (fresh host)
 
@@ -65,7 +68,7 @@ again.
 `scripts/test-cachyos.sh` runs the bootstrap twice in an unprivileged
 `cachyos/cachyos` container (never `--privileged`, never systemd as init),
 capped at 4 CPUs and 6 GB. It tests the committed `HEAD`, so commit first.
-It cannot test services, SDDM or the desktop.
+It cannot test services, the login screen or the desktop.
 
 ## How to apply changes
 
@@ -261,7 +264,7 @@ before `hms` will see it — flakes only operate on tracked files.
   (`/etc/nvidia/nvidia-application-profiles-rc.d/limit-vram-usage`), so
   nothing to do.
 - Post-install checks (not in the container test): `systemctl is-active keyd
-  docker tailscaled`; re-login for the docker group; `tailscale up`; SDDM logs
+  docker tailscaled`; re-login for the docker group; `tailscale up`; greetd logs
   in to niri; the Noctalia bar and launcher work; `systemctl --user status
   safeeyes`.
 

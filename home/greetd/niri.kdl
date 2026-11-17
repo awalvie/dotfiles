@@ -1,0 +1,14 @@
+// niri for the login screen only. The screen layout and keyboard settings are
+// copies of the desktop's (setup-cachyos.sh installs them next to this file).
+include "display.kdl"
+include "input.kdl"
+
+spawn-sh-at-startup "regreet; niri msg action quit --skip-confirmation"
+hotkey-overlay { skip-at-startup; }
+animations { off; }
+
+// GTK would wait for desktop portals that do not run here.
+environment {
+    GTK_USE_PORTAL "0"
+    GDK_DEBUG "no-portals"
+}

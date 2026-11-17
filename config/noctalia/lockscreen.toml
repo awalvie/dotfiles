@@ -1,0 +1,9 @@
+# Lock screen to match the login screen: the same background (installed to
+# /etc/greetd by setup-cachyos.sh, readable by everyone), a light blur and a
+# Rosé Pine surface tint, and no lock/unlock animation.
+[lockscreen]
+wallpaper       = "/etc/greetd/background.gif"
+blur_intensity  = 0.3
+tint_intensity  = 0.35
+tint_color      = "surface"
+transition      = []

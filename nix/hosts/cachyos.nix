@@ -45,7 +45,8 @@ in
     ${../../scripts/setup-cachyos.sh} \
       ${user} \
       ${../../home/keyd/default.conf} \
-      ${../../home/sddm} \
+      ${../../home/greetd} \
+      ${../../config/niri/cfg} \
       ${../../config/wallpapers/rain-cyber-balcony.gif}
   '';
 }

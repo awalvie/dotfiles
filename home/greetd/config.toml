@@ -1,0 +1,8 @@
+# greetd runs the login screen: ReGreet inside a small niri session, so the
+# login screen uses the same screen layout as the desktop.
+[terminal]
+vt = 1
+
+[default_session]
+command = "dbus-run-session niri --config /etc/greetd/niri.kdl"
+user = "greeter"

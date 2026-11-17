@@ -6,7 +6,7 @@ let
     "${config.home.homeDirectory}/dotfiles/config/${name}";
 in
 {
-  imports = [ ../linux.nix ];
+  imports = [ ../linux.nix ../which-key.nix ];
 
   programs.zsh.shellAliases.hms =
     "home-manager switch --flake ~/dotfiles#cachyos --impure";

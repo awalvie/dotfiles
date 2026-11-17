@@ -231,6 +231,11 @@ before `hms` will see it — flakes only operate on tracked files.
   / 40/s in `cfg/input.kdl`, screenshots on Print (Ctrl: screen, Alt:
   window) in `cfg/keybinds.kdl`, animations off in niri and Noctalia, and a bare
   auto-hiding floating bar in `config/noctalia/bar.toml`.
+- `nix/which-key.nix` (cachyos only): wlr-which-key on Mod+Space, a menu of
+  niri actions whose labels show each direct shortcut (a cheat sheet). The
+  menu is generated from `cfg/keybinds.kdl` at `hms` time by
+  `scripts/niri-which-key.py` (groups and extras are set there), so a new bind
+  shows up after `hms`. It uses no GPU, so it comes from nix under ADR 0001.
 - `targets.genericLinux.enable = true` (GPU part off: CachyOS ships the
   drivers). Why: the nix zsh does not read Arch's `/etc/zsh/zprofile`, so
   nothing sources `/etc/profile.d`. Home-manager's session vars then put
@@ -329,6 +334,8 @@ nix/common.nix                  # OS-agnostic config (packages, programs, symlin
 nix/linux.nix                   # imports common + bits shared by both Linux hosts
 nix/hosts/pop.nix               # Pop!_OS host: nixGL, keyd, setup scripts, hms alias
 nix/hosts/cachyos.nix           # CachyOS host: shared Linux config + niri/Noctalia links, genericLinux, safeeyes, hms alias
+nix/which-key.nix               # cachyos: wlr-which-key menu of niri actions on Mod+Space
+scripts/niri-which-key.py       # builds the which-key menu from the niri binds (+ test-niri-which-key.sh)
 nix/darwin.nix                  # imports common + macOS bits (plain alacritty)
 scripts/setup-keyd.sh           # sudo: keyd /etc config + systemd unit (hm activation, pop)
 scripts/setup-alacritty.sh      # no sudo: alacritty desktop entry (hm activation, pop)

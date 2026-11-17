@@ -12,7 +12,7 @@ let
   lsCmd    = if isDarwin then "ls -G"  else "ls --color=auto";
 
   # Out-of-store link to the checkout: edits apply at once, without `hms`, and
-  # the program can write the file back (btop rewrites btop.conf on exit).
+  # the program can write the file back.
   link = path: config.lib.file.mkOutOfStoreSymlink
     "${config.home.homeDirectory}/dotfiles/config/${path}";
   # A file of the current theme variant (see home/bin/theme).
@@ -364,7 +364,6 @@ in
     "lazygit"   = { source = ../config/lazygit;   recursive = true; };
     "btop/themes/current.theme".source = config.lib.file.mkOutOfStoreSymlink (themeFile "btop.theme");
     "sofka/conf.d/10-theme.toml".source = config.lib.file.mkOutOfStoreSymlink (themeFile "sofka.toml");
-    "btop/btop.conf".source = link "btop/btop.conf";
     # theme variants; the `current` link in ~/.local/state/theme points into
     # this folder, so it must resolve to the checkout, not the store.
     "themes".source = link "themes";
@@ -402,6 +401,17 @@ in
   home.activation.setupTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     export PATH=${pkgs.coreutils}/bin:${pkgs.gnused}/bin:$PATH
     $DRY_RUN_CMD ${../home/bin/theme} init
+  '';
+
+  # btop rewrites btop.conf whenever a setting changes, so it gets a local,
+  # writable copy of the repo's file, made only when it is missing (or still
+  # the old link into the repo). The copy keeps color_theme = "current".
+  home.activation.setupBtop = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    f=${config.xdg.configHome}/btop/btop.conf
+    if [ -L "$f" ] || [ ! -e "$f" ]; then
+      $DRY_RUN_CMD rm -f "$f"
+      $DRY_RUN_CMD install -Dm644 ${../config/btop/btop.conf} "$f"
+    fi
   '';
 
   # Project workspace dirs. No sudo, no script — just ensure they exist.

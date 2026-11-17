@@ -29,8 +29,8 @@ long-term clock on it.
   own packages, activations, and `hms` alias.
 - **Per-program glue**: `scripts/setup-*.sh` — one script per program for
   setup nix can't do declaratively on a non-NixOS host. Each is wired to its
-  own `home.activation.setup<Program>` block: `setup-zsh.sh` in `nix/linux.nix`
-  (both Linux hosts), `setup-cachyos.sh` in `nix/hosts/cachyos.nix`, the rest in
+  own `home.activation.setup<Program>` block: `setup-zsh.sh` and
+  `setup-firefox.sh` in `nix/linux.nix` (both Linux hosts), `setup-cachyos.sh` in `nix/hosts/cachyos.nix`, the rest in
   `nix/hosts/pop.nix` (Pop!_OS only). Each runs standalone too and is idempotent
   (only acts when something changed). Currently:
   - `setup-keyd.sh` — sudo; installs keyd config + a generated systemd unit
@@ -38,6 +38,12 @@ long-term clock on it.
   - `setup-alacritty.sh` — no sudo; installs a desktop entry into
     `~/.local/share/applications` with absolute nix-store paths.
   - `setup-zsh.sh` — sudo; sets the nix zsh as the login shell.
+  - `setup-firefox.sh` — sudo, both Linux hosts (in `nix/linux.nix`);
+    installs `home/firefox/policies.json` to `/etc/firefox/policies`: the
+    extensions Firefox installs in every profile, plus no telemetry, studies,
+    Pocket, sponsored tiles, password saving or first-run pages. Extension
+    settings are not in it (uBlock, Vimium C and Containers sync through a
+    Firefox account).
   - `setup-docker.sh` — sudo; installs Docker Engine from Docker's official
     apt repo, enables the daemon, adds the user to the docker group.
   - `setup-cachyos.sh` — sudo, CachyOS only; installs keyd, alacritty, docker
@@ -358,6 +364,7 @@ nix/darwin.nix                  # imports common + macOS bits (plain alacritty)
 scripts/setup-keyd.sh           # sudo: keyd /etc config + systemd unit (hm activation, pop)
 scripts/setup-alacritty.sh      # no sudo: alacritty desktop entry (hm activation, pop)
 scripts/setup-zsh.sh            # sudo: set nix zsh as login shell (hm activation, both Linux hosts)
+scripts/setup-firefox.sh        # sudo: firefox policy, extensions + defaults (hm activation, both Linux hosts)
 scripts/setup-docker.sh         # sudo: install docker engine via apt (hm activation, pop)
 scripts/setup-tailscale.sh      # sudo: install tailscale via apt (hm activation, pop)
 scripts/hms-state.sh            # record/check the repo state hms applied (prompt marker)

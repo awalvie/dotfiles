@@ -138,6 +138,7 @@ check "the paintings are installed for every screen and mode" bash -c \
 check "the paintings are readable by the greeter" bash -c \
     '[ -z "$(find /usr/share/backgrounds/dotfiles ! -perm -o+r -o -type d ! -perm -o+x)" ]'
 check "noctalia wallpaper config is valid" noctalia config validate
+check "firefox policy is installed" cmp dotfiles/home/firefox/policies.json /etc/firefox/policies/policies.json
 check "user is in the docker group" bash -c 'id -nG | tr " " "\n" | grep -qx docker'
 # Second run by hand with a sudo that always fails: it must not need sudo.
 as_user bash -c 'mkdir -p stub && printf "#!/bin/sh\necho sudo called >&2\nexit 1\n" > stub/sudo && chmod +x stub/sudo'

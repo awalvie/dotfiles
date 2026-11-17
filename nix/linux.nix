@@ -21,4 +21,11 @@
       ${config.home.profileDirectory}/bin/zsh \
       ${user}
   '';
+
+  # Firefox comes from the host OS; its policy file sets our extensions and
+  # defaults (see scripts/setup-firefox.sh).
+  home.activation.setupFirefox = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    export PATH=/usr/bin:/bin:$PATH
+    ${../scripts/setup-firefox.sh} ${../home/firefox/policies.json}
+  '';
 }

@@ -22,6 +22,7 @@ in
     neovim
     tmux
     lazygit
+    btop
     bat
     fzf
     ripgrep
@@ -301,6 +302,11 @@ in
     "nvim"      = { source = ../config/nvim;      recursive = true; };
     "alacritty" = { source = ../config/alacritty; recursive = true; };
     "lazygit"   = { source = ../config/lazygit;   recursive = true; };
+    "btop/themes" = { source = ../config/btop/themes; recursive = true; };
+    # btop rewrites btop.conf when it exits, so link it out of the store: the
+    # file stays writable and its changes land in the repo.
+    "btop/btop.conf".source = config.lib.file.mkOutOfStoreSymlink
+      "${config.home.homeDirectory}/dotfiles/config/btop/btop.conf";
 
     # ~/.config/nix/nix.conf — enables flakes + the new nix CLI. Managed as a
     # plain symlink rather than via the HM `nix.*` module on purpose: that

@@ -120,7 +120,7 @@ before `hms` will see it — flakes only operate on tracked files.
 ## What nix manages
 
 - Cross-platform CLI packages in `common.nix`'s `home.packages` (neovim, tmux,
-  lazygit, ripgrep, go, rustup, nodejs, python3, uv, delta, fzf, bat, direnv,
+  lazygit, btop, ripgrep, go, rustup, nodejs, python3, uv, delta, fzf, bat, direnv,
   stylua, yt-dlp, ffmpeg, iosevka-term nerd font, etc.). `stylua` is the lua formatter the
   repo's `Makefile fmt` target calls — now nix-managed rather than via Mason.
   OS-specific packages are added in the per-OS modules: `alacrittyGL`, `keyd`,
@@ -160,6 +160,9 @@ before `hms` will see it — flakes only operate on tracked files.
     `~/.config/alacritty` too)
     Colours are the official Rosé Pine (main) palette, inline in `alacritty.toml`.
   - `~/.config/lazygit` ← `config/lazygit/`
+  - `~/.config/btop/themes` ← `config/btop/themes/` (Rosé Pine main)
+  - `~/.config/btop/btop.conf` ← `config/btop/btop.conf`, an out-of-store
+    symlink because btop rewrites the file when it exits
   - `~/.config/nix/nix.conf` ← `config/nix/nix.conf` (enables flakes + the new
     nix CLI; a flat symlink on purpose, not the HM `nix.*` module — see the
     gotcha below)

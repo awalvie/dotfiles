@@ -106,7 +106,8 @@ before `hms` will see it — flakes only operate on tracked files.
   `o` alias are OS-conditional
   (`pbcopy`/`open` on darwin, `wl-copy`/`xdg-open` on linux); the `hms` alias
   is defined per host in `pop.nix`/`cachyos.nix`/`darwin.nix` (different `--flake` target).
-- Theme: Rosé Pine Moon is set in four places only: btop, Alacritty (inline
+- Theme: Rosé Pine Moon is set in five places only: btop, tmux (status bar and pane
+  borders, hex colours), Alacritty (inline
   colours), Neovim (`rose-pine/neovim` in `config/nvim/lua/plugins/rose-pine.lua`,
   with MiniTabline and BlinkCmp highlight tweaks) and sofka
   (`rose-pine` skin with Moon colour overrides). Everything else follows the terminal palette.
@@ -114,8 +115,7 @@ before `hms` will see it — flakes only operate on tracked files.
   (line numbers, file labels, hunk headers, blame, merge conflicts) is inline in
   `programs.delta.options`.
 - Terminal-palette colours: fzf (no colour options), bat (`ansi` theme), delta
-  (terminal colour names, `syntax-theme = ansi`), lazygit's delta pager and tmux
-  (colour names) all use the terminal's ANSI colours, so a terminal theme change
+  (terminal colour names, `syntax-theme = ansi`), lazygit's delta pager all use the terminal's ANSI colours, so a terminal theme change
   reaches them with no edits. No hex colours live in their config.
   Also a global gitignore (`programs.git.ignores` → `~/.config/git/ignore`) for
   `.envrc`/`.venv`/`.direnv` so venv/direnv artifacts never show up in any

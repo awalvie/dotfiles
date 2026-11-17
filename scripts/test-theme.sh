@@ -223,6 +223,11 @@ unset XDG_CURRENT_DESKTOP
 rejects_unknown_mode() { ! "$theme" apply purple; }
 check "apply rejects an unknown mode" rejects_unknown_mode
 
+# the session pill keeps its round ends (Nerd Font half circles)
+for v in moon dawn; do
+    check "$v tmux session pill has round ends" grep -q $'\ue0b6.*\ue0b4' "$repo/config/themes/rose-pine/$v/tmux.conf"
+done
+
 # discoverability: status, list and help
 check "theme with no arguments shows the theme" bash -c '"$0" | grep -q "^theme: *rose-pine"' "$theme"
 check "theme list marks the current theme" bash -c '"$0" list | grep -q "^\* rose-pine .*dark: moon .*light: dawn"' "$theme"

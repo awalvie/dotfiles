@@ -162,8 +162,9 @@ before `hms` will see it — flakes only operate on tracked files.
     Colours come from the current theme variant (see Themes).
   - `~/.config/lazygit` ← `config/lazygit/`
   - `~/.config/btop/themes/current.theme` ← the current variant's `btop.theme`
-  - `~/.config/btop/btop.conf` ← `config/btop/btop.conf`, an out-of-store
-    symlink because btop rewrites the file when it exits
+  - `~/.config/btop/btop.conf` ← a local copy of `config/btop/btop.conf`,
+    made by the `setupBtop` activation only when it is missing: btop rewrites
+    the file on every settings change, so those stay local
   - `~/.config/nix/nix.conf` ← `config/nix/nix.conf` (enables flakes + the new
     nix CLI; a flat symlink on purpose, not the HM `nix.*` module — see the
     gotcha below)
@@ -248,7 +249,7 @@ before `hms` will see it — flakes only operate on tracked files.
   `config/noctalia/wallpaper.toml` rotates them every 30 minutes, the Dell
   from the `tall` folders, and follows the theme mode. Add a painting by
   dropping a file in the right folder and running `hms`.
-- `nix/which-key.nix` (cachyos only): wlr-which-key on Mod+Space, a menu of
+- `nix/which-key.nix` (cachyos only): wlr-which-key on Mod+/, a menu of
   niri actions whose labels show each direct shortcut (a cheat sheet). The
   menu is generated from `cfg/keybinds.kdl` at `hms` time by
   `scripts/niri-which-key.py` (groups and extras are set there), so a new bind
@@ -351,7 +352,7 @@ nix/common.nix                  # OS-agnostic config (packages, programs, symlin
 nix/linux.nix                   # imports common + bits shared by both Linux hosts
 nix/hosts/pop.nix               # Pop!_OS host: nixGL, keyd, setup scripts, hms alias
 nix/hosts/cachyos.nix           # CachyOS host: shared Linux config + niri/Noctalia links, genericLinux, safeeyes, hms alias
-nix/which-key.nix               # cachyos: wlr-which-key menu of niri actions on Mod+Space
+nix/which-key.nix               # cachyos: wlr-which-key menu of niri actions on Mod+/
 scripts/niri-which-key.py       # builds the which-key menu from the niri binds (+ test-niri-which-key.sh)
 nix/darwin.nix                  # imports common + macOS bits (plain alacritty)
 scripts/setup-keyd.sh           # sudo: keyd /etc config + systemd unit (hm activation, pop)

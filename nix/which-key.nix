@@ -1,4 +1,4 @@
-# wlr-which-key on Mod+Space: a menu of niri actions that doubles as a cheat
+# wlr-which-key on Mod+/: a menu of niri actions that doubles as a cheat
 # sheet. The menu is generated from niri's key binds at `hms` time
 # (scripts/niri-which-key.py), so it always matches them; each label shows the
 # direct shortcut. No GPU use, so it comes from nix (ADR 0001).

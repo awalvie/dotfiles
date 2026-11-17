@@ -23,6 +23,9 @@ in
   home.homeDirectory = if isDarwin then "/Users/${user}" else "/home/${user}";
   home.stateVersion  = "24.05";
 
+  # No "unread news items" notice after each switch (`home-manager news` still works).
+  news.display = "silent";
+
   # cross-platform CLI surface. OS-specific packages (nixGL-wrapped alacritty,
   # keyd, clipboard tools, fontconfig) live in linux.nix / darwin.nix.
   home.packages = with pkgs; [

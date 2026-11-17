@@ -244,7 +244,7 @@ before `hms` will see it — flakes only operate on tracked files.
   overrides our files.
 - Our changes to those copies: screens matched by make/model in
   `cfg/display.kdl` (Dell portrait left of the Samsung; the Samsung over
-  DisplayPort reports no model, so it is matched by port), key repeat 250 ms
+  DisplayPort reports no model, so it is matched by port), key repeat 150 ms
   / 40/s in `cfg/input.kdl`, screenshots on Print (Ctrl: screen, Alt:
   window) in `cfg/keybinds.kdl`, animations off in niri and Noctalia, and a bare
   auto-hiding floating bar in `config/noctalia/bar.toml`.

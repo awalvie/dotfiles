@@ -20,7 +20,7 @@ NIRI_CFG="${4:?missing niri cfg dir}"
 WALLPAPERS_SRC="${5:?missing wallpapers dir}"
 WALLPAPERS_DST=/usr/share/backgrounds/dotfiles
 PACKAGES=(keyd alacritty docker docker-compose docker-buildx tailscale
-    greetd greetd-regreet)
+    greetd greetd-regreet flatpak)
 
 if ! pacman -Q "${PACKAGES[@]}" >/dev/null 2>&1; then
     echo ">>> cachyos: installing packages (sudo required)"

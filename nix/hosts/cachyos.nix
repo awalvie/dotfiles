@@ -48,4 +48,19 @@ in
       ${../../config/niri/cfg} \
       ${../../config/wallpapers}
   '';
+
+  # Desktop apps (calibre, ...) come from Flathub, per user, so they bring
+  # their own libraries instead of adding packages to the host (ADR 0002).
+  # The list is home/flatpak/apps; flatpak itself comes from pacman above.
+  home.activation.setupFlatpak = lib.hm.dag.entryAfter [ "setupCachyos" ] ''
+    export PATH=/usr/bin:/bin:$PATH
+    ${../../scripts/setup-flatpak.sh} ${../../home/flatpak/apps}
+  '';
+
+  # Flatpak's /etc/profile.d script never runs under the nix zsh, so add its
+  # desktop entries to XDG_DATA_DIRS here (niri and the launcher see them).
+  xdg.systemDirs.data = [
+    "${config.home.homeDirectory}/.local/share/flatpak/exports/share"
+    "/var/lib/flatpak/exports/share"
+  ];
 }

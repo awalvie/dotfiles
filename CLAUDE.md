@@ -46,8 +46,8 @@ long-term clock on it.
     Firefox account).
   - `setup-docker.sh` — sudo; installs Docker Engine from Docker's official
     apt repo, enables the daemon, adds the user to the docker group.
-  - `setup-cachyos.sh` — sudo, CachyOS only; installs keyd, alacritty, docker
-    and tailscale with pacman, installs the keyd config, enables the services,
+  - `setup-cachyos.sh` — sudo, CachyOS only; installs keyd, alacritty, docker,
+    tailscale and flatpak with pacman, installs the keyd config, enables the services,
     adds the docker group, sets the Tailscale operator, and sets up the login
     screen: greetd + ReGreet running inside niri (Wayland-native), with
     `home/greetd/` installed to `/etc/greetd` plus copies of
@@ -59,6 +59,11 @@ long-term clock on it.
     switch from SDDM happens at the next boot. To go back from a text console
     (Ctrl+Alt+F3): `sudo systemctl disable greetd && sudo systemctl enable
     sddm`, then reboot.
+  - `setup-flatpak.sh` — no sudo, CachyOS (runs after `setup-cachyos.sh`);
+    installs the desktop apps listed in `home/flatpak/apps` per user from
+    Flathub (ADR 0002: desktop apps from Flatpak, pacman keeps the base
+    system). Skips itself until flatpak is installed. Removing a line does not
+    uninstall: `flatpak uninstall --user <id>`.
 
 ## Bootstrap (fresh host)
 
@@ -387,6 +392,8 @@ home/bin/niri-move-column       # cachyos: Mod+(Shift+)Ctrl+H/L, columns cross m
 config/themes/                  # one folder per theme variant, one file per program
 scripts/test-hms-state.sh       # test for hms-state.sh (temp repo)
 scripts/setup-cachyos.sh        # sudo: pacman packages, keyd conf, services (hm activation, cachyos)
+scripts/setup-flatpak.sh        # no sudo: Flathub apps from home/flatpak/apps, per user (hm activation, cachyos)
+home/flatpak/apps               # cachyos: Flatpak app ids to install (calibre, ...)
 config/                         # configs symlinked into ~/.config/
 home/                           # configs symlinked into ~/
 home/bin/                       # custom shell scripts (hublink)

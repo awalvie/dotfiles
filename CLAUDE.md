@@ -266,6 +266,12 @@ before `hms` will see it — flakes only operate on tracked files.
   `~/.nix-profile/bin` on `PATH` and `~/.nix-profile/share` in
   `XDG_DATA_DIRS` (also via `environment.d`), so apps started by niri and the
   launcher find nix tools and desktop entries.
+- Audio, Bluetooth, network, all from nix on Mod+Shift: `wiremix` (Mod+Shift+A)
+  and `bluetui` (Mod+Shift+B) open floating (window rule in `cfg/rules.kdl`);
+  `networkmanager_dmenu` (Mod+Shift+N) shows through `fuzzel`
+  (`config/{fuzzel,networkmanager-dmenu}`, out-of-store links). Mod+Shift+O
+  runs `home/bin/audio-output`: a fuzzel list of outputs (current marked);
+  the pick becomes the default and playing streams move to it.
 - `services.safeeyes.enable = true`: a user unit wanted by
   `graphical-session.target` (Pop!_OS keeps the plain package in `pop.nix`).
 - NVIDIA VRAM: niri's wiki asks for a driver profile limiting VRAM use.
@@ -371,6 +377,7 @@ scripts/hms-state.sh            # record/check the repo state hms applied (promp
 scripts/test-theme.sh           # test for the theme command (temp home, fake tools)
 home/bin/theme                  # theme command: status, list, set, toggle, apply, init
 home/bin/theme-watch            # pop: COSMIC colour-scheme signal -> theme apply
+home/bin/audio-output           # cachyos: pick the audio output in fuzzel (Mod+Shift+O)
 config/themes/                  # one folder per theme variant, one file per program
 scripts/test-hms-state.sh       # test for hms-state.sh (temp repo)
 scripts/setup-cachyos.sh        # sudo: pacman packages, keyd conf, services (hm activation, cachyos)

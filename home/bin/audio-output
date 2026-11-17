@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Pick the audio output from a fuzzel list (current one marked and
+# preselected), make it the default and move playing streams to it.
+# Bound to Mod+Shift+O in niri.
+set -euo pipefail
+
+names=() labels=()
+while IFS=$'\t' read -r name desc; do
+    names+=("$name") labels+=("$desc")
+done < <(pactl list sinks | awk '
+    $1 == "Name:" { name = $2 }
+    $1 == "Description:" { sub(/^[ \t]*Description: /, ""); print name "\t" $0 }')
+[ "${#names[@]}" -gt 0 ] || exit 0
+
+current=$(pactl get-default-sink)
+selected=0
+for i in "${!names[@]}"; do
+    mark="  "
+    if [ "${names[$i]}" = "$current" ]; then
+        mark="● " selected=$i
+    fi
+    labels[$i]="$mark${labels[$i]}"
+done
+
+choice=$(printf '%s\n' "${labels[@]}" |
+    fuzzel --dmenu --index --prompt "Output > " --select-index "$selected" \
+        --lines "${#names[@]}") || exit 0
+next=${names[$choice]}
+
+pactl set-default-sink "$next"
+pactl list short sink-inputs | cut -f1 | while read -r input; do
+    pactl move-sink-input "$input" "$next" || true
+done

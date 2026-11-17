@@ -21,6 +21,12 @@ binds {
     Mod+ALT+L                           hotkey-overlay-title="Lock Screen: noctalia lock" { spawn-sh "noctalia msg session lock"; }
     Mod+Shift+Q                         hotkey-overlay-title="Session Menu: noctalia sessionMenu" { spawn-sh "noctalia msg panel-toggle session"; }
 
+    // --- Audio, Bluetooth, network (Mod+Shift) ---
+    Mod+Shift+A                         hotkey-overlay-title="Audio Mixer: wiremix" { spawn "alacritty" "--class" "wiremix" "-e" "wiremix"; }
+    Mod+Shift+O                         hotkey-overlay-title="Audio Output: audio-output" { spawn-sh "~/bin/audio-output"; }
+    Mod+Shift+B                         hotkey-overlay-title="Bluetooth: bluetui" { spawn "alacritty" "--class" "bluetui" "-e" "bluetui"; }
+    Mod+Shift+N                         hotkey-overlay-title="Network Menu: networkmanager_dmenu" { spawn "networkmanager_dmenu"; }
+
     // Please set the text editor of your choice.
     // Mod+Shift+E                               hotkey-overlay-title="Open Text Editor: Zed" { spawn "zed"; }
 

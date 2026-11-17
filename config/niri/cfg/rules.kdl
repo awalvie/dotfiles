@@ -18,6 +18,16 @@
         default-window-height { fixed 920; }
     }
 
+    // wiremix (Mod+Shift+A) and bluetui (Mod+Shift+B): small floating windows
+    // in the middle of the screen.
+    window-rule {
+        match app-id="wiremix"
+        match app-id="bluetui"
+        open-floating true
+        default-column-width { fixed 1000; }
+        default-window-height { fixed 600; }
+    }
+
     // if you use steam you will probably like these
     window-rule {
         match app-id="steam"

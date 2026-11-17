@@ -21,6 +21,12 @@ in
 
   services.safeeyes.enable = true;
 
+  # Keyboard-first audio, Bluetooth and network tools on Mod+Shift+A/B/N
+  # (config/niri/cfg/keybinds.kdl).
+  home.packages = with pkgs; [ wiremix bluetui networkmanager_dmenu fuzzel ];
+  xdg.configFile."fuzzel".source = link "fuzzel";
+  xdg.configFile."networkmanager-dmenu".source = link "networkmanager-dmenu";
+
   # keyd, Alacritty, Docker and Tailscale come from pacman (no nix keyd, no
   # nix Alacritty, no nixGL); see scripts/setup-cachyos.sh.
   home.activation.setupCachyos = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

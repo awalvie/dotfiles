@@ -5,9 +5,11 @@
 # something has to change. Service steps only run on a booted systemd host.
 # Login stays manual: run `tailscale up` once.
 #
-# Usage: setup-cachyos.sh <user> <keyd-config> <greetd-dir> <niri-cfg-dir> <login-wallpaper>
+# Usage: setup-cachyos.sh <user> <keyd-config> <greetd-dir> <niri-cfg-dir> <wallpapers-dir>
 #   <greetd-dir> holds the greetd, greeter niri and ReGreet configs; the
 #   greeter reuses display.kdl and input.kdl from <niri-cfg-dir>.
+#   <wallpapers-dir> holds {dark,light}/{wide,tall}/ paintings, installed to
+#   /usr/share/backgrounds/dotfiles for Noctalia and the login screen.
 set -euo pipefail
 
 USER_NAME="${1:?missing user}"
@@ -15,9 +17,10 @@ KEYD_CONF_SRC="${2:?missing keyd config source}"
 KEYD_CONF_DST=/etc/keyd/default.conf
 GREETD_SRC="${3:?missing greetd dir}"
 NIRI_CFG="${4:?missing niri cfg dir}"
-LOGIN_WALLPAPER="${5:?missing login wallpaper}"
-PACKAGES=(keyd alacritty docker docker-compose docker-buildx tailscale mpvpaper mpv socat
-    greetd greetd-regreet gst-plugins-good gst-plugin-gtk4)
+WALLPAPERS_SRC="${5:?missing wallpapers dir}"
+WALLPAPERS_DST=/usr/share/backgrounds/dotfiles
+PACKAGES=(keyd alacritty docker docker-compose docker-buildx tailscale
+    greetd greetd-regreet)
 
 if ! pacman -Q "${PACKAGES[@]}" >/dev/null 2>&1; then
     echo ">>> cachyos: installing packages (sudo required)"
@@ -41,7 +44,6 @@ login_files=(
     "$GREETD_SRC/regreet-tmpfiles.conf:/etc/tmpfiles.d/regreet.conf"
     "$NIRI_CFG/display.kdl:/etc/greetd/display.kdl"
     "$NIRI_CFG/input.kdl:/etc/greetd/input.kdl"
-    "$LOGIN_WALLPAPER:/etc/greetd/background.gif"
 )
 for pair in "${login_files[@]}"; do
     src=${pair%%:*} dst=${pair#*:}
@@ -50,6 +52,16 @@ for pair in "${login_files[@]}"; do
         sudo install -Dm644 "$src" "$dst"
     fi
 done
+
+# Wallpapers, readable by every user (the greeter too). Noctalia rotates
+# through them; the login screen picks a random dark one.
+if ! diff -rq "$WALLPAPERS_SRC" "$WALLPAPERS_DST" >/dev/null 2>&1; then
+    echo ">>> cachyos: updating $WALLPAPERS_DST (sudo required)"
+    sudo rm -rf "$WALLPAPERS_DST"
+    sudo mkdir -p "$(dirname "$WALLPAPERS_DST")"
+    sudo cp -r "$WALLPAPERS_SRC" "$WALLPAPERS_DST"
+    sudo chmod -R a+rX "$WALLPAPERS_DST"
+fi
 
 # Takes effect in new login sessions.
 if ! id -nG "$USER_NAME" | tr ' ' '\n' | grep -qx docker; then

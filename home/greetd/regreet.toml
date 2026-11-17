@@ -1,7 +1,7 @@
 # ReGreet, the login screen (see config.toml). The greeter user cannot read the
 # home folder, so everything it uses lives in /etc/greetd.
 [background]
-path = "/etc/greetd/background.gif"
+path = "/var/lib/regreet/background"
 fit = "Cover"
 
 [GTK]

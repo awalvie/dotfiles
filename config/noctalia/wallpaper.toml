@@ -1,0 +1,20 @@
+# Rotating paintings (config/wallpapers, installed to
+# /usr/share/backgrounds/dotfiles by setup-cachyos.sh): a random one every 30
+# minutes from the folder for the current dark/light mode, with no transition
+# effect. The portrait Dell gets its own tall paintings.
+[wallpaper]
+fill_mode               = "crop"
+transition              = []
+directory_dark          = "/usr/share/backgrounds/dotfiles/dark/wide"
+directory_light         = "/usr/share/backgrounds/dotfiles/light/wide"
+per_monitor_directories = true
+
+[wallpaper.automation]
+enabled          = true
+interval_seconds = 1800
+order            = "random"
+
+[wallpaper.monitor.dell]
+match           = "P2725DE"
+directory_dark  = "/usr/share/backgrounds/dotfiles/dark/tall"
+directory_light = "/usr/share/backgrounds/dotfiles/light/tall"

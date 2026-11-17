@@ -127,20 +127,24 @@ as_user bash -c "./dotfiles/bootstrap.sh cachyos > third.log 2>&1"
 check "a changed theme link survives another hms" bash -c "readlink -f .local/state/theme/current | grep -q '/rose-pine/dawn\$'"
 
 echo "== setup script"
-check "setup script installed the packages" pacman -Q keyd alacritty docker docker-compose docker-buildx tailscale mpvpaper mpv socat greetd greetd-regreet gst-plugins-good gst-plugin-gtk4
+check "setup script installed the packages" pacman -Q keyd alacritty docker docker-compose docker-buildx tailscale greetd greetd-regreet
 check "keyd config matches the repo file" cmp dotfiles/home/keyd/default.conf /etc/keyd/default.conf
 check "greetd runs niri for the login screen" grep -q 'niri --config /etc/greetd/niri.kdl' /etc/greetd/config.toml
 check "the greeter niri config is valid" niri validate -c /etc/greetd/niri.kdl
 check "the login screen uses the desktop's screen layout" cmp dotfiles/config/niri/cfg/display.kdl /etc/greetd/display.kdl
 check "regreet uses the rose pine css" grep -q c4a7e7 /etc/greetd/regreet.css
-check "login wallpaper is readable by the greeter" bash -c "stat -c %a /etc/greetd/background.gif | grep -qx 644"
+check "the paintings are installed for every screen and mode" bash -c \
+    'for d in {dark,light}/{wide,tall}; do ls /usr/share/backgrounds/dotfiles/$d/*.jpg >/dev/null || exit 1; done'
+check "the paintings are readable by the greeter" bash -c \
+    '[ -z "$(find /usr/share/backgrounds/dotfiles ! -perm -o+r -o -type d ! -perm -o+x)" ]'
+check "noctalia wallpaper config is valid" noctalia config validate
 check "user is in the docker group" bash -c 'id -nG | tr " " "\n" | grep -qx docker'
 # Second run by hand with a sudo that always fails: it must not need sudo.
 as_user bash -c 'mkdir -p stub && printf "#!/bin/sh\necho sudo called >&2\nexit 1\n" > stub/sudo && chmod +x stub/sudo'
 check "second setup run needs no sudo" env PATH="$home/stub:/usr/bin:/bin" \
     dotfiles/scripts/setup-cachyos.sh "$user" "$home/dotfiles/home/keyd/default.conf" \
     "$home/dotfiles/home/greetd" "$home/dotfiles/config/niri/cfg" \
-    "$home/dotfiles/config/wallpapers/rain-cyber-balcony.gif"
+    "$home/dotfiles/config/wallpapers"
 check "cachyos generation has no nix keyd, alacritty or nixGL" bash -c \
     '! grep -rEq "keyd|alacritty-wrapped|nixGL" .local/state/nix/profiles/home-manager/home-path/bin 2>/dev/null'
 

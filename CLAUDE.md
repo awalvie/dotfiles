@@ -47,8 +47,9 @@ long-term clock on it.
     `home/greetd/` installed to `/etc/greetd` plus copies of
     `config/niri/cfg/{display,input}.kdl`, so the login screen has the same
     screen layout (Dell portrait, Samsung focused) and keys as the desktop.
-    ReGreet uses a Rosé Pine Moon CSS and the rain GIF as background; Noctalia's
-    lock screen (`config/noctalia/lockscreen.toml`) uses the same file. The
+    ReGreet uses a Rosé Pine Moon CSS and a random dark painting (picked by
+    the greetd command at each start) as background; Noctalia's lock screen
+    (`config/noctalia/lockscreen.toml`) shows the current desktop painting. The
     switch from SDDM happens at the next boot. To go back from a text console
     (Ctrl+Alt+F3): `sudo systemctl disable greetd && sudo systemctl enable
     sddm`, then reboot.
@@ -240,12 +241,13 @@ before `hms` will see it — flakes only operate on tracked files.
   / 40/s in `cfg/input.kdl`, screenshots on Print (Ctrl: screen, Alt:
   window) in `cfg/keybinds.kdl`, animations off in niri and Noctalia, and a bare
   auto-hiding floating bar in `config/noctalia/bar.toml`.
-- Animated wallpaper (cachyos): Noctalia's official `noctalia/mpvpaper` plugin
-  (enabled in `config/noctalia/config.toml`; `mpvpaper`, `mpv`, `socat` from
-  `setup-cachyos.sh`) plays videos from `~/Videos`. The repo ships
-  `config/wallpapers/rain-cyber-balcony.gif` there, and the `setupWallpaper`
-  activation assigns it to every screen only on first run; after that the
-  plugin's picker owns the choice.
+- Wallpapers (cachyos): public-domain paintings in
+  `config/wallpapers/{dark,light}/{wide,tall}/`, pre-cropped to the Samsung
+  (3440x1440) and the Dell (1440x2560). `setup-cachyos.sh` installs them to
+  `/usr/share/backgrounds/dotfiles` (the greeter reads them too).
+  `config/noctalia/wallpaper.toml` rotates them every 30 minutes, the Dell
+  from the `tall` folders, and follows the theme mode. Add a painting by
+  dropping a file in the right folder and running `hms`.
 - `nix/which-key.nix` (cachyos only): wlr-which-key on Mod+Space, a menu of
   niri actions whose labels show each direct shortcut (a cheat sheet). The
   menu is generated from `cfg/keybinds.kdl` at `hms` time by

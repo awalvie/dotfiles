@@ -8,8 +8,3 @@ enabled = false
 [theme]
 source = "custom"
 custom_palette = "RosePine"
-
-# Animated wallpaper through the official mpvpaper plugin (packages from
-# setup-cachyos.sh). The video lives in ~/Videos; see nix/hosts/cachyos.nix.
-[plugins]
-enabled = ["noctalia/mpvpaper"]

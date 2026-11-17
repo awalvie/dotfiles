@@ -21,23 +21,6 @@ in
 
   services.safeeyes.enable = true;
 
-  # Animated wallpaper: Noctalia's mpvpaper plugin plays videos from ~/Videos.
-  # On first run, assign this one to every screen (the plugin then owns the
-  # choice; pick another from its panel).
-  home.file."Videos/rain-cyber-balcony.gif".source = ../../config/wallpapers/rain-cyber-balcony.gif;
-  home.activation.setupWallpaper = lib.hm.dag.entryAfter [ "writeBoundary" ] (
-    let
-      assignments = pkgs.writeText "mpvpaper-assignments.json" (builtins.toJSON {
-        assignments."*" = "${config.home.homeDirectory}/Videos/rain-cyber-balcony.gif";
-        lastAssignments = { };
-      });
-    in
-    ''
-      f=${config.xdg.stateHome}/noctalia/mpvpaper/assignments.json
-      [ -e "$f" ] || $DRY_RUN_CMD install -Dm644 ${assignments} "$f"
-    ''
-  );
-
   # keyd, Alacritty, Docker and Tailscale come from pacman (no nix keyd, no
   # nix Alacritty, no nixGL); see scripts/setup-cachyos.sh.
   home.activation.setupCachyos = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -47,6 +30,6 @@ in
       ${../../home/keyd/default.conf} \
       ${../../home/greetd} \
       ${../../config/niri/cfg} \
-      ${../../config/wallpapers/rain-cyber-balcony.gif}
+      ${../../config/wallpapers}
   '';
 }

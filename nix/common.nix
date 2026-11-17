@@ -133,6 +133,31 @@ in
     ];
   };
 
+  # yazi terminal file manager. `y` opens it and, on quit, cd's the shell into
+  # the folder yazi was in.
+  programs.yazi = {
+    enable               = true;
+    enableZshIntegration = true;
+    shellWrapperName     = "y";
+    # Official Rosé Pine flavours; yazi picks Moon or Dawn from the terminal's
+    # background when it starts, so it follows the theme switch by itself.
+    flavors = let
+      rosePine = pkgs.fetchFromGitHub {
+        owner = "rose-pine";
+        repo  = "yazi";
+        rev   = "c89d745573d4fcfe0550fe6646f9f9ab1c0e51db";
+        hash  = "sha256-9e3dXViWl1rK9BPrGAFfs9ZL/tsG6Njz6ksuU6AIrFY=";
+      };
+    in {
+      rose-pine-moon = "${rosePine}/flavors/rose-pine-moon.yazi";
+      rose-pine-dawn = "${rosePine}/flavors/rose-pine-dawn.yazi";
+    };
+    theme.flavor = {
+      dark  = "rose-pine-moon";
+      light = "rose-pine-dawn";
+    };
+  };
+
   programs.zoxide = {
     enable               = true;
     enableZshIntegration = true;

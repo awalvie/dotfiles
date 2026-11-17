@@ -97,7 +97,7 @@ before `hms` will see it — flakes only operate on tracked files.
 ## What nix manages
 
 - Cross-platform CLI packages in `common.nix`'s `home.packages` (neovim, tmux,
-  lazygit, btop, ripgrep, go, rustup, nodejs, python3, uv, delta, fzf, bat, direnv,
+  lazygit, btop, yazi (`y` opens it and cds on quit; official Rosé Pine flavours, Moon or Dawn picked from the terminal background), ripgrep, go, rustup, nodejs, python3, uv, delta, fzf, bat, direnv,
   stylua, yt-dlp, ffmpeg, iosevka-term nerd font, etc.). `stylua` is the lua formatter the
   repo's `Makefile fmt` target calls — now nix-managed rather than via Mason.
   OS-specific packages are added in the per-OS modules: `alacrittyGL`, `keyd`,

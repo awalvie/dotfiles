@@ -1,0 +1,47 @@
+# A bare top bar: one floating rounded panel with workspaces | clock | status.
+# It hides until the pointer reaches the top edge and then draws over the
+# windows without pushing them down. Colours come from the theme's palette.
+
+[bar.default]
+position                 = "top"
+auto_hide                = true
+auto_hide_delay_ms       = 300
+show_on_workspace_switch = false
+reserve_space            = false
+thickness                = 40
+scale                    = 1.15
+background_opacity       = 1.0
+compositor_blur          = false
+shadow                   = false
+border_width             = 0.0
+radius                   = 12
+margin_ends              = 16
+margin_edge              = 8
+padding                  = 16
+widget_spacing           = 14
+hover_highlight          = false
+capsule                  = false
+start  = ["workspaces"]
+center = ["clock"]
+end    = ["tray", "volume", "network"]
+
+# Dots for workspaces, a wider pill for the focused one.
+[widget.workspaces]
+style      = "focus_hint"
+show_icons = false
+
+[widget.clock]
+format         = "{:%H:%M   %a %d %b}"
+tooltip_format = "{:%A %d %B %Y}"
+
+[widget.volume]
+show_label = false
+peek       = true
+
+[widget.network]
+show_label = false
+peek       = true
+
+[widget.tray]
+hide_passive = true
+drawer       = true

@@ -43,22 +43,16 @@ binds {
     // ─── Window Movement and Focus ───
     Mod+Q                               { close-window; }
 
-    Mod+Left                            { focus-column-left; }
+    // hjkl: Mod moves focus, +Ctrl moves the window or column, +Shift
+    // works across monitors.
     Mod+H                               { focus-column-left; }
-    Mod+Right                           { focus-column-right; }
     Mod+L                               { focus-column-right; }
-    Mod+Up                              { focus-window-up; }
     Mod+K                               { focus-window-up; }
-    Mod+Down                            { focus-window-down; }
     Mod+J                               { focus-window-down; }
 
-    Mod+CTRL+Left                       { move-column-left; }
     Mod+CTRL+H                          { move-column-left; }
-    Mod+CTRL+Right                      { move-column-right; }
     Mod+CTRL+L                          { move-column-right; }
-    Mod+CTRL+UP                         { move-window-up; }
     Mod+CTRL+K                          { move-window-up; }
-    Mod+CTRL+Down                       { move-window-down; }
     Mod+CTRL+J                          { move-window-down; }
 
     Mod+Home                            { focus-column-first; }
@@ -66,15 +60,15 @@ binds {
     Mod+CTRL+Home                       { move-column-to-first; }
     Mod+CTRL+End                        { move-column-to-last; }
 
-    Mod+Shift+Left                      { focus-monitor-left; }
-    Mod+Shift+Right                     { focus-monitor-right; }
-    Mod+Shift+UP                        { focus-monitor-up; }
-    Mod+Shift+Down                      { focus-monitor-down; }
+    Mod+Shift+H                         { focus-monitor-left; }
+    Mod+Shift+L                         { focus-monitor-right; }
+    Mod+Shift+K                         { focus-monitor-up; }
+    Mod+Shift+J                         { focus-monitor-down; }
 
-    Mod+Shift+CTRL+Left                 { move-column-to-monitor-left; }
-    Mod+Shift+CTRL+Right                { move-column-to-monitor-right; }
-    Mod+Shift+CTRL+UP                   { move-column-to-monitor-up; }
-    Mod+Shift+CTRL+Down                 { move-column-to-monitor-down; }
+    Mod+Shift+CTRL+H                    { move-column-to-monitor-left; }
+    Mod+Shift+CTRL+L                    { move-column-to-monitor-right; }
+    Mod+Shift+CTRL+K                    { move-column-to-monitor-up; }
+    Mod+Shift+CTRL+J                    { move-column-to-monitor-down; }
     Mod+Shift+V                         { switch-focus-between-floating-and-tiling; }
 
     Mod+BracketLeft                     { consume-or-expel-window-left; }
@@ -145,10 +139,11 @@ binds {
     Mod+W                               { toggle-column-tabbed-display; }
     Mod+M                               { maximize-window-to-edges; }
 
-    // ─── Screenshots ───
-    CTRL+Shift+1                        { screenshot; }
-    CTRL+Shift+2                        { screenshot-screen; }
-    CTRL+Shift+3                        { screenshot-window; }
+    // ─── Screenshots ─── (niri's defaults; Ctrl+Shift+number is taken by
+    // Firefox's multi-account containers)
+    Print                               { screenshot; }
+    Ctrl+Print                          { screenshot-screen; }
+    Alt+Print                           { screenshot-window; }
 
     // ─── Emergency Escape Key ───
     // Use this when a fullscreen app blocks your keybinds.

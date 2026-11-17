@@ -1,6 +1,10 @@
 [shell]
 polkit_agent = true
 
+# No animated transitions anywhere in the shell.
+[shell.animation]
+enabled = false
+
 [theme]
 source = "custom"
 custom_palette = "RosePine"

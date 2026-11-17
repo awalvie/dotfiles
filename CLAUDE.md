@@ -225,6 +225,12 @@ before `hms` will see it — flakes only operate on tracked files.
   `config/niri/cfg/*.kdl`. Noctalia's GUI writes its settings to
   `~/.local/state/noctalia/settings.toml`; that state is not managed and
   overrides our files.
+- Our changes to those copies: screens matched by make/model in
+  `cfg/display.kdl` (Dell portrait left of the Samsung; the Samsung over
+  DisplayPort reports no model, so it is matched by port), key repeat 250 ms
+  / 40/s in `cfg/input.kdl`, screenshots on Print (Ctrl: screen, Alt:
+  window) in `cfg/keybinds.kdl`, animations off in niri and Noctalia, and a bare
+  auto-hiding floating bar in `config/noctalia/bar.toml`.
 - `targets.genericLinux.enable = true` (GPU part off: CachyOS ships the
   drivers). Why: the nix zsh does not read Arch's `/etc/zsh/zprofile`, so
   nothing sources `/etc/profile.d`. Home-manager's session vars then put

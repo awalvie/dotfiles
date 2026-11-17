@@ -1,9 +1,34 @@
 // ────────────── Output Configuration ──────────────
-// You can run `niri msg outputs` to get the correct name for your displays.
-// You will have to remove "/-" and edit it before it takes effect.
-// https://github.com/YaLTeR/niri/wiki/Configuration:-Outputs
+// Screens are matched by make and model where they report one, so they keep
+// their place whichever port they use. A mode without a refresh rate uses
+// the highest one.
+// `niri msg outputs` lists the names, ports and modes.
 
-/- output "DP-1" {
-    mode "2560x1440@359.979" // Set resolution and refresh rate
-    scale 1 // No scaling (use 2 for HiDPI)
+// Dell P2725DE, 2560x1440, portrait on the left.
+output "Dell Inc. DELL P2725DE GYWCRC4" {
+    mode "2560x1440"
+    transform "90"
+    scale 1
+    position x=0 y=0
+    // Portrait: a new window takes the full width, so windows sit one per
+    // screen instead of in thin side-by-side columns. Stack two in one column
+    // with Mod+, (consume into column).
+    layout {
+        default-column-width { proportion 1.0; }
+    }
+}
+
+// Samsung LS34A650U, 3440x1440, over DisplayPort, to the right, centred on the
+// Dell's height. Its DisplayPort input reports no make or model, so it is
+// matched by port.
+output "DP-3" {
+    focus-at-startup // the primary screen: focused when niri starts
+    mode "3440x1440"
+    scale 1
+    position x=1440 y=560
+}
+
+// The Samsung's HDMI cable: unused.
+output "Samsung Electric Company LS34A650U HNTW205468" {
+    off
 }

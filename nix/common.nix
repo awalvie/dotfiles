@@ -15,6 +15,8 @@ let
   # the program can write the file back (btop rewrites btop.conf on exit).
   link = path: config.lib.file.mkOutOfStoreSymlink
     "${config.home.homeDirectory}/dotfiles/config/${path}";
+  # A file of the current theme variant (see home/bin/theme).
+  themeFile = name: "${config.home.homeDirectory}/.local/state/theme/current/${name}";
 in
 {
   home.username      = user;
@@ -61,18 +63,9 @@ in
 
   programs.home-manager.enable = true;
 
-  # module comes from the sofka flake input (see flake.nix)
-  programs.sofka = {
-    enable = true;
-    # sofka has no Rosé Pine Moon skin: start from main and swap in the Moon colours.
-    skin.name = "rose-pine";
-    skin.colors = {
-      rosewater = "#ea9a97"; flamingo = "#ea9a97"; pink = "#ea9a97";
-      green = "#3e8fb0"; teal = "#3e8fb0";
-      overlay0 = "#56526e"; surface2 = "#56526e"; surface1 = "#44415a";
-      surface0 = "#393552"; base = "#232136"; mantle = "#232136";
-    };
-  };
+  # module comes from the sofka flake input (see flake.nix); the skin comes
+  # from the current theme variant through conf.d (see xdg.configFile below)
+  programs.sofka.enable = true;
 
   programs.delta = {
     enable = true;
@@ -80,7 +73,6 @@ in
     options = {
       navigate   = true;
       true-color = "always";
-      dark       = true;
       syntax-theme = "ansi";
       file-added-label    = "[+]";
       file-copied-label   = "[==]";
@@ -119,6 +111,10 @@ in
     enable = true;
 
     lfs.enable = true;
+
+    # delta's dark/light flag, from the current theme variant (a missing file
+    # is skipped); terminal detection can fail inside tmux
+    includes = [{ path = themeFile "delta.gitconfig"; }];
 
     settings = {
       user.name  = "awalvie";
@@ -306,6 +302,17 @@ in
       autoload -Uz add-zsh-hook
       add-zsh-hook precmd _hms_marker
 
+      # Tab completion for the `theme` command (home/bin/theme).
+      function _theme {
+        local -a cmds=(list set toggle apply init help)
+        case $CURRENT:$words[2] in
+          2:*) _describe command cmds ;;
+          3:set) _files -W ~/.config/themes -/ ;;
+          3:apply) _values mode dark light ;;
+        esac
+      }
+      compdef _theme theme
+
       export EDITOR='nvim'
       export GOPATH=$HOME/go
       export GPG_TTY=$(tty)
@@ -330,8 +337,12 @@ in
     "nvim".source = link "nvim";
     "alacritty" = { source = ../config/alacritty; recursive = true; };
     "lazygit"   = { source = ../config/lazygit;   recursive = true; };
-    "btop/themes" = { source = ../config/btop/themes; recursive = true; };
+    "btop/themes/current.theme".source = config.lib.file.mkOutOfStoreSymlink (themeFile "btop.theme");
+    "sofka/conf.d/10-theme.toml".source = config.lib.file.mkOutOfStoreSymlink (themeFile "sofka.toml");
     "btop/btop.conf".source = link "btop/btop.conf";
+    # theme variants; the `current` link in ~/.local/state/theme points into
+    # this folder, so it must resolve to the checkout, not the store.
+    "themes".source = link "themes";
 
     # ~/.config/nix/nix.conf — enables flakes + the new nix CLI. Managed as a
     # plain symlink rather than via the HM `nix.*` module on purpose: that
@@ -360,6 +371,12 @@ in
   home.activation.recordHmsState = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     export PATH=${pkgs.git}/bin:/usr/bin:/bin:$PATH
     $DRY_RUN_CMD ${../scripts/hms-state.sh} record
+  '';
+
+  # Default theme link (Rosé Pine, desktop mode), only when it is missing.
+  home.activation.setupTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    export PATH=${pkgs.coreutils}/bin:${pkgs.gnused}/bin:$PATH
+    $DRY_RUN_CMD ${../home/bin/theme} init
   '';
 
   # Project workspace dirs. No sudo, no script — just ensure they exist.

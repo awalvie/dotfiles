@@ -32,6 +32,23 @@ in
   programs.zsh.shellAliases.hms =
     "home-manager switch --flake ~/dotfiles#pop --impure";
 
+  # Follows COSMIC's dark/light mode: the portal's colour-scheme signal drives
+  # `theme apply` (see home/bin/theme-watch).
+  systemd.user.services.theme-watch = {
+    Unit = {
+      Description = "Apply the theme variant when COSMIC changes dark/light mode";
+      PartOf = [ "graphical-session.target" ];
+      After = [ "graphical-session.target" ];
+    };
+    Service = {
+      ExecStart = "${pkgs.bash}/bin/bash -c '${pkgs.glib}/bin/gdbus monitor --session --dest org.freedesktop.portal.Desktop --object-path /org/freedesktop/portal/desktop | ${config.home.homeDirectory}/bin/theme-watch'";
+      Environment = [ "PATH=${config.home.profileDirectory}/bin:/usr/bin:/bin" "XDG_CURRENT_DESKTOP=COSMIC" ];
+      Restart = "always";
+      RestartSec = 5;
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
+
   # Per-program setup for things nix/home-manager can't manage declaratively on
   # a non-NixOS host. Each program gets its own script in scripts/.
   home.activation.setupKeyd = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

@@ -15,3 +15,15 @@ _Avoid_: install script, hook
 **Bootstrap**:
 The one command that takes a fresh clone of the repo to a working host, including installing nix and the first switch.
 _Avoid_: install, setup, first run
+
+**Theme**:
+A colour family, such as Rosé Pine, kept as one folder in `config/themes/`. Its `theme` file names the variant for dark and for light; a theme with one entry uses it in both modes.
+_Avoid_: skin, colourscheme
+
+**Variant**:
+One palette of a theme, such as Moon or Dawn: a subfolder with one file per program.
+_Avoid_: flavour, scheme
+
+**Mode**:
+Dark or light, as set by the desktop. The mode picks which variant of the current theme is applied.
+_Avoid_: appearance, brightness

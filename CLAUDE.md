@@ -106,17 +106,35 @@ before `hms` will see it — flakes only operate on tracked files.
   `o` alias are OS-conditional
   (`pbcopy`/`open` on darwin, `wl-copy`/`xdg-open` on linux); the `hms` alias
   is defined per host in `pop.nix`/`cachyos.nix`/`darwin.nix` (different `--flake` target).
-- Theme: Rosé Pine Moon is set in five places only: btop, tmux (status bar and pane
-  borders, hex colours), Alacritty (inline
-  colours), Neovim (`rose-pine/neovim` in `config/nvim/lua/plugins/rose-pine.lua`,
-  with MiniTabline and BlinkCmp highlight tweaks) and sofka
-  (`rose-pine` skin with Moon colour overrides). Everything else follows the terminal palette.
+- Theme: Rosé Pine (Moon dark, Dawn light) through the theme system below.
+  fzf, bat and lazygit follow the terminal palette and need no theme files.
 - git config (delta integration, settings.user.{name,email}). delta's layout
   (line numbers, file labels, hunk headers, blame, merge conflicts) is inline in
   `programs.delta.options`.
+- Themes (see GLOSSARY.md for Theme, Variant, Mode):
+  - `config/themes/<theme>/<variant>/` holds one file per program:
+    `alacritty.toml`, `tmux.conf`, `nvim` (colour scheme name), `btop.theme`,
+    `sofka.toml`, `delta.gitconfig`, `niri.kdl`, plus a `mode` marker.
+    `config/themes/<theme>/theme` declares `dark=` and `light=` variants;
+    `config/themes/<theme>/noctalia.json` is Noctalia's palette with both.
+  - `~/.config/themes` links out of store to that folder; the active variant
+    is the `~/.local/state/theme/current` link, so switching needs no `hms`.
+    Each program reads its file through that link (Alacritty import, tmux
+    `source-file`, btop `current` theme, sofka `conf.d`, git include for
+    delta, niri `include optional=true`, nvim at startup).
+  - `theme` (`home/bin/theme`, run `theme help`): with no argument it shows
+    the state; `list`, `set <name>`, `toggle` (flips the desktop's mode),
+    `apply dark|light` (moves the link and reloads Alacritty, tmux, nvim
+    through its sockets and btop), `init` (the `setupTheme` activation:
+    creates the link only when it is missing).
+  - Triggers: on `cachyos` Noctalia's `theme_mode_changed` hook
+    (`config/noctalia/theme-hook.toml`); on `pop` the `theme-watch` user
+    service follows COSMIC through the portal's colour-scheme signal.
+  - Test: `scripts/test-theme.sh`. Add a theme by adding a folder (and its
+    nvim plugin).
 - Terminal-palette colours: fzf (no colour options), bat (`ansi` theme), delta
-  (terminal colour names, `syntax-theme = ansi`), lazygit's delta pager all use the terminal's ANSI colours, so a terminal theme change
-  reaches them with no edits. No hex colours live in their config.
+  (terminal colour names, `syntax-theme = ansi`) and lazygit's delta pager use
+  the terminal's ANSI colours, so a theme switch reaches them with no edits.
   Also a global gitignore (`programs.git.ignores` → `~/.config/git/ignore`) for
   `.envrc`/`.venv`/`.direnv` so venv/direnv artifacts never show up in any
   repo's status — important for the monorepo.
@@ -131,9 +149,9 @@ before `hms` will see it — flakes only operate on tracked files.
     files)
   - `~/.config/alacritty` ← `config/alacritty/` (shared; macOS alacritty reads
     `~/.config/alacritty` too)
-    Colours are the official Rosé Pine Moon palette, inline in `alacritty.toml`.
+    Colours come from the current theme variant (see Themes).
   - `~/.config/lazygit` ← `config/lazygit/`
-  - `~/.config/btop/themes` ← `config/btop/themes/` (Rosé Pine Moon)
+  - `~/.config/btop/themes/current.theme` ← the current variant's `btop.theme`
   - `~/.config/btop/btop.conf` ← `config/btop/btop.conf`, an out-of-store
     symlink because btop rewrites the file when it exits
   - `~/.config/nix/nix.conf` ← `config/nix/nix.conf` (enables flakes + the new
@@ -205,7 +223,8 @@ before `hms` will see it — flakes only operate on tracked files.
   (`mkOutOfStoreSymlink`) to `~/dotfiles/config/...`, so edits reload at once
   without `hms`. Put your own keybinds, input and display settings in
   `config/niri/cfg/*.kdl`. Noctalia's GUI writes its settings to
-  `~/.local/state/noctalia/settings.toml`; that state is not managed.
+  `~/.local/state/noctalia/settings.toml`; that state is not managed and
+  overrides our files.
 - `targets.genericLinux.enable = true` (GPU part off: CachyOS ships the
   drivers). Why: the nix zsh does not read Arch's `/etc/zsh/zprofile`, so
   nothing sources `/etc/profile.d`. Home-manager's session vars then put
@@ -311,6 +330,10 @@ scripts/setup-zsh.sh            # sudo: set nix zsh as login shell (hm activatio
 scripts/setup-docker.sh         # sudo: install docker engine via apt (hm activation, pop)
 scripts/setup-tailscale.sh      # sudo: install tailscale via apt (hm activation, pop)
 scripts/hms-state.sh            # record/check the repo state hms applied (prompt marker)
+scripts/test-theme.sh           # test for the theme command (temp home, fake tools)
+home/bin/theme                  # theme command: status, list, set, toggle, apply, init
+home/bin/theme-watch            # pop: COSMIC colour-scheme signal -> theme apply
+config/themes/                  # one folder per theme variant, one file per program
 scripts/test-hms-state.sh       # test for hms-state.sh (temp repo)
 scripts/setup-cachyos.sh        # sudo: pacman packages, keyd conf, services (hm activation, cachyos)
 config/                         # configs symlinked into ~/.config/

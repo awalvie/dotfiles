@@ -111,6 +111,21 @@ check "login zsh has ~/.nix-profile/bin on PATH" bash -c "$home/.nix-profile/bin
 check "login zsh has nix share in XDG_DATA_DIRS" bash -c "$home/.nix-profile/bin/zsh -l -c 'echo \$XDG_DATA_DIRS' | grep -q '\.nix-profile/share'"
 check "safeeyes unit is wanted by graphical-session.target" test -e .config/systemd/user/graphical-session.target.wants/safeeyes.service
 
+echo "== theme"
+check "default theme link points at a rose-pine variant" bash -c "readlink -f .local/state/theme/current | grep -q '/config/themes/rose-pine/'"
+check "alacritty colours resolve through the link" test -s .local/state/theme/current/alacritty.toml
+check "tmux colours resolve through the link" test -s .local/state/theme/current/tmux.conf
+check "nvim colour scheme resolves through the link" test -s .local/state/theme/current/nvim
+check "btop theme resolves through the link" test -s .config/btop/themes/current.theme
+check "sofka skin resolves through conf.d" test -s .config/sofka/conf.d/10-theme.toml
+check "delta flag resolves through the link" test -s .local/state/theme/current/delta.gitconfig
+check "noctalia theme-mode hook runs theme apply" bash -c "grep -q 'theme_mode_changed.*theme apply' .config/noctalia/*.toml"
+check "noctalia palette resolves through the link" test -s .config/noctalia/palettes/RosePine.json
+check "niri border colours resolve through the link" test -s .local/state/theme/current/niri.kdl
+as_user dotfiles/home/bin/theme apply light
+as_user bash -c "./dotfiles/bootstrap.sh cachyos > third.log 2>&1"
+check "a changed theme link survives another hms" bash -c "readlink -f .local/state/theme/current | grep -q '/rose-pine/dawn\$'"
+
 echo "== setup script"
 check "setup script installed the packages" pacman -Q keyd alacritty docker docker-compose docker-buildx tailscale
 check "keyd config matches the repo file" cmp dotfiles/home/keyd/default.conf /etc/keyd/default.conf

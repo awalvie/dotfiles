@@ -1,3 +1,15 @@
+-- the colour scheme the applied theme names, e.g. rose-pine-moon
+local function theme_scheme()
+	local state = vim.env.XDG_STATE_HOME or (vim.env.HOME .. "/.local/state")
+	local f = io.open(state .. "/theme/current/nvim")
+	if not f then
+		return "rose-pine-moon"
+	end
+	local name = f:read("*l")
+	f:close()
+	return name
+end
+
 return {
 	"rose-pine/neovim",
 	name = "rose-pine",
@@ -5,7 +17,6 @@ return {
 	priority = 1000,
 	config = function()
 		require("rose-pine").setup({
-			variant = "moon",
 			highlight_groups = {
 				-- rose-pine has no mini.tabline theme, so the tabs fall back to plain TabLine
 				MiniTablineCurrent = { fg = "text", bg = "overlay", bold = true },
@@ -26,6 +37,6 @@ return {
 				BlinkCmpLabelDescription = { fg = "muted" },
 			},
 		})
-		vim.cmd.colorscheme("rose-pine")
+		vim.cmd.colorscheme(theme_scheme())
 	end,
 }

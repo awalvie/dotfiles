@@ -1,0 +1,3 @@
+# Noctalia's dark/light switch drives the terminal programs through `theme`.
+[hooks]
+theme_mode_changed = "$HOME/bin/theme apply $NOCTALIA_THEME_MODE"

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# theme-watch: read `gdbus monitor` output of the desktop portal on stdin and
+# call `theme apply` whenever the colour-scheme setting changes.
+#   colour-scheme: 1 = dark, 2 = light, 0 = no preference (ignored)
+set -uo pipefail
+
+theme=$(dirname "${BASH_SOURCE[0]}")/theme
+re="SettingChanged \('org\.freedesktop\.appearance', 'color-scheme', <uint32 ([0-9]+)>"
+
+while IFS= read -r line; do
+    [[ $line =~ $re ]] || continue
+    case ${BASH_REMATCH[1]} in
+        1) "$theme" apply dark ;;
+        2) "$theme" apply light ;;
+    esac
+done

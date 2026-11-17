@@ -6,3 +6,6 @@ include "./cfg/display.kdl"
 include "./cfg/layout.kdl"
 include "./cfg/rules.kdl"
 include "./cfg/misc.kdl"
+
+// Focus ring and border colours, from the current theme variant.
+include optional=true "~/.local/state/theme/current/niri.kdl"

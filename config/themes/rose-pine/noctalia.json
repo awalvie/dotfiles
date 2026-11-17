@@ -1,0 +1,39 @@
+{
+  "version": 2,
+  "dark": {
+    "primary": "#c4a7e7",
+    "on_primary": "#232136",
+    "secondary": "#9ccfd8",
+    "on_secondary": "#232136",
+    "tertiary": "#ea9a97",
+    "on_tertiary": "#232136",
+    "error": "#eb6f92",
+    "on_error": "#232136",
+    "surface": "#232136",
+    "on_surface": "#e0def4",
+    "surface_container": "#2a273f",
+    "on_surface_variant": "#908caa",
+    "outline_variant": "#56526e",
+    "shadow": "#232136",
+    "hover": "#44415a",
+    "on_hover": "#e0def4"
+  },
+  "light": {
+    "primary": "#907aa9",
+    "on_primary": "#faf4ed",
+    "secondary": "#56949f",
+    "on_secondary": "#faf4ed",
+    "tertiary": "#d7827e",
+    "on_tertiary": "#faf4ed",
+    "error": "#b4637a",
+    "on_error": "#faf4ed",
+    "surface": "#faf4ed",
+    "on_surface": "#575279",
+    "surface_container": "#fffaf3",
+    "on_surface_variant": "#797593",
+    "outline_variant": "#cecacd",
+    "shadow": "#575279",
+    "hover": "#dfdad9",
+    "on_hover": "#575279"
+  }
+}

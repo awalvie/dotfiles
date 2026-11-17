@@ -1,2 +1,6 @@
 [shell]
 polkit_agent = true
+
+[theme]
+source = "custom"
+custom_palette = "RosePine"

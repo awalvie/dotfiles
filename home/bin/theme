@@ -1,0 +1,199 @@
+#!/usr/bin/env bash
+# theme: point the `current` link at a variant of the chosen theme and reload
+# running programs.
+#
+# Run `theme help` for the commands.
+set -euo pipefail
+
+themes=${THEME_DIR:-$HOME/.config/themes}
+state=${XDG_STATE_HOME:-$HOME/.local/state}/theme
+current=$state/current
+
+# COSMIC keeps its mode in a cosmic-config file ("true" = dark); the system
+# default is used until the user's file exists.
+cosmic_dir=com.system76.CosmicTheme.Mode/v1
+cosmic_file=${XDG_CONFIG_HOME:-$HOME/.config}/cosmic/$cosmic_dir/is_dark
+
+cosmic_mode() {
+    local f=$cosmic_file
+    [ -f "$f" ] || f=/usr/share/cosmic/$cosmic_dir/is_dark
+    if [ -f "$f" ] && [ "$(<"$f")" = false ]; then echo light; else echo dark; fi
+}
+
+# Which desktop is running: a backend name, or "" when unknown.
+desktop() {
+    case ${XDG_CURRENT_DESKTOP:-} in
+        *COSMIC*) echo cosmic ;;
+        *) command -v noctalia >/dev/null && echo noctalia ;;
+    esac
+}
+
+# The desktop's dark/light setting. Falls back to dark when unknown.
+desktop_mode() {
+    local m=
+    case $(desktop) in
+        cosmic) m=$(cosmic_mode) ;;
+        noctalia) m=$(noctalia msg theme-mode-get 2>/dev/null) || m= ;;
+    esac
+    case $m in dark | light) echo "$m" ;; *) echo dark ;; esac
+}
+
+# Flip the desktop's mode. The desktop (or its watcher) then calls
+# `theme apply`, so the link is not moved here.
+desktop_toggle() {
+    case $(desktop) in
+        cosmic)
+            local new=false
+            [ "$(cosmic_mode)" = light ] && new=true
+            mkdir -p "$(dirname "$cosmic_file")"
+            echo "$new" >"$cosmic_file"
+            ;;
+        noctalia) noctalia msg theme-mode-toggle ;;
+        *)
+            echo "theme: no desktop to toggle" >&2
+            exit 1
+            ;;
+    esac
+}
+
+# The variant folder a theme uses for a mode; a theme without that entry
+# uses the other one.
+variant_for() {
+    local name=$1 mode=$2 v other=light
+    [ "$mode" = light ] && other=dark
+    v=$(sed -n "s/^$mode=//p" "$themes/$name/theme")
+    [ -n "$v" ] || v=$(sed -n "s/^$other=//p" "$themes/$name/theme")
+    echo "$v"
+}
+
+theme_name() {
+    local n=rose-pine
+    [ -f "$state/name" ] && n=$(<"$state/name")
+    echo "$n"
+}
+
+# The mode in effect now: the desktop's when one is running (it is the source
+# of truth), else the applied variant's, else dark.
+current_mode() {
+    local m=
+    if [ -n "$(desktop || true)" ]; then
+        desktop_mode
+        return
+    fi
+    [ -f "$current/mode" ] && m=$(<"$current/mode")
+    case $m in dark | light) echo "$m" ;; *) echo dark ;; esac
+}
+
+set_theme() {
+    local name=${1:-}
+    [ -n "$name" ] && [ -f "$themes/$name/theme" ] || {
+        echo "theme: unknown theme '$name'" >&2
+        exit 1
+    }
+    mkdir -p "$state"
+    echo "$name" >"$state/name"
+    apply "$(current_mode)"
+}
+
+reload_alacritty() {
+    # Alacritty watches the file it imported, so touch the old and the new
+    # target; the reload then reads the import through the new link.
+    local old=$1 new=$2
+    [ -e "$old" ] && touch "$old"
+    [ -e "$new" ] && touch "$new"
+    return 0
+}
+
+reload_tmux() {
+    # A missing tmux or no running server is fine.
+    command -v tmux >/dev/null || return 0
+    tmux source-file -q "$current/tmux.conf" >/dev/null 2>&1 || true
+}
+
+reload_nvim() {
+    # Every nvim listens on $XDG_RUNTIME_DIR/nvim.<pid>.0 by default.
+    local scheme sock
+    [ -f "$current/nvim" ] || return 0
+    scheme=$(<"$current/nvim")
+    for sock in "${XDG_RUNTIME_DIR:-/run/user/$UID}"/nvim.*.0; do
+        [ -e "$sock" ] || continue
+        nvim --server "$sock" --remote-expr "execute('colorscheme $scheme')" >/dev/null 2>&1 || true
+    done
+}
+
+reload_btop() {
+    pkill -USR2 -x btop || true
+}
+
+apply() {
+    local mode=$1 name variant old=
+    case $mode in dark | light) ;; *)
+        echo "usage: theme apply dark|light" >&2
+        exit 2
+        ;; esac
+    name=$(theme_name)
+    variant=$(variant_for "$name" "$mode")
+    [ -d "$themes/$name/$variant" ] || {
+        echo "theme: no variant '$variant' in '$name'" >&2
+        exit 1
+    }
+    mkdir -p "$state"
+    [ -e "$current/alacritty.toml" ] && old=$(readlink -f "$current/alacritty.toml")
+    ln -sfn "$themes/$name/$variant" "$current"
+    reload_alacritty "$old" "$current/alacritty.toml"
+    reload_tmux
+    reload_nvim
+    reload_btop
+}
+
+usage() {
+    cat <<EOF
+theme: switch the colour theme of the terminal programs and the desktop
+
+  theme                    show the current theme, variant and mode
+  theme list               list the themes and their dark/light variants
+  theme set <name>         switch to another theme, keeping the mode
+  theme toggle             flip the desktop between dark and light
+  theme apply dark|light   use the theme's dark or light variant (the
+                           desktop calls this when its mode changes)
+  theme init               create the default link when it is missing
+  theme help               show this help
+EOF
+}
+
+status() {
+    local variant=none
+    [ -e "$current" ] && variant=$(basename "$(readlink -f "$current")")
+    echo "theme:   $(theme_name)"
+    echo "variant: $variant"
+    echo "mode:    $(current_mode)"
+    local d
+    d=$(desktop || true)
+    echo "desktop: ${d:-none}"
+}
+
+list() {
+    local dir name mark
+    for dir in "$themes"/*/; do
+        name=$(basename "$dir")
+        [ -f "$dir/theme" ] || continue
+        mark=" "
+        [ "$name" = "$(theme_name)" ] && mark="*"
+        printf '%s %-16s dark: %-10s light: %s\n' "$mark" "$name" \
+            "$(variant_for "$name" dark)" "$(variant_for "$name" light)"
+    done
+}
+
+case ${1:-} in
+    "") status ;;
+    list) list ;;
+    help | -h | --help) usage ;;
+    apply) apply "${2:-}" ;;
+    set) set_theme "${2:-}" ;;
+    toggle) desktop_toggle ;;
+    init) [ -e "$current" ] || apply "$(desktop_mode)" ;;
+    *)
+        usage >&2
+        exit 2
+        ;;
+esac

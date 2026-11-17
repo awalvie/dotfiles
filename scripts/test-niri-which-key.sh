@@ -14,9 +14,9 @@ check() {
     fi
 }
 check "every bind is an entry that runs its action" \
-    '[.menu[].submenu[] | select(.desc | test("Mod\\+H$"))][0].cmd == "niri msg action focus-column-left"'
+    '[.menu[].submenu[] | select(.desc | test("Mod\\+H$"))][0].cmd == "niri msg action focus-column-or-monitor-left"'
 check "entries take their bind's own key" \
-    '[.menu[] | select(.key == "f") | .submenu[] | select(.cmd | endswith("focus-column-left"))][0].key == "h"'
+    '[.menu[] | select(.key == "f") | .submenu[] | select(.cmd | endswith("focus-column-or-monitor-left"))][0].key == "h"'
 check "keys are unique within each menu" \
     'all(.menu[]; [.submenu[].key] | length == (unique | length))'
 check "spawn binds run their command" \

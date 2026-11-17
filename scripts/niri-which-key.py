@@ -107,7 +107,9 @@ def main(path):
         if "wlr-which-key" in action:
             continue
         title = TITLE.search(m["props"])
-        name = action.split()[0]
+        # Group by the main action: `focus-column-or-monitor-left` is a focus
+        # move that only crosses monitors at the edge.
+        name = action.split()[0].split("-or-")[0]
         key = next(k for k, _, test in GROUPS if test(name))
         groups[key].append((label(action, title and title[1]), pretty(m["key"]), command(action)))
 

@@ -42,7 +42,13 @@ long-term clock on it.
     apt repo, enables the daemon, adds the user to the docker group.
   - `setup-cachyos.sh` — sudo, CachyOS only; installs keyd, alacritty, docker
     and tailscale with pacman, installs the keyd config, enables the services,
-    adds the docker group and sets the Tailscale operator.
+    adds the docker group, sets the Tailscale operator, and sets up the login
+    screen: `home/sddm/conf.d/*.conf` into `/etc/sddm.conf.d` (hide the nix
+    build users, select the theme, no on-screen keyboard, run
+    `home/sddm/xsetup.sh` to rotate the Dell and make the Samsung primary on
+    X11) and
+    sddm-astronaut-theme at a pinned commit with our Rosé Pine Moon config
+    (`home/sddm/astronaut-rose-pine.conf`) and the rain GIF as background.
 
 ## Bootstrap (fresh host)
 
@@ -231,6 +237,12 @@ before `hms` will see it — flakes only operate on tracked files.
   / 40/s in `cfg/input.kdl`, screenshots on Print (Ctrl: screen, Alt:
   window) in `cfg/keybinds.kdl`, animations off in niri and Noctalia, and a bare
   auto-hiding floating bar in `config/noctalia/bar.toml`.
+- Animated wallpaper (cachyos): Noctalia's official `noctalia/mpvpaper` plugin
+  (enabled in `config/noctalia/config.toml`; `mpvpaper`, `mpv`, `socat` from
+  `setup-cachyos.sh`) plays videos from `~/Videos`. The repo ships
+  `config/wallpapers/rain-cyber-balcony.gif` there, and the `setupWallpaper`
+  activation assigns it to every screen only on first run; after that the
+  plugin's picker owns the choice.
 - `nix/which-key.nix` (cachyos only): wlr-which-key on Mod+Space, a menu of
   niri actions whose labels show each direct shortcut (a cheat sheet). The
   menu is generated from `cfg/keybinds.kdl` at `hms` time by

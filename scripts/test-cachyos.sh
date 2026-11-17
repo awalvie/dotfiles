@@ -127,13 +127,19 @@ as_user bash -c "./dotfiles/bootstrap.sh cachyos > third.log 2>&1"
 check "a changed theme link survives another hms" bash -c "readlink -f .local/state/theme/current | grep -q '/rose-pine/dawn\$'"
 
 echo "== setup script"
-check "setup script installed the packages" pacman -Q keyd alacritty docker docker-compose docker-buildx tailscale
+check "setup script installed the packages" pacman -Q keyd alacritty docker docker-compose docker-buildx tailscale mpvpaper mpv socat qt6-svg qt6-virtualkeyboard qt6-multimedia-ffmpeg xorg-xrandr
 check "keyd config matches the repo file" cmp dotfiles/home/keyd/default.conf /etc/keyd/default.conf
+check "sddm hides the nix build users" cmp dotfiles/home/sddm/conf.d/10-hide-system-users.conf /etc/sddm.conf.d/10-hide-system-users.conf
+check "sddm lays out the screens on x11" test -x /etc/sddm/xsetup.sh
+check "sddm uses the astronaut theme" grep -qx Current=sddm-astronaut-theme /etc/sddm.conf.d/20-theme.conf
+check "login theme uses the rose pine config" grep -qx ConfigFile=Themes/rose-pine.conf /usr/share/sddm/themes/sddm-astronaut-theme/metadata.desktop
+check "login wallpaper is in the theme" cmp dotfiles/config/wallpapers/rain-cyber-balcony.gif /usr/share/sddm/themes/sddm-astronaut-theme/Backgrounds/login.gif
 check "user is in the docker group" bash -c 'id -nG | tr " " "\n" | grep -qx docker'
 # Second run by hand with a sudo that always fails: it must not need sudo.
 as_user bash -c 'mkdir -p stub && printf "#!/bin/sh\necho sudo called >&2\nexit 1\n" > stub/sudo && chmod +x stub/sudo'
 check "second setup run needs no sudo" env PATH="$home/stub:/usr/bin:/bin" \
-    dotfiles/scripts/setup-cachyos.sh "$user" "$home/dotfiles/home/keyd/default.conf"
+    dotfiles/scripts/setup-cachyos.sh "$user" "$home/dotfiles/home/keyd/default.conf" \
+    "$home/dotfiles/home/sddm" "$home/dotfiles/config/wallpapers/rain-cyber-balcony.gif"
 check "cachyos generation has no nix keyd, alacritty or nixGL" bash -c \
     '! grep -rEq "keyd|alacritty-wrapped|nixGL" .local/state/nix/profiles/home-manager/home-path/bin 2>/dev/null'
 

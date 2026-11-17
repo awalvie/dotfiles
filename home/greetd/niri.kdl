@@ -4,6 +4,14 @@ include "display.kdl"
 include "input.kdl"
 
 spawn-sh-at-startup "regreet; niri msg action quit --skip-confirmation"
+// The login form always opens on the Samsung, whichever screen niri focuses
+// first (focus-at-startup alone left it on the Dell).
+window-rule {
+    match app-id=r#"^apps\.regreet$"#
+    open-on-output "Samsung Electric Company LS34A650U HNTW205468"
+    open-maximized true
+}
+
 hotkey-overlay { skip-at-startup; }
 animations { off; }
 

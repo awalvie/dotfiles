@@ -58,8 +58,12 @@ binds {
     Mod+K                               { focus-window-or-workspace-up; }
     Mod+J                               { focus-window-or-workspace-down; }
 
-    Mod+CTRL+H                          { move-column-left-or-to-monitor-left; }
-    Mod+CTRL+L                          { move-column-right-or-to-monitor-right; }
+    // H/L via home/bin/niri-move-column: crossing to the other monitor, the
+    // column lands at the edge it came in from (niri would put it next to
+    // that monitor's focused column) and takes a width that suits the screen
+    // (full on the portrait Dell, half on the Samsung).
+    Mod+CTRL+H                          hotkey-overlay-title="Move column left (or to monitor)" { spawn-sh "~/bin/niri-move-column left"; }
+    Mod+CTRL+L                          hotkey-overlay-title="Move column right (or to monitor)" { spawn-sh "~/bin/niri-move-column right"; }
     Mod+CTRL+K                          { move-window-up-or-to-workspace-up; }
     Mod+CTRL+J                          { move-window-down-or-to-workspace-down; }
 
@@ -73,8 +77,8 @@ binds {
     Mod+Shift+K                         { focus-monitor-up; }
     Mod+Shift+J                         { focus-monitor-down; }
 
-    Mod+Shift+CTRL+H                    { move-column-to-monitor-left; }
-    Mod+Shift+CTRL+L                    { move-column-to-monitor-right; }
+    Mod+Shift+CTRL+H                    hotkey-overlay-title="Move column to monitor left" { spawn-sh "~/bin/niri-move-column left --monitor"; }
+    Mod+Shift+CTRL+L                    hotkey-overlay-title="Move column to monitor right" { spawn-sh "~/bin/niri-move-column right --monitor"; }
     Mod+Shift+CTRL+K                    { move-column-to-monitor-up; }
     Mod+Shift+CTRL+J                    { move-column-to-monitor-down; }
     Mod+Shift+V                         { switch-focus-between-floating-and-tiling; }

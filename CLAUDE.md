@@ -378,6 +378,7 @@ scripts/test-theme.sh           # test for the theme command (temp home, fake to
 home/bin/theme                  # theme command: status, list, set, toggle, apply, init
 home/bin/theme-watch            # pop: COSMIC colour-scheme signal -> theme apply
 home/bin/audio-output           # cachyos: pick the audio output in fuzzel (Mod+Shift+O)
+home/bin/niri-move-column       # cachyos: Mod+(Shift+)Ctrl+H/L, columns cross monitors at the near edge, width fit to the screen
 config/themes/                  # one folder per theme variant, one file per program
 scripts/test-hms-state.sh       # test for hms-state.sh (temp repo)
 scripts/setup-cachyos.sh        # sudo: pacman packages, keyd conf, services (hm activation, cachyos)

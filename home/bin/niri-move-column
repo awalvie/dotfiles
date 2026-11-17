@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# Move the focused column left or right as if the monitors were one long row:
+# within a monitor it moves one column; from the edge it crosses to the next
+# monitor and lands at the edge it came in from (moving right lands first,
+# moving left lands last), instead of next to that monitor's focused column.
+# With --monitor it crosses straight away, from anywhere.
+# A column that crosses gets the width that suits its new screen: full on a
+# portrait one (the Dell), half on a wide one (the Samsung), instead of
+# keeping its old share of the screen.
+# Bound to Mod+Ctrl+H/L and Mod+Shift+Ctrl+H/L in niri.
+set -euo pipefail
+
+usage() { echo "usage: niri-move-column left|right [--monitor]" >&2; exit 2; }
+dir=${1:-}
+case $dir in
+    left) edge_col=first land=move-column-to-last ;;
+    right) edge_col=last land=move-column-to-first ;;
+    *) usage ;;
+esac
+case ${2:-} in
+    "") cross_now=false ;;
+    --monitor) cross_now=true ;;
+    *) usage ;;
+esac
+
+focused=$(niri msg --json focused-window)
+ws=$(jq -r '.workspace_id // empty' <<<"$focused")
+col=$(jq -r '.layout.pos_in_scrolling_layout[0] // empty' <<<"$focused")
+
+# Floating or no window: niri's own action.
+if [ -z "$ws" ] || [ -z "$col" ]; then
+    if $cross_now; then
+        niri msg action "move-column-to-monitor-$dir"
+    else
+        niri msg action "move-column-$dir-or-to-monitor-$dir"
+    fi
+    exit
+fi
+
+if ! $cross_now; then
+    last=$(niri msg --json windows |
+        jq --argjson ws "$ws" '[.[] | select(.workspace_id == $ws)
+            | .layout.pos_in_scrolling_layout[0] // empty] | max')
+    if { [ "$edge_col" = first ] && [ "$col" -gt 1 ]; } ||
+       { [ "$edge_col" = last ] && [ "$col" -lt "$last" ]; }; then
+        niri msg action "move-column-$dir"
+        exit
+    fi
+fi
+
+niri msg action "move-column-to-monitor-$dir"
+new_ws=$(niri msg --json focused-window | jq -r '.workspace_id // empty')
+if [ -n "$new_ws" ] && [ "$new_ws" != "$ws" ]; then
+    niri msg action "$land"
+    width=$(niri msg --json focused-output |
+        jq -r 'if .logical.height > .logical.width then "100%" else "50%" end')
+    niri msg action set-column-width "$width"
+fi

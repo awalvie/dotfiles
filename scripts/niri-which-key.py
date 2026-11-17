@@ -108,8 +108,12 @@ def main(path):
             continue
         title = TITLE.search(m["props"])
         # Group by the main action: `focus-column-or-monitor-left` is a focus
-        # move that only crosses monitors at the edge.
-        name = action.split()[0].split("-or-")[0]
+        # move that only crosses monitors at the edge, and the column-move
+        # script is a column move.
+        if "niri-move-column" in action:
+            name = "move-column-to-monitor" if "--monitor" in action else "move-column"
+        else:
+            name = action.split()[0].split("-or-")[0]
         key = next(k for k, _, test in GROUPS if test(name))
         groups[key].append((label(action, title and title[1]), pretty(m["key"]), command(action)))
 

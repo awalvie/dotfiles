@@ -19,6 +19,8 @@ check "entries take their bind's own key" \
     '[.menu[] | select(.key == "f") | .submenu[] | select(.cmd | endswith("focus-column-or-monitor-left"))][0].key == "h"'
 check "keys are unique within each menu" \
     'all(.menu[]; [.submenu[].key] | length == (unique | length))'
+check "the column-move script sits with the moves" \
+    '[.menu[] | select(.key == "v") | .submenu[] | select(.cmd | endswith("niri-move-column right"))] | length == 1'
 check "spawn binds run their command" \
     'any(.menu[].submenu[]; .cmd == "alacritty")'
 check "the menu does not list itself" \

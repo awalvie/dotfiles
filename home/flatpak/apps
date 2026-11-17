@@ -2,3 +2,4 @@
 # scripts/setup-flatpak.sh on every hms. One app id per line; find ids with
 # `flatpak search <name>`. Removing a line does not uninstall the app.
 com.calibre_ebook.calibre
+com.slack.Slack

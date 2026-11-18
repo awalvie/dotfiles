@@ -59,6 +59,7 @@ in
   home.activation.setupFlatpak = let
     apps = [
       "com.calibre_ebook.calibre"
+      "md.obsidian.Obsidian"
       "com.slack.Slack"
     ];
   in lib.hm.dag.entryAfter [ "setupCachyos" ] ''

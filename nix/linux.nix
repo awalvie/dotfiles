@@ -5,15 +5,15 @@
   imports = [ ./common.nix ];
 
   home.packages = with pkgs; [
+    # wl-copy / wl-paste. No xclip: both hosts run Wayland, and xclip reads
+    # XWayland's clipboard, which goes stale while no X11 window has focus
+    # (Claude Code pastes with xclip first, so it got old screenshots).
     wl-clipboard
-    xclip
     fontconfig
     xdg-utils      # xdg-open, used by the `o` alias
   ];
 
   fonts.fontconfig.enable = true;
-
-  programs.zsh.shellAliases.xclip = "xclip -selection clipboard";
 
   # tsp / tsw: switch Tailscale to the account nicknamed personal / work.
   # Without that nickname on this machine, print how to set it up.

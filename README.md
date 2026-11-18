@@ -119,7 +119,7 @@ before `hms` will see it — flakes only operate on tracked files.
   stylua, yt-dlp, ffmpeg, iosevka-term nerd font, etc.). `stylua` is the lua formatter the
   repo's `Makefile fmt` target calls — now nix-managed rather than via Mason.
   OS-specific packages are added in the per-OS modules: `alacrittyGL`, `keyd`,
-  `safeeyes` in `pop.nix`; `wl-clipboard`, `xclip`, `fontconfig`, `xdg-utils`
+  `safeeyes` in `pop.nix`; `wl-clipboard`, `fontconfig`, `xdg-utils`
   in `linux.nix` (both Linux hosts); plain
   `alacritty` in `darwin.nix`.
 - zsh config (in `common.nix`): history, aliases, vi-mode bindings, pure prompt

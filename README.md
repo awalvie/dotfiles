@@ -286,8 +286,10 @@ before `hms` will see it — flakes only operate on tracked files.
   (`config/{fuzzel,networkmanager-dmenu}`, out-of-store links). Mod+Shift+O
   runs `home/bin/audio-output`: a fuzzel list of outputs (current marked);
   the pick becomes the default and playing streams move to it.
-- Screen recording: Shift+Print records an area picked with `slurp`,
-  Ctrl+Shift+Print the focused output; the same key stops it. Runs
+- Screen recording: Mod+Shift+C opens a fuzzel menu (area or screen, with
+  or without system audio, open the folder); Shift+Print records an area
+  picked with `slurp`, Ctrl+Shift+Print the focused output; any of them
+  stops a running recording. Runs
   `home/bin/screen-record` (`wf-recorder` and `slurp` come from pacman),
   saves to `~/Videos/recording-<date>.mp4`.
 - `services.safeeyes.enable = true`: a user unit wanted by

@@ -24,6 +24,7 @@ binds {
     // --- Audio, Bluetooth, network (Mod+Shift) ---
     Mod+Shift+A                         hotkey-overlay-title="Audio Mixer: wiremix" { spawn "alacritty" "--class" "wiremix" "-e" "wiremix"; }
     Mod+Shift+O                         hotkey-overlay-title="Audio Output: audio-output" { spawn-sh "~/bin/audio-output"; }
+    Mod+Shift+C                         hotkey-overlay-title="Screen recording menu (again to stop)" { spawn-sh "~/bin/screen-record"; }
     Mod+Shift+B                         hotkey-overlay-title="Bluetooth: bluetui" { spawn "alacritty" "--class" "bluetui" "-e" "bluetui"; }
     Mod+Shift+N                         hotkey-overlay-title="Network Menu: networkmanager_dmenu" { spawn "networkmanager_dmenu"; }
 
@@ -165,7 +166,7 @@ binds {
     Print                               { screenshot; }
     Ctrl+Print                          { screenshot-screen; }
     Alt+Print                           { screenshot-window; }
-    // Recording via home/bin/screen-record; press again to stop.
+    // Recording via home/bin/screen-record (menu on Mod+Shift+C); press again to stop.
     Shift+Print                         hotkey-overlay-title="Record area (again to stop)" { spawn-sh "~/bin/screen-record area"; }
     Ctrl+Shift+Print                    hotkey-overlay-title="Record screen (again to stop)" { spawn-sh "~/bin/screen-record screen"; }
 

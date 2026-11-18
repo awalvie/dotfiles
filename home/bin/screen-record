@@ -1,33 +1,64 @@
 #!/usr/bin/env bash
-# Start or stop a screen recording into ~/Videos. Running it again while
-# a recording is on stops it. Bound in niri: Shift+Print records an area
-# (picked with slurp), Ctrl+Shift+Print the whole focused output.
-#   screen-record [area|screen]
+# Start or stop a screen recording into ~/Videos. Running it while a
+# recording is on stops it. Bound in niri: Mod+Shift+C opens a fuzzel menu,
+# Shift+Print records an area (picked with slurp), Ctrl+Shift+Print the
+# whole focused output.
+#   screen-record [menu|area|screen] [--audio]
 set -euo pipefail
 
-if pgrep -x wf-recorder >/dev/null; then
+dir=~/Videos
+
+stop() {
     pkill -INT -x wf-recorder
-    notify-send -a screen-record "Recording saved" "$(ls -t ~/Videos/recording-*.mp4 | head -n1)"
+    notify-send -a screen-record "Recording saved" "$(ls -t "$dir"/recording-*.mp4 | head -n1)"
+}
+
+if pgrep -x wf-recorder >/dev/null; then
+    stop
     exit 0
 fi
 
-out=~/Videos/recording-$(date +%Y-%m-%d_%H-%M-%S).mp4
-mkdir -p ~/Videos
+mode=${1:-menu}
+audio=${2:-}
 
-case ${1:-area} in
+if [ "$mode" = menu ]; then
+    choices=(
+        "Record area"
+        "Record screen"
+        "Record area with audio"
+        "Record screen with audio"
+        "Open recordings folder"
+    )
+    choice=$(printf '%s\n' "${choices[@]}" |
+        fuzzel --dmenu --index --prompt "Record > " --lines "${#choices[@]}") || exit 0
+    case $choice in
+    0) mode=area ;;
+    1) mode=screen ;;
+    2) mode=area audio=--audio ;;
+    3) mode=screen audio=--audio ;;
+    4) mkdir -p "$dir" && exec xdg-open "$dir" ;;
+    esac
+fi
+
+case $mode in
 area)
     geometry=$(slurp) || exit 0 # Esc cancels
     args=(-g "$geometry")
     ;;
 screen)
-    output=$(niri msg --json focused-output | jq -r .name)
-    args=(-o "$output")
+    args=(-o "$(niri msg --json focused-output | jq -r .name)")
     ;;
 *)
-    echo "usage: screen-record [area|screen]" >&2
+    echo "usage: screen-record [menu|area|screen] [--audio]" >&2
     exit 2
     ;;
 esac
 
+# --audio records the default output's monitor, i.e. what you hear.
+if [ "$audio" = --audio ]; then
+    args+=("--audio=$(pactl get-default-sink).monitor")
+fi
+
+mkdir -p "$dir"
 notify-send -a screen-record -t 2000 "Recording" "Press the shortcut again to stop"
-exec wf-recorder "${args[@]}" -f "$out"
+exec wf-recorder "${args[@]}" -f "$dir/recording-$(date +%Y-%m-%d_%H-%M-%S).mp4"

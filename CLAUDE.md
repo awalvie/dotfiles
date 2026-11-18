@@ -20,7 +20,7 @@ long-term clock on it.
   just symlinks the existing files into `~/.config/`, `~/`, etc. (The pre-nix
   `unix/` and `darwin/` layouts have been removed — both OSes are now driven by
   the flake. The old darwin zsh/git were superseded by the flake, its ssh
-  config moved to `config/ssh/config`, and its k9s config was dropped as
+  config moved to `home/.ssh/config`, and its k9s config was dropped as
   unused.)
 - **Nix lives in**: `flake.nix` (root) + `nix/{common,linux,darwin}.nix` + host modules `nix/hosts/{pop,cachyos}.nix`.
   `common.nix` holds everything shared; `linux.nix` holds what both Linux hosts
@@ -39,7 +39,7 @@ long-term clock on it.
     `~/.local/share/applications` with absolute nix-store paths.
   - `setup-zsh.sh` — sudo; sets the nix zsh as the login shell.
   - `setup-firefox.sh` — sudo, both Linux hosts (in `nix/linux.nix`);
-    installs `home/firefox/policies.json` to `/etc/firefox/policies`: the
+    installs `system/firefox/policies.json` to `/etc/firefox/policies`: the
     extensions Firefox installs in every profile, plus no telemetry, studies,
     Pocket, sponsored tiles, password saving or first-run pages, and web apps
     on (`browser.taskbarTabs.enabled`, off by default on Linux; e.g. Teams
@@ -53,7 +53,7 @@ long-term clock on it.
     (sshd too, Arch defaults: keys and passwords), allows SSH (tcp 22) from the
     LAN `192.168.0.0/20` in ufw, adds the docker group, sets the Tailscale operator, and sets up the login
     screen: greetd + ReGreet running inside niri (Wayland-native), with
-    `home/greetd/` installed to `/etc/greetd` plus copies of
+    `system/greetd/` installed to `/etc/greetd` plus copies of
     `config/niri/cfg/{display,input}.kdl`, so the login screen has the same
     screen layout (Dell portrait, Samsung focused) and keys as the desktop;
     a window rule opens ReGreet on the Samsung.
@@ -186,7 +186,7 @@ before `hms` will see it — flakes only operate on tracked files.
     gotcha below)
   - `~/.tmux.conf` ← `home/.tmux.conf` (clipboard `copy-command` is split via
     `if-shell uname` — `pbcopy` on darwin, `wl-copy` on linux)
-  - `~/.ssh/config` ← `config/ssh/config` (host aliases; the referenced
+  - `~/.ssh/config` ← `home/.ssh/config` (host aliases; the referenced
     `IdentityFile`s are per-machine, not in the repo)
   - `~/bin` ← `home/bin/` (hublink script)
 - keyd (Pop!_OS only; CachyOS uses pacman, see `setup-cachyos.sh`), indirectly: nix installs the binary, `setup-keyd.sh` writes
@@ -264,7 +264,7 @@ before `hms` will see it — flakes only operate on tracked files.
   window) in `cfg/keybinds.kdl`, animations off in niri and Noctalia, and a bare
   auto-hiding floating bar in `config/noctalia/bar.toml`.
 - Wallpapers (cachyos): public-domain paintings in
-  `config/wallpapers/{dark,light}/{wide,tall}/`, pre-cropped to the Samsung
+  `system/wallpapers/{dark,light}/{wide,tall}/`, pre-cropped to the Samsung
   (3440x1440) and the Dell (1440x2560). `setup-cachyos.sh` installs them to
   `/usr/share/backgrounds/dotfiles` (the greeter reads them too).
   `config/noctalia/wallpaper.toml` rotates them every 30 minutes, the Dell

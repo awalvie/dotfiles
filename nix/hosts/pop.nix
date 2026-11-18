@@ -55,7 +55,7 @@ in
     export PATH=/usr/bin:/bin:$PATH
     ${../../scripts/setup-keyd.sh} \
       ${pkgs.keyd}/bin/keyd \
-      ${../../home/keyd/default.conf}
+      ${../../system/keyd/default.conf}
   '';
 
   home.activation.setupAlacritty = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

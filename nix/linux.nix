@@ -42,6 +42,6 @@
   # defaults (see scripts/setup-firefox.sh).
   home.activation.setupFirefox = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     export PATH=/usr/bin:/bin:$PATH
-    ${../scripts/setup-firefox.sh} ${../home/firefox/policies.json}
+    ${../scripts/setup-firefox.sh} ${../system/firefox/policies.json}
   '';
 }

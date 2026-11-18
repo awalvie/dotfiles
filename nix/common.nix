@@ -394,7 +394,7 @@ in
 
     # ssh host aliases (github accounts + a few servers). The referenced
     # IdentityFiles (~/.ssh/<name>) are per-machine and NOT in the repo.
-    ".ssh/config".source = ../config/ssh/config;
+    ".ssh/config".source = ../home/.ssh/config;
 
     "bin" = {
       source    = ../home/bin;

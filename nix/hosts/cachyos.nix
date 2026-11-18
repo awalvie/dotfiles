@@ -21,7 +21,7 @@ in
   services.safeeyes.enable = true;
 
   # niri starts no SSH agent, so run one as a user unit. It also sets
-  # SSH_AUTH_SOCK for the shell. config/ssh/config adds keys to it on first use.
+  # SSH_AUTH_SOCK for the shell. home/.ssh/config adds keys to it on first use.
   services.ssh-agent.enable = true;
 
   # Warmer screen from sunset to sunrise (a user unit on graphical-session).
@@ -46,10 +46,10 @@ in
     export PATH=/usr/sbin:/sbin:/usr/bin:/bin:$PATH
     ${../../scripts/setup-cachyos.sh} \
       ${user} \
-      ${../../home/keyd/default.conf} \
-      ${../../home/greetd} \
+      ${../../system/keyd/default.conf} \
+      ${../../system/greetd} \
       ${../../config/niri/cfg} \
-      ${../../config/wallpapers}
+      ${../../system/wallpapers}
   '';
 
   # Desktop apps (calibre, ...) come from Flathub, per user, so they bring

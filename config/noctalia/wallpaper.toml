@@ -1,4 +1,4 @@
-# Rotating paintings (config/wallpapers, installed to
+# Rotating paintings (system/wallpapers, installed to
 # /usr/share/backgrounds/dotfiles by setup-cachyos.sh): a random one every 30
 # minutes from the folder for the current dark/light mode, with no transition
 # effect. The portrait Dell gets its own tall paintings.

@@ -52,6 +52,12 @@
     },
     "OfferToSaveLogins": false,
     "OverrideFirstRunPage": "",
-    "OverridePostUpdatePage": ""
+    "OverridePostUpdatePage": "",
+    "Preferences": {
+      "browser.taskbarTabs.enabled": {
+        "Value": true,
+        "Status": "default"
+      }
+    }
   }
 }

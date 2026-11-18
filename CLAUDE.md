@@ -41,7 +41,9 @@ long-term clock on it.
   - `setup-firefox.sh` — sudo, both Linux hosts (in `nix/linux.nix`);
     installs `home/firefox/policies.json` to `/etc/firefox/policies`: the
     extensions Firefox installs in every profile, plus no telemetry, studies,
-    Pocket, sponsored tiles, password saving or first-run pages. Extension
+    Pocket, sponsored tiles, password saving or first-run pages, and web apps
+    on (`browser.taskbarTabs.enabled`, off by default on Linux; e.g. Teams
+    via "Add tab to taskbar"). Extension
     settings are not in it (uBlock, Vimium C and Containers sync through a
     Firefox account).
   - `setup-docker.sh` — sudo; installs Docker Engine from Docker's official

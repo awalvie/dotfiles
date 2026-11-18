@@ -47,8 +47,9 @@ long-term clock on it.
   - `setup-docker.sh` — sudo; installs Docker Engine from Docker's official
     apt repo, enables the daemon, adds the user to the docker group.
   - `setup-cachyos.sh` — sudo, CachyOS only; installs keyd, alacritty, docker,
-    tailscale and flatpak with pacman, installs the keyd config, enables the services,
-    adds the docker group, sets the Tailscale operator, and sets up the login
+    tailscale, flatpak and openssh with pacman, installs the keyd config, enables the services
+    (sshd too, Arch defaults: keys and passwords), allows SSH (tcp 22) from the
+    LAN `192.168.0.0/20` in ufw, adds the docker group, sets the Tailscale operator, and sets up the login
     screen: greetd + ReGreet running inside niri (Wayland-native), with
     `home/greetd/` installed to `/etc/greetd` plus copies of
     `config/niri/cfg/{display,input}.kdl`, so the login screen has the same

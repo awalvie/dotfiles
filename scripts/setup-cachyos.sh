@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # CachyOS setup that nix can't manage: pacman packages, /etc/keyd, the login
-# screen (greetd + ReGreet in niri), services, the docker group and the
-# Tailscale operator. Idempotent: sudo only when
+# screen (greetd + ReGreet in niri), services, SSH from the LAN, the docker
+# group and the Tailscale operator. Idempotent: sudo only when
 # something has to change. Service steps only run on a booted systemd host.
 # Login stays manual: run `tailscale up` once.
 #
@@ -20,7 +20,7 @@ NIRI_CFG="${4:?missing niri cfg dir}"
 WALLPAPERS_SRC="${5:?missing wallpapers dir}"
 WALLPAPERS_DST=/usr/share/backgrounds/dotfiles
 PACKAGES=(keyd alacritty docker docker-compose docker-buildx tailscale
-    greetd greetd-regreet flatpak)
+    greetd greetd-regreet flatpak openssh)
 
 if ! pacman -Q "${PACKAGES[@]}" >/dev/null 2>&1; then
     echo ">>> cachyos: installing packages (sudo required)"
@@ -81,7 +81,7 @@ if ! systemctl is-enabled --quiet greetd; then
     sudo systemctl enable greetd
 fi
 
-for svc in keyd docker tailscaled; do
+for svc in keyd docker tailscaled sshd; do
     if ! systemctl is-enabled --quiet "$svc" || ! systemctl is-active --quiet "$svc"; then
         echo ">>> cachyos: enabling and starting $svc (sudo required)"
         sudo systemctl enable --now "$svc"
@@ -93,4 +93,13 @@ done
 if [[ "$(tailscale debug prefs 2>/dev/null)" != *"\"OperatorUser\": \"$USER_NAME\""* ]]; then
     echo ">>> cachyos: setting the tailscale operator (sudo required)"
     sudo tailscale set --operator="$USER_NAME"
+fi
+
+# SSH in from the office LAN (ufw drops everything else). sshd keeps Arch's
+# defaults: keys and passwords, no root password login.
+SSH_LAN=192.168.0.0/20
+if command -v ufw >/dev/null &&
+    ! grep -qF "### tuple ### allow tcp 22 0.0.0.0/0 any $SSH_LAN in" /etc/ufw/user.rules 2>/dev/null; then
+    echo ">>> cachyos: allowing SSH from $SSH_LAN in ufw (sudo required)"
+    sudo ufw allow proto tcp from "$SSH_LAN" to any port 22
 fi

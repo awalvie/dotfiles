@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Tests hms-state.sh against a temporary git repo and a temporary state dir.
 set -u
-here=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+here=$(cd "$(dirname "${BASH_SOURCE[0]}")/../scripts" && pwd)
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
 export HOME=$tmp/home XDG_STATE_HOME=$tmp/state DOTFILES_REPO=$tmp/repo

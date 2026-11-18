@@ -81,7 +81,7 @@ git clone <repo> ~/dotfiles && ~/dotfiles/bootstrap.sh   # or: bootstrap.sh cach
 with `-b backup`, so replaced files are kept as `*.backup`. It is safe to run
 again.
 
-`scripts/test-cachyos.sh` runs the bootstrap twice in an unprivileged
+`tests/cachyos.sh` runs the bootstrap twice in an unprivileged
 `cachyos/cachyos` container (never `--privileged`, never systemd as init),
 capped at 4 CPUs and 6 GB. It tests the committed `HEAD`, so commit first.
 It cannot test services, the login screen or the desktop.
@@ -156,7 +156,7 @@ before `hms` will see it — flakes only operate on tracked files.
   - Triggers: on `cachyos` Noctalia's `theme_mode_changed` hook
     (`config/noctalia/theme-hook.toml`); on `pop` the `theme-watch` user
     service follows COSMIC through the portal's colour-scheme signal.
-  - Test: `scripts/test-theme.sh`. Add a theme by adding a folder (and its
+  - Test: `tests/theme.sh`. Add a theme by adding a folder (and its
     nvim plugin).
 - Terminal-palette colours: fzf (no colour options), bat (`ansi` theme), delta
   (terminal colour names, `syntax-theme = ansi`) and lazygit's delta pager use
@@ -222,7 +222,7 @@ before `hms` will see it — flakes only operate on tracked files.
   `scripts/hms-state.sh record`, storing the repo's HEAD plus a checksum of
   uncommitted tracked changes in `~/.local/state/dotfiles/applied`. A precmd
   hook runs `hms-state.sh check` (local git only) and shows a gold `hms` in
-  `RPROMPT` while the repo differs. `scripts/test-hms-state.sh` tests it.
+  `RPROMPT` while the repo differs. `tests/hms-state.sh` tests it.
 - `~/code/{origin,lamp,work}` workspace dirs — created by the
   `setupCodeDirs` activation block (inline `mkdir -p`, no sudo, no script —
   too trivial to warrant one).
@@ -377,14 +377,14 @@ start feeling like friction.
 
 ```
 bootstrap.sh                    # fresh-host bootstrap: nix install + first switch
-scripts/test-cachyos.sh         # container test of the bootstrap on CachyOS
+tests/cachyos.sh               # container test of the bootstrap on CachyOS
 flake.nix                       # flake inputs + entry points (#pop, #cachyos, #darwin)
 nix/common.nix                  # OS-agnostic config (packages, programs, symlinks)
 nix/linux.nix                   # imports common + bits shared by both Linux hosts
 nix/hosts/pop.nix               # Pop!_OS host: nixGL, keyd, setup scripts, hms alias
 nix/hosts/cachyos.nix           # CachyOS host: shared Linux config + niri/Noctalia links, genericLinux, safeeyes, ssh-agent, hms alias
 nix/which-key.nix               # cachyos: wlr-which-key menu of niri actions on Mod+/
-scripts/niri-which-key.py       # builds the which-key menu from the niri binds (+ test-niri-which-key.sh)
+scripts/niri-which-key.py       # builds the which-key menu from the niri binds (+ tests/niri-which-key.sh)
 nix/darwin.nix                  # imports common + macOS bits (plain alacritty)
 scripts/setup-keyd.sh           # sudo: keyd /etc config + systemd unit (hm activation, pop)
 scripts/setup-alacritty.sh      # no sudo: alacritty desktop entry (hm activation, pop)
@@ -393,13 +393,13 @@ scripts/setup-firefox.sh        # sudo: firefox policy, extensions + defaults (h
 scripts/setup-docker.sh         # sudo: install docker engine via apt (hm activation, pop)
 scripts/setup-tailscale.sh      # sudo: install tailscale via apt (hm activation, pop)
 scripts/hms-state.sh            # record/check the repo state hms applied (prompt marker)
-scripts/test-theme.sh           # test for the theme command (temp home, fake tools)
+tests/theme.sh                 # test for the theme command (temp home, fake tools)
 home/bin/theme                  # theme command: status, list, set, toggle, apply, init
 home/bin/theme-watch            # pop: COSMIC colour-scheme signal -> theme apply
 home/bin/audio-output           # cachyos: pick the audio output in fuzzel (Mod+Shift+O)
 home/bin/niri-move-column       # cachyos: Mod+(Shift+)Ctrl+H/L, columns cross monitors at the near edge, width fit to the screen
 config/themes/                  # one folder per theme variant, one file per program
-scripts/test-hms-state.sh       # test for hms-state.sh (temp repo)
+tests/hms-state.sh             # test for hms-state.sh (temp repo)
 scripts/setup-cachyos.sh        # sudo: pacman packages, keyd conf, services (hm activation, cachyos)
 scripts/setup-flatpak.sh        # no sudo: Flathub apps listed in cachyos.nix, per user (hm activation, cachyos)
 config/                         # configs symlinked into ~/.config/

@@ -5,7 +5,7 @@
 # the only way to test the nix installer. To rebuild the base image:
 # docker rmi dotfiles-test-cachyos-base
 #
-# Usage: scripts/test-cachyos.sh [--fresh]
+# Usage: tests/cachyos.sh [--fresh]
 set -euo pipefail
 
 repo=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)

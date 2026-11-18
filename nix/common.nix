@@ -13,12 +13,15 @@ let
 
   # Out-of-store link to the checkout: edits apply at once, without `hms`, and
   # the program can write the file back.
-  link = path: config.lib.file.mkOutOfStoreSymlink
-    "${config.home.homeDirectory}/dotfiles/config/${path}";
+  link = path: config.lib.file.mkOutOfStoreSymlink "${dotfiles}/config/${path}";
+  # The checkout, for out-of-store links. Host modules get it as `dotfiles`.
+  dotfiles = "${config.home.homeDirectory}/dotfiles";
   # A file of the current theme variant (see home/bin/theme).
   themeFile = name: "${config.home.homeDirectory}/.local/state/theme/current/${name}";
 in
 {
+  _module.args.dotfiles = dotfiles;
+
   home.username      = user;
   home.homeDirectory = if isDarwin then "/Users/${user}" else "/home/${user}";
   home.stateVersion  = "24.05";

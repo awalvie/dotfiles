@@ -1,9 +1,8 @@
 # CachyOS (niri + Noctalia) work PC. Shared Linux config lives in linux.nix.
-{ config, lib, pkgs, user, ... }:
+{ config, lib, pkgs, user, dotfiles, ... }:
 
 let
-  link = name: config.lib.file.mkOutOfStoreSymlink
-    "${config.home.homeDirectory}/dotfiles/config/${name}";
+  link = name: config.lib.file.mkOutOfStoreSymlink "${dotfiles}/config/${name}";
 in
 {
   imports = [ ../linux.nix ../which-key.nix ];

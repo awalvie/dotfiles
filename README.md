@@ -286,6 +286,10 @@ before `hms` will see it — flakes only operate on tracked files.
   (`config/{fuzzel,networkmanager-dmenu}`, out-of-store links). Mod+Shift+O
   runs `home/bin/audio-output`: a fuzzel list of outputs (current marked);
   the pick becomes the default and playing streams move to it.
+- Screen recording: Shift+Print records an area picked with `slurp`,
+  Ctrl+Shift+Print the focused output; the same key stops it. Runs
+  `home/bin/screen-record` (`wf-recorder` and `slurp` come from pacman),
+  saves to `~/Videos/recording-<date>.mp4`.
 - `services.safeeyes.enable = true`: a user unit wanted by
   `graphical-session.target` (Pop!_OS keeps the plain package in `pop.nix`).
 - `services.wlsunset`: warmer screen (4000 K) from sunset to sunrise, a user

@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Start or stop a screen recording into ~/Videos. Running it again while
+# a recording is on stops it. Bound in niri: Shift+Print records an area
+# (picked with slurp), Ctrl+Shift+Print the whole focused output.
+#   screen-record [area|screen]
+set -euo pipefail
+
+if pgrep -x wf-recorder >/dev/null; then
+    pkill -INT -x wf-recorder
+    notify-send -a screen-record "Recording saved" "$(ls -t ~/Videos/recording-*.mp4 | head -n1)"
+    exit 0
+fi
+
+out=~/Videos/recording-$(date +%Y-%m-%d_%H-%M-%S).mp4
+mkdir -p ~/Videos
+
+case ${1:-area} in
+area)
+    geometry=$(slurp) || exit 0 # Esc cancels
+    args=(-g "$geometry")
+    ;;
+screen)
+    output=$(niri msg --json focused-output | jq -r .name)
+    args=(-o "$output")
+    ;;
+*)
+    echo "usage: screen-record [area|screen]" >&2
+    exit 2
+    ;;
+esac
+
+notify-send -a screen-record -t 2000 "Recording" "Press the shortcut again to stop"
+exec wf-recorder "${args[@]}" -f "$out"

@@ -21,7 +21,10 @@ for app in "$@"; do
     flatpak info --user "$app" >/dev/null 2>&1 || missing+=("$app")
 done
 
-if [ "${#missing[@]}" -gt 0 ]; then
-    echo ">>> flatpak: installing ${missing[*]}"
-    flatpak install --user --noninteractive flathub "${missing[@]}"
-fi
+# One app at a time, and a failure only warns: a broken app or a Flathub
+# outage must not stop the rest of hms. The next hms tries again.
+for app in "${missing[@]}"; do
+    echo ">>> flatpak: installing $app"
+    flatpak install --user --noninteractive flathub "$app" ||
+        echo ">>> flatpak: WARNING: $app failed to install; hms carries on" >&2
+done

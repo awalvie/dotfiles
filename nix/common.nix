@@ -30,7 +30,7 @@ in
   news.display = "silent";
 
   # cross-platform CLI surface. OS-specific packages (nixGL-wrapped alacritty,
-  # keyd, clipboard tools, fontconfig) live in linux.nix / darwin.nix.
+  # keyd, clipboard tools, fontconfig) live in linux.nix / hosts/darwin.nix.
   home.packages = with pkgs; [
     neovim
     tmux

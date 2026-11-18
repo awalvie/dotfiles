@@ -7,7 +7,7 @@ MacBook (`x86_64-darwin`). One home-manager output per host:
 
 - `#pop`     → `x86_64-linux` (`nix/hosts/pop.nix`)
 - `#cachyos` → `x86_64-linux` (`nix/hosts/cachyos.nix`)
-- `#darwin`  → `x86_64-darwin` (`nix/darwin.nix`)
+- `#darwin`  → `x86_64-darwin` (`nix/hosts/darwin.nix`)
 
 `pop` and `cachyos` import `nix/linux.nix` (shared Linux config), which imports
 `nix/common.nix` (the OS-agnostic bulk); `darwin` imports `common.nix` directly. Note: nixpkgs is
@@ -22,7 +22,7 @@ long-term clock on it.
   the flake. The old darwin zsh/git were superseded by the flake, its ssh
   config moved to `home/.ssh/config`, and its k9s config was dropped as
   unused.)
-- **Nix lives in**: `flake.nix` (root) + `nix/{common,linux,darwin}.nix` + host modules `nix/hosts/{pop,cachyos}.nix`.
+- **Nix lives in**: `flake.nix` (root) + `nix/{common,linux}.nix` + host modules `nix/hosts/{pop,cachyos,darwin}.nix`.
   `common.nix` holds everything shared; `linux.nix` holds what both Linux hosts
   share (clipboard tools, fontconfig, xdg-utils, `xclip` alias, zsh setup
   activation); each host module (`pop`/`cachyos`/`darwin`) adds its
@@ -385,7 +385,7 @@ nix/hosts/pop.nix               # Pop!_OS host: nixGL, keyd, setup scripts, hms 
 nix/hosts/cachyos.nix           # CachyOS host: shared Linux config + niri/Noctalia links, genericLinux, safeeyes, ssh-agent, hms alias
 nix/which-key.nix               # cachyos: wlr-which-key menu of niri actions on Mod+/
 scripts/niri-which-key.py       # builds the which-key menu from the niri binds (+ tests/niri-which-key.sh)
-nix/darwin.nix                  # imports common + macOS bits (plain alacritty)
+nix/hosts/darwin.nix            # imports common + macOS bits (plain alacritty)
 scripts/setup-keyd.sh           # sudo: keyd /etc config + systemd unit (hm activation, pop)
 scripts/setup-alacritty.sh      # no sudo: alacritty desktop entry (hm activation, pop)
 scripts/setup-zsh.sh            # sudo: set nix zsh as login shell (hm activation, both Linux hosts)

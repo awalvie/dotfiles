@@ -1,7 +1,7 @@
 { config, pkgs, lib, user, ... }:
 
 {
-  imports = [ ./common.nix ];
+  imports = [ ../common.nix ];
 
   # alacritty runs natively on macos — no nixGL wrap needed. pbcopy/pbpaste are
   # built in, so no clipboard package. keyd is linux-only (use Karabiner on mac).

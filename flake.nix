@@ -61,7 +61,7 @@
         # Intel macOS. `hms` -> #darwin
         darwin = mkHome {
           system  = "x86_64-darwin";
-          modules = [ ./nix/darwin.nix ];
+          modules = [ ./nix/hosts/darwin.nix ];
         };
       };
     };

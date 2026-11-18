@@ -64,9 +64,9 @@ long-term clock on it.
     (Ctrl+Alt+F3): `sudo systemctl disable greetd && sudo systemctl enable
     sddm`, then reboot.
   - `setup-flatpak.sh` — no sudo, CachyOS (runs after `setup-cachyos.sh`);
-    installs the desktop apps listed in `home/flatpak/apps` per user from
+    installs the desktop apps listed in `nix/hosts/cachyos.nix` per user from
     Flathub (ADR 0002: desktop apps from Flatpak, pacman keeps the base
-    system). Skips itself until flatpak is installed. Removing a line does not
+    system). Skips itself until flatpak is installed. Removing an app does not
     uninstall: `flatpak uninstall --user <id>`.
 
 ## Bootstrap (fresh host)
@@ -401,8 +401,7 @@ home/bin/niri-move-column       # cachyos: Mod+(Shift+)Ctrl+H/L, columns cross m
 config/themes/                  # one folder per theme variant, one file per program
 scripts/test-hms-state.sh       # test for hms-state.sh (temp repo)
 scripts/setup-cachyos.sh        # sudo: pacman packages, keyd conf, services (hm activation, cachyos)
-scripts/setup-flatpak.sh        # no sudo: Flathub apps from home/flatpak/apps, per user (hm activation, cachyos)
-home/flatpak/apps               # cachyos: Flatpak app ids to install (calibre, ...)
+scripts/setup-flatpak.sh        # no sudo: Flathub apps listed in cachyos.nix, per user (hm activation, cachyos)
 config/                         # configs symlinked into ~/.config/
 home/                           # configs symlinked into ~/
 home/bin/                       # custom shell scripts (hublink)

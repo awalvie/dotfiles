@@ -52,12 +52,18 @@ in
       ${../../system/wallpapers}
   '';
 
-  # Desktop apps (calibre, ...) come from Flathub, per user, so they bring
-  # their own libraries instead of adding packages to the host (ADR 0002).
-  # The list is home/flatpak/apps; flatpak itself comes from pacman above.
-  home.activation.setupFlatpak = lib.hm.dag.entryAfter [ "setupCachyos" ] ''
+  # Desktop apps from Flathub, per user, so they bring their own libraries
+  # instead of adding packages to the host (ADR 0002). Find ids with
+  # `flatpak search <name>`. Removing one does not uninstall it:
+  # `flatpak uninstall --user <id>`. flatpak itself comes from pacman above.
+  home.activation.setupFlatpak = let
+    apps = [
+      "com.calibre_ebook.calibre"
+      "com.slack.Slack"
+    ];
+  in lib.hm.dag.entryAfter [ "setupCachyos" ] ''
     export PATH=/usr/bin:/bin:$PATH
-    ${../../scripts/setup-flatpak.sh} ${../../home/flatpak/apps}
+    ${../../scripts/setup-flatpak.sh} ${lib.escapeShellArgs apps}
   '';
 
   # Flatpak's /etc/profile.d script never runs under the nix zsh, so add its

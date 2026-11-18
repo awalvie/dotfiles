@@ -2,6 +2,7 @@ Host github.com
     User git
     IdentityFile ~/.ssh/github
     IdentitiesOnly yes
+    AddKeysToAgent yes
 
 Host stone
     Hostname 140.245.198.72

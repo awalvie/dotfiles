@@ -379,7 +379,7 @@ flake.nix                       # flake inputs + entry points (#pop, #cachyos, #
 nix/common.nix                  # OS-agnostic config (packages, programs, symlinks)
 nix/linux.nix                   # imports common + bits shared by both Linux hosts
 nix/hosts/pop.nix               # Pop!_OS host: nixGL, keyd, setup scripts, hms alias
-nix/hosts/cachyos.nix           # CachyOS host: shared Linux config + niri/Noctalia links, genericLinux, safeeyes, hms alias
+nix/hosts/cachyos.nix           # CachyOS host: shared Linux config + niri/Noctalia links, genericLinux, safeeyes, ssh-agent, hms alias
 nix/which-key.nix               # cachyos: wlr-which-key menu of niri actions on Mod+/
 scripts/niri-which-key.py       # builds the which-key menu from the niri binds (+ test-niri-which-key.sh)
 nix/darwin.nix                  # imports common + macOS bits (plain alacritty)

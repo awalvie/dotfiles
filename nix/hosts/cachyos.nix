@@ -21,6 +21,10 @@ in
 
   services.safeeyes.enable = true;
 
+  # niri starts no SSH agent, so run one as a user unit. It also sets
+  # SSH_AUTH_SOCK for the shell. config/ssh/config adds keys to it on first use.
+  services.ssh-agent.enable = true;
+
   # Warmer screen from sunset to sunrise (a user unit on graphical-session).
   # Oslo, from the system timezone. Noctalia's own night light stays off so
   # the two do not fight over the gamma.

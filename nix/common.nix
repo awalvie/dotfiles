@@ -321,7 +321,8 @@ in
       # Try a program without installing it: `nr cmatrix`, `nr gping 1.1.1.1`
       # (nix run), or `ns gping trippy` for a shell that has them (nix shell).
       function nr { local p=$1; shift; nix run "nixpkgs#$p" -- "$@" }
-      function ns { nix shell "''${@/#/nixpkgs#}" }
+      # NS_PKGS names them for the prompt (nix shell sets no variable of its own).
+      function ns { NS_PKGS="''${NS_PKGS:+$NS_PKGS }$*" nix shell "''${@/#/nixpkgs#}" }
 
       fpath+=(${pkgs.pure-prompt}/share/zsh/site-functions)
       autoload -U promptinit; promptinit
@@ -335,8 +336,14 @@ in
           RPROMPT=""
         fi
       }
+      # `ns: <pkgs> ❯` inside an `ns` shell, in pure's virtualenv slot
+      # (psvar[20]); runs after pure's precmd, which clears it.
+      function _ns_marker {
+        [[ -n $NS_PKGS ]] && psvar[20]="ns: $NS_PKGS"
+      }
       autoload -Uz add-zsh-hook
       add-zsh-hook precmd _hms_marker
+      add-zsh-hook precmd _ns_marker
 
       # Tab completion for the `theme` command (home/bin/theme).
       function _theme {

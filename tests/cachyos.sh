@@ -127,15 +127,15 @@ as_user bash -c "./dotfiles/bootstrap.sh cachyos > third.log 2>&1"
 check "a changed theme link survives another hms" bash -c "readlink -f .local/state/theme/current | grep -q '/rose-pine/dawn\$'"
 
 echo "== setup script"
-check "setup script installed the packages" pacman -Q keyd alacritty docker docker-compose docker-buildx tailscale greetd greetd-regreet
+check "setup script installed the packages" pacman -Q keyd alacritty docker docker-compose docker-buildx tailscale greetd greetd-tuigreet
 check "keyd config matches the repo file" cmp dotfiles/system/keyd/default.conf /etc/keyd/default.conf
-check "greetd runs niri for the login screen" grep -q 'niri --config /etc/greetd/niri.kdl' /etc/greetd/config.toml
-check "the greeter niri config is valid" niri validate -c /etc/greetd/niri.kdl
-check "the login screen uses the desktop's screen layout" cmp dotfiles/config/niri/cfg/display.kdl /etc/greetd/display.kdl
-check "regreet uses the rose pine css" grep -q c4a7e7 /etc/greetd/regreet.css
+check "greetd config matches the repo file" cmp dotfiles/system/greetd/config.toml /etc/greetd/config.toml
+check "greetd runs tuigreet into niri" grep -q 'tuigreet .*--cmd niri-session' /etc/greetd/config.toml
+check "regreet is not installed" bash -c '! pacman -Q greetd-regreet'
+check "tuigreet can remember the last user" test -d /var/cache/tuigreet
 check "the paintings are installed for every screen and mode" bash -c \
     'for d in {dark,light}/{wide,tall}; do ls /usr/share/backgrounds/dotfiles/$d/*.jpg >/dev/null || exit 1; done'
-check "the paintings are readable by the greeter" bash -c \
+check "the paintings are readable by every user" bash -c \
     '[ -z "$(find /usr/share/backgrounds/dotfiles ! -perm -o+r -o -type d ! -perm -o+x)" ]'
 check "noctalia wallpaper config is valid" noctalia config validate
 check "firefox policy is installed" cmp dotfiles/system/firefox/policies.json /etc/firefox/policies/policies.json
@@ -144,7 +144,7 @@ check "user is in the docker group" bash -c 'id -nG | tr " " "\n" | grep -qx doc
 as_user bash -c 'mkdir -p stub && printf "#!/bin/sh\necho sudo called >&2\nexit 1\n" > stub/sudo && chmod +x stub/sudo'
 check "second setup run needs no sudo" env PATH="$home/stub:/usr/bin:/bin" \
     dotfiles/scripts/setup-cachyos.sh "$user" "$home/dotfiles/system/keyd/default.conf" \
-    "$home/dotfiles/system/greetd" "$home/dotfiles/config/niri/cfg" \
+    "$home/dotfiles/system/greetd/config.toml" \
     "$home/dotfiles/system/wallpapers"
 check "cachyos generation has no nix keyd, alacritty or nixGL" bash -c \
     '! grep -rEq "keyd|alacritty-wrapped|nixGL" .local/state/nix/profiles/home-manager/home-path/bin 2>/dev/null'

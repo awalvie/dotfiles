@@ -48,18 +48,15 @@ See ADR 0003 (`docs/adr/`).
   - `setup-docker.sh` — sudo; installs Docker Engine from Docker's official
     apt repo, enables the daemon, adds the user to the docker group.
   - `setup-cachyos.sh` — sudo, CachyOS only; installs keyd, alacritty, docker,
-    tailscale, flatpak and openssh with pacman, installs the keyd config, enables the services
+    tailscale, flatpak, openssh and greetd-tuigreet with pacman, installs the keyd config, enables the services
     (sshd too, Arch defaults: keys and passwords), allows SSH (tcp 22) from the
     LAN `192.168.0.0/20` in ufw, adds the docker group, sets the Tailscale operator, and sets up the login
-    screen: greetd + ReGreet running inside niri (Wayland-native), with
-    `system/greetd/` installed to `/etc/greetd` plus copies of
-    `config/niri/cfg/{display,input}.kdl`, so the login screen has the same
-    screen layout (Dell portrait, Samsung focused) and keys as the desktop;
-    a window rule opens ReGreet on the Samsung.
-    ReGreet uses a Rosé Pine Moon CSS and a random dark painting (picked by
-    the greetd command at each start) as background; Noctalia's lock screen
-    (`config/noctalia/lockscreen.toml`) shows the current desktop painting. The
-    switch from SDDM happens at the next boot. To go back from a text console
+    screen: greetd running tuigreet, a text greeter on the console that
+    remembers the last user and session and starts `niri-session`
+    (`system/greetd/config.toml` → `/etc/greetd/config.toml`). It also
+    removes what the earlier ReGreet login screen left behind. Noctalia's
+    lock screen (`config/noctalia/lockscreen.toml`) shows the current
+    desktop painting. The switch from SDDM happens at the next boot. To go back from a text console
     (Ctrl+Alt+F3): `sudo systemctl disable greetd && sudo systemctl enable
     sddm`, then reboot.
   - `setup-flatpak.sh` — no sudo, CachyOS (runs after `setup-cachyos.sh`);
@@ -271,7 +268,7 @@ before `hms` will see it — flakes only operate on tracked files.
 - Wallpapers (cachyos): public-domain paintings in
   `system/wallpapers/{dark,light}/{wide,tall}/`, pre-cropped to the Samsung
   (3440x1440) and the Dell (1440x2560). `setup-cachyos.sh` installs them to
-  `/usr/share/backgrounds/dotfiles` (the greeter reads them too).
+  `/usr/share/backgrounds/dotfiles`.
   `config/noctalia/wallpaper.toml` rotates them every 30 minutes, the Dell
   from the `tall` folders, and follows the theme mode. Add a painting by
   dropping a file in the right folder and running `hms`.

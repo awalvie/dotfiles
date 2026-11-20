@@ -66,8 +66,7 @@ in
     ${../../scripts/setup-cachyos.sh} \
       ${user} \
       ${../../system/keyd/default.conf} \
-      ${../../system/greetd} \
-      ${../../config/niri/cfg} \
+      ${../../system/greetd/config.toml} \
       ${../../system/wallpapers}
   '';
 

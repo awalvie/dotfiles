@@ -1,9 +1,9 @@
-# greetd runs the login screen: ReGreet inside a small niri session, so the
-# login screen uses the same screen layout as the desktop. Each start picks a
-# random dark painting as the background (ReGreet reads a fixed path).
+# greetd runs the login screen: tuigreet, a text greeter on the console (no
+# compositor). --remember keeps the last user, --remember-session the last
+# session; niri is the default.
 [terminal]
 vt = 1
 
 [default_session]
-command = "sh -c 'ln -sf \"$(ls /usr/share/backgrounds/dotfiles/dark/wide/* | shuf -n1)\" /var/lib/regreet/background; exec dbus-run-session niri --config /etc/greetd/niri.kdl'"
+command = "tuigreet --time --asterisks --remember --remember-session --cmd niri-session"
 user = "greeter"

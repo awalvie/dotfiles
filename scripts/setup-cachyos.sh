@@ -1,26 +1,24 @@
 #!/usr/bin/env bash
 # CachyOS setup that nix can't manage: pacman packages, /etc/keyd, the login
-# screen (greetd + ReGreet in niri), services, SSH from the LAN, the docker
+# screen (greetd + tuigreet), services, SSH from the LAN, the docker
 # group and the Tailscale operator. Idempotent: sudo only when
 # something has to change. Service steps only run on a booted systemd host.
 # Login stays manual: run `tailscale up` once.
 #
-# Usage: setup-cachyos.sh <user> <keyd-config> <greetd-dir> <niri-cfg-dir> <wallpapers-dir>
-#   <greetd-dir> holds the greetd, greeter niri and ReGreet configs; the
-#   greeter reuses display.kdl and input.kdl from <niri-cfg-dir>.
+# Usage: setup-cachyos.sh <user> <keyd-config> <greetd-config> <wallpapers-dir>
 #   <wallpapers-dir> holds {dark,light}/{wide,tall}/ paintings, installed to
-#   /usr/share/backgrounds/dotfiles for Noctalia and the login screen.
+#   /usr/share/backgrounds/dotfiles for Noctalia.
 set -euo pipefail
 
 USER_NAME="${1:?missing user}"
 KEYD_CONF_SRC="${2:?missing keyd config source}"
 KEYD_CONF_DST=/etc/keyd/default.conf
-GREETD_SRC="${3:?missing greetd dir}"
-NIRI_CFG="${4:?missing niri cfg dir}"
-WALLPAPERS_SRC="${5:?missing wallpapers dir}"
+GREETD_CONF_SRC="${3:?missing greetd config}"
+GREETD_CONF_DST=/etc/greetd/config.toml
+WALLPAPERS_SRC="${4:?missing wallpapers dir}"
 WALLPAPERS_DST=/usr/share/backgrounds/dotfiles
 PACKAGES=(keyd alacritty docker docker-compose docker-buildx tailscale
-    greetd greetd-regreet flatpak openssh wf-recorder slurp)
+    greetd greetd-tuigreet flatpak openssh wf-recorder slurp)
 
 if ! pacman -Q "${PACKAGES[@]}" >/dev/null 2>&1; then
     echo ">>> cachyos: installing packages (sudo required)"
@@ -33,28 +31,28 @@ if ! cmp -s "$KEYD_CONF_SRC" "$KEYD_CONF_DST"; then
     sudo systemctl try-restart keyd 2>/dev/null || true
 fi
 
-# Login screen: greetd runs ReGreet inside niri with the desktop's screen
-# layout. The greeter user cannot read the home folder, so everything goes
-# into /etc/greetd (read at the next login screen).
-login_files=(
-    "$GREETD_SRC/config.toml:/etc/greetd/config.toml"
-    "$GREETD_SRC/niri.kdl:/etc/greetd/niri.kdl"
-    "$GREETD_SRC/regreet.toml:/etc/greetd/regreet.toml"
-    "$GREETD_SRC/regreet.css:/etc/greetd/regreet.css"
-    "$GREETD_SRC/regreet-tmpfiles.conf:/etc/tmpfiles.d/regreet.conf"
-    "$NIRI_CFG/display.kdl:/etc/greetd/display.kdl"
-    "$NIRI_CFG/input.kdl:/etc/greetd/input.kdl"
-)
-for pair in "${login_files[@]}"; do
-    src=${pair%%:*} dst=${pair#*:}
-    if ! cmp -s "$src" "$dst"; then
-        echo ">>> cachyos: updating $dst (sudo required)"
-        sudo install -Dm644 "$src" "$dst"
+# Login screen: greetd runs tuigreet (read at the next login screen).
+if ! cmp -s "$GREETD_CONF_SRC" "$GREETD_CONF_DST"; then
+    echo ">>> cachyos: updating $GREETD_CONF_DST (sudo required)"
+    sudo install -Dm644 "$GREETD_CONF_SRC" "$GREETD_CONF_DST"
+fi
+
+# Leftovers of the earlier login screen (ReGreet inside niri).
+regreet_files=(/etc/greetd/niri.kdl /etc/greetd/regreet.toml /etc/greetd/regreet.css
+    /etc/greetd/display.kdl /etc/greetd/input.kdl /etc/tmpfiles.d/regreet.conf /var/lib/regreet)
+for f in "${regreet_files[@]}"; do
+    if [ -e "$f" ]; then
+        echo ">>> cachyos: removing $f, left from ReGreet (sudo required)"
+        sudo rm -rf "$f"
     fi
 done
+if pacman -Q greetd-regreet >/dev/null 2>&1; then
+    echo ">>> cachyos: removing greetd-regreet (sudo required)"
+    sudo pacman -Rns --noconfirm greetd-regreet
+fi
 
-# Wallpapers, readable by every user (the greeter too). Noctalia rotates
-# through them; the login screen picks a random dark one.
+# Wallpapers, readable by every user. Noctalia rotates through them and
+# its lock screen shows the current one.
 if ! diff -rq "$WALLPAPERS_SRC" "$WALLPAPERS_DST" >/dev/null 2>&1; then
     echo ">>> cachyos: updating $WALLPAPERS_DST (sudo required)"
     sudo rm -rf "$WALLPAPERS_DST"
@@ -71,7 +69,11 @@ fi
 
 [ -d /run/systemd/system ] || exit 0
 
-[ -d /var/lib/regreet ] || sudo systemd-tmpfiles --create /etc/tmpfiles.d/regreet.conf
+# tuigreet --remember writes here; the package may not create it.
+if [ ! -d /var/cache/tuigreet ]; then
+    echo ">>> cachyos: creating /var/cache/tuigreet (sudo required)"
+    sudo install -d -o greeter -g greeter -m 755 /var/cache/tuigreet
+fi
 
 # Switch the login screen from SDDM to greetd. Only enabled, not started:
 # it takes over at the next boot.

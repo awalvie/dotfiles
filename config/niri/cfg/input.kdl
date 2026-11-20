@@ -9,7 +9,7 @@ input {
             //layout "us" // Use the American keyboard layout
         }
         numlock // Enable numlock on startup
-        repeat-delay 150 // ms before a held key repeats
+        repeat-delay 180 // ms before a held key repeats
         repeat-rate 40 // repeats per second
     }
 

@@ -34,6 +34,25 @@ in
     temperature = { day = 6500; night = 4000; };
   };
 
+  # Finger rehab reminder: a notification every 4 hours of the session
+  # (first one 4 hours after login). Critical, so it stays until dismissed.
+  systemd.user.services.finger-rehab = {
+    Unit.Description = "Finger rehab reminder";
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.libnotify}/bin/notify-send -u critical -a Rehab "
+        + "'Finger rehab' 'Get up and do your finger exercises.'";
+    };
+  };
+  systemd.user.timers.finger-rehab = {
+    Unit = {
+      Description = "Finger rehab reminder every 4 hours";
+      PartOf = [ "graphical-session.target" ];
+    };
+    Timer = { OnActiveSec = "4h"; OnUnitActiveSec = "4h"; };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
+
   # Keyboard-first audio, Bluetooth and network tools on Mod+Shift+A/B/N
   # (config/niri/cfg/keybinds.kdl).
   home.packages = with pkgs; [ wiremix bluetui networkmanager_dmenu fuzzel ];

@@ -93,6 +93,18 @@ set_theme() {
     mkdir -p "$state"
     echo "$name" >"$state/name"
     apply "$(current_mode)"
+    set_noctalia_palette "$name"
+}
+
+# Noctalia keeps one palette with both modes: the theme file's `noctalia=`
+# names it (config/noctalia/palettes/<name>.json). The choice lands in
+# Noctalia's own state, not in config.toml.
+set_noctalia_palette() {
+    local palette
+    [ "$(desktop || true)" = noctalia ] || return 0
+    palette=$(sed -n 's/^noctalia=//p' "$themes/$1/theme")
+    [ -n "$palette" ] || return 0
+    noctalia msg color-scheme-set custom "$palette" >/dev/null 2>&1 || true
 }
 
 reload_alacritty() {

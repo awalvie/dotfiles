@@ -1,0 +1,16 @@
+# sofka has no Everforest skin: start from catppuccin-latte and swap in its colours.
+[skin]
+name = "catppuccin-latte"
+
+[skin.colors]
+rosewater = "#f57d26"
+flamingo = "#f57d26"
+pink = "#df69ba"
+green = "#8da101"
+teal = "#35a77c"
+overlay0 = "#939f91"
+surface2 = "#bdc3af"
+surface1 = "#e6e2cc"
+surface0 = "#efebd4"
+base = "#fdf6e3"
+mantle = "#f4f0d9"

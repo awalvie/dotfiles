@@ -131,7 +131,9 @@ before `hms` will see it — flakes only operate on tracked files.
   `o` alias are OS-conditional
   (`pbcopy`/`open` on darwin, `wl-copy`/`xdg-open` on linux); the `hms` alias
   is defined per host in `pop.nix`/`cachyos.nix`/`darwin.nix` (different `--flake` target).
-- Theme: Rosé Pine (Moon dark, Dawn light) through the theme system below.
+- Themes: Rosé Pine (Moon / Dawn, the default), Gruvbox, Catppuccin (Mocha /
+  Latte), Tokyo Night (Night / Day), Everforest, Kanagawa (Wave / Lotus),
+  Solarized, Flexoki and Twilight (dark only), through the theme system below (`theme list`).
   fzf, bat and lazygit follow the terminal palette and need no theme files.
 - git config (delta integration, settings.user.{name,email}). delta's layout
   (line numbers, file labels, hunk headers, blame, merge conflicts) is inline in
@@ -140,23 +142,27 @@ before `hms` will see it — flakes only operate on tracked files.
   - `config/themes/<theme>/<variant>/` holds one file per program:
     `alacritty.toml`, `tmux.conf`, `nvim` (colour scheme name), `btop.theme`,
     `sofka.toml`, `delta.gitconfig`, `niri.kdl`, plus a `mode` marker.
-    `config/themes/<theme>/theme` declares `dark=` and `light=` variants;
-    `config/themes/<theme>/noctalia.json` is Noctalia's palette with both.
+    `config/themes/<theme>/theme` declares `dark=` and `light=` variants and
+    `noctalia=` the palette name; `config/themes/<theme>/noctalia.json` is
+    that palette with both modes, linked as
+    `config/noctalia/palettes/<name>.json`.
   - `~/.config/themes` links out of store to that folder; the active variant
     is the `~/.local/state/theme/current` link, so switching needs no `hms`.
     Each program reads its file through that link (Alacritty import, tmux
     `source-file`, btop `current` theme, sofka `conf.d`, git include for
     delta, niri `include optional=true`, nvim at startup).
   - `theme` (`home/bin/theme`, run `theme help`): with no argument it shows
-    the state; `list`, `set <name>`, `toggle` (flips the desktop's mode),
+    the state; `list`, `set <name>` (also switches Noctalia's palette, kept
+    in Noctalia's state, not `config.toml`), `toggle` (flips the desktop's mode),
     `apply dark|light` (moves the link and reloads Alacritty, tmux, nvim
     through its sockets, btop and Claude Code's `theme` setting), `init` (the `setupTheme` activation:
     creates the link only when it is missing).
   - Triggers: on `cachyos` Noctalia's `theme_mode_changed` hook
     (`config/noctalia/theme-hook.toml`); on `pop` the `theme-watch` user
     service follows COSMIC through the portal's colour-scheme signal.
-  - Test: `tests/theme.sh`. Add a theme by adding a folder (and its
-    nvim plugin).
+  - Test: `tests/theme.sh`. Add a theme by adding a folder, its palette link
+    in `config/noctalia/palettes/` and its nvim plugin
+    (`config/nvim/lua/plugins/themes.lua`).
 - Terminal-palette colours: fzf (no colour options), bat (`ansi` theme), delta
   (terminal colour names, `syntax-theme = ansi`) and lazygit's delta pager use
   the terminal's ANSI colours, so a theme switch reaches them with no edits.

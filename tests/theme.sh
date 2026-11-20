@@ -33,6 +33,18 @@ printf '#!/bin/sh\necho "$@" >> "%s/tmux.calls"\n' "$tmp" >"$tmp/bin/tmux"
 chmod +x "$tmp/bin/tmux"
 export PATH=$tmp/bin:$PATH
 
+# A fake Noctalia from the start, so no test reaches the real desktop
+# (`set` switches its palette). It reports dark until a test says otherwise.
+cat >"$tmp/bin/noctalia" <<'F'
+#!/usr/bin/env bash
+echo "$*" >>"$NOCTALIA_LOG"
+[ "$*" = "msg theme-mode-get" ] && cat "$NOCTALIA_MODE"
+exit 0
+F
+chmod +x "$tmp/bin/noctalia"
+export NOCTALIA_LOG=$tmp/noctalia.log NOCTALIA_MODE=$tmp/noctalia.mode
+echo dark >"$NOCTALIA_MODE"
+
 fails=0
 check() {
     local desc=$1
@@ -108,8 +120,11 @@ check "set applies the one-variant theme in light mode" fixture_resolves_to solo
 check "set records the theme name" has_text "$HOME/.local/state/theme/name" '^solo$'
 fixture_theme apply dark
 check "one-variant theme is used in dark mode too" fixture_resolves_to solo/only
+: >"$NOCTALIA_LOG"
 fixture_theme set rose-pine
 check "set keeps the current mode when changing theme" fixture_resolves_to rose-pine/moon
+check "set switches Noctalia to the theme's palette" \
+    has_line "$NOCTALIA_LOG" "msg color-scheme-set custom RosePine"
 rejects_unknown_theme() { ! fixture_theme set nope; }
 check "set rejects an unknown theme" rejects_unknown_theme
 check "a rejected set keeps the recorded theme" has_text "$HOME/.local/state/theme/name" '^rose-pine$'
@@ -147,16 +162,8 @@ check "apply works with no nvim running" "$theme" apply dark
 check "nvim config reads the theme's colour scheme" \
     grep -qF 'theme/current/nvim' "$repo/config/nvim/lua/plugins/rose-pine.lua"
 
-# With Noctalia present, it is the desktop: its mode is read, and toggle flips it
-# without moving the link.
-cat >"$tmp/bin/noctalia" <<'F'
-#!/usr/bin/env bash
-echo "$*" >>"$NOCTALIA_LOG"
-[ "$*" = "msg theme-mode-get" ] && cat "$NOCTALIA_MODE"
-exit 0
-F
-chmod +x "$tmp/bin/noctalia"
-export NOCTALIA_LOG=$tmp/noctalia.log NOCTALIA_MODE=$tmp/noctalia.mode
+# Noctalia is the desktop: its mode is read, and toggle flips it without
+# moving the link.
 : >"$NOCTALIA_LOG"
 rm -rf "$HOME/.local/state/theme"
 echo light >"$NOCTALIA_MODE"
@@ -189,6 +196,27 @@ check "moon niri colours use the moon gold" has_text "$repo/config/themes/rose-p
 check "Noctalia's palette links to the theme's palette" \
     test "$(readlink -f "$repo/config/noctalia/palettes/RosePine.json")" = "$(readlink -f "$pal")"
 check "Noctalia config selects the custom palette" has_text "$repo/config/noctalia/config.toml" 'custom_palette *= *"RosePine"'
+# every theme: both variants carry every program's file, and its Noctalia
+# palette is linked under the name the theme file gives
+for dir in "$repo"/config/themes/*/; do
+    t=$(basename "$dir")
+    for side in dark light; do
+        v=$(sed -n "s/^$side=//p" "$dir/theme")
+        [ -n "$v" ] || continue # a one-variant theme serves both modes
+        for f in alacritty.toml tmux.conf niri.kdl btop.theme delta.gitconfig sofka.toml mode nvim; do
+            check "$t $v has $f" test -s "$dir/$v/$f"
+        done
+        check "$t $v is marked $side" has_text "$dir/$v/mode" "^$side\$"
+    done
+    p=$(sed -n 's/^noctalia=//p' "$dir/theme")
+    check "$t names a Noctalia palette" test -n "$p"
+    check "$t Noctalia palette is linked" \
+        test "$(readlink -f "$repo/config/noctalia/palettes/$p.json")" = "$(readlink -f "$dir/noctalia.json")"
+    check "$t Noctalia palette has dark and light" jq -e '.dark.primary and .light.primary' "$dir/noctalia.json"
+    # Noctalia silently falls back to its builtin palette without these
+    check "$t Noctalia palette has terminal colours in both modes" \
+        jq -e '.dark.terminal.normal.black and .light.terminal.bright.white' "$dir/noctalia.json"
+done
 check "niri includes colours through the current link" \
     grep -qF 'include optional=true "~/.local/state/theme/current/niri.kdl"' "$repo/config/niri/config.kdl"
 

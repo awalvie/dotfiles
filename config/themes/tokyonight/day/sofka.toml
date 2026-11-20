@@ -1,0 +1,16 @@
+# sofka has no Tokyo Night skin: start from catppuccin-latte and swap in its colours.
+[skin]
+name = "catppuccin-latte"
+
+[skin.colors]
+rosewater = "#b15c00"
+flamingo = "#b15c00"
+pink = "#9854f1"
+green = "#587539"
+teal = "#118c74"
+overlay0 = "#848cb5"
+surface2 = "#a8aecb"
+surface1 = "#b7c1e3"
+surface0 = "#c4c8da"
+base = "#e1e2e7"
+mantle = "#d0d5e3"

@@ -1,4 +1,5 @@
--- the colour scheme the applied theme names, e.g. rose-pine-moon
+-- the colour scheme the applied theme names, e.g. rose-pine-moon; the other
+-- schemes are in themes.lua and load first
 local function theme_scheme()
 	local state = vim.env.XDG_STATE_HOME or (vim.env.HOME .. "/.local/state")
 	local f = io.open(state .. "/theme/current/nvim")

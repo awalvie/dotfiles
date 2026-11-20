@@ -1,0 +1,16 @@
+# sofka has no Kanagawa skin: start from catppuccin-mocha and swap in its colours.
+[skin]
+name = "catppuccin-mocha"
+
+[skin.colors]
+rosewater = "#ffa066"
+flamingo = "#ffa066"
+pink = "#d27e99"
+green = "#98bb6c"
+teal = "#7aa89f"
+overlay0 = "#727169"
+surface2 = "#54546d"
+surface1 = "#223249"
+surface0 = "#363646"
+base = "#1f1f28"
+mantle = "#2a2a37"

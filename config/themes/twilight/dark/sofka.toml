@@ -1,0 +1,16 @@
+# sofka has no Twilight skin: start from catppuccin-mocha and swap in its colours.
+[skin]
+name = "catppuccin-mocha"
+
+[skin.colors]
+rosewater = "#cda869"
+flamingo = "#cda869"
+pink = "#9b859d"
+green = "#8f9d6a"
+teal = "#afc4db"
+overlay0 = "#5f5a60"
+surface2 = "#3a3a3a"
+surface1 = "#323537"
+surface0 = "#262626"
+base = "#141414"
+mantle = "#1b1b1b"

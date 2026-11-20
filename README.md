@@ -116,15 +116,20 @@ before `hms` will see it — flakes only operate on tracked files.
   stylua, yt-dlp, ffmpeg, iosevka-term nerd font, etc.). `stylua` is the lua formatter the
   repo's `Makefile fmt` target calls — now nix-managed rather than via Mason.
   OS-specific packages are added in the per-OS modules: `alacrittyGL`, `keyd`,
-  `safeeyes` in `pop.nix`; `wl-clipboard`, `fontconfig`, `xdg-utils`
-  in `linux.nix` (both Linux hosts); plain
+  `safeeyes` in `pop.nix`; `wl-clipboard`, `fontconfig`, `xdg-utils`,
+  `lima` in `linux.nix` (both Linux hosts); plain
   `alacritty` in `darwin.nix`.
 - zsh config (in `common.nix`): history, aliases, vi-mode bindings, pure prompt
   (via `pkgs.pure-prompt`), zoxide (`programs.zoxide`, the `z`/`zi` jump
   commands — replaced the older `zsh-z`), navigation setopts (AUTO_CD,
   AUTO_PUSHD), completion zstyles (highlighted menu, case-insensitive matching,
   ls-colors), autosuggestion, syntax highlighting, `nr <pkg> [args]` (`nix run
-  nixpkgs#<pkg>`) and `ns <pkg>...` (`nix shell` with them) to try programs. The clipboard command and
+  nixpkgs#<pkg>`) and `ns <pkg>...` (`nix shell` with them) to try programs.
+  Those only skip the install: what a program does when run is real. For a
+  tool that would change the host (writes config, starts containers), try it
+  in a Lima VM (Linux hosts), which sees `~` read-only and goes away whole:
+  `limactl start --name=try template:docker`, `limactl shell try`,
+  `limactl delete -f try`. The clipboard command and
   `o` alias are OS-conditional
   (`pbcopy`/`open` on darwin, `wl-copy`/`xdg-open` on linux); the `hms` alias
   is defined per host in `pop.nix`/`cachyos.nix`/`darwin.nix` (different `--flake` target).

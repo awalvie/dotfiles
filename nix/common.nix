@@ -398,6 +398,15 @@ in
 
   home.file = {
     ".tmux.conf".source = ../home/.tmux.conf;
+    # tmux plugins from nixpkgs (no tpm), loaded at the end of .tmux.conf.
+    # resurrect: prefix+C-s saves sessions, prefix+C-r restores them;
+    # continuum saves every 15 min and restores when the tmux server starts.
+    ".tmux-plugins.conf".text = ''
+      set -g @resurrect-capture-pane-contents 'on'
+      set -g @continuum-restore 'on'
+      run-shell ${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/resurrect.tmux
+      run-shell ${pkgs.tmuxPlugins.continuum}/share/tmux-plugins/continuum/continuum.tmux
+    '';
 
     # ssh host aliases (github accounts + a few servers). The referenced
     # IdentityFiles (~/.ssh/<name>) are per-machine and NOT in the repo.

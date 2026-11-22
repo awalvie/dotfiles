@@ -33,10 +33,6 @@
         "installation_mode": "normal_installed",
         "install_url": "https://addons.mozilla.org/firefox/downloads/latest/dearrow/latest.xpi"
       },
-      "myallychou@gmail.com": {
-        "installation_mode": "normal_installed",
-        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/youtube-recommended-videos/latest.xpi"
-      },
       "{4f391a9e-8717-4ba6-a5b1-488a34931fcb}": {
         "installation_mode": "normal_installed",
         "install_url": "https://addons.mozilla.org/firefox/downloads/latest/bonjourr-startpage/latest.xpi"

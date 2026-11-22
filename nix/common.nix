@@ -127,6 +127,11 @@ in
       user.email = "agrawal.vishesh.178@gmail.com";
       merge.conflictstyle = "diff3";
       diff.colorMoved     = "default";
+
+      # push to GitHub over ssh (key: ~/.ssh/github, see home/.ssh/config).
+      # Clones and fetches stay on https, so a new host can clone before it
+      # has a key.
+      url."git@github.com:".pushInsteadOf = "https://github.com/";
     };
 
     # global gitignore (~/.config/git/ignore). keeps direnv/venv artifacts out

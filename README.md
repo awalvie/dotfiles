@@ -174,6 +174,10 @@ stores HEAD and a checksum of uncommitted changes in
 - delta shows diffs. Its layout is in `programs.delta.options`.
 - A global gitignore (`~/.config/git/ignore`) hides `.envrc`, `.venv` and
   `.direnv` in every repo.
+- Pushes to `https://github.com/` go over SSH with the `~/.ssh/github` key.
+  Clones and fetches stay on HTTPS. To set up a new host, run
+  `ssh-keygen -t ed25519 -f ~/.ssh/github`, then `gh auth login -p ssh`. gh
+  uploads the key.
 
 ### Python venvs
 

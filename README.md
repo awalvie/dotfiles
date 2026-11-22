@@ -1,361 +1,376 @@
 # Dotfiles
 
-One Nix flake with home-manager for three hosts: a Pop!_OS laptop (COSMIC,
-NVIDIA), a CachyOS work PC (niri + Noctalia) and an Intel MacBook. Notes for
-agents working in the repo are in `CLAUDE.md`.
+One Nix flake with home-manager. It sets up three hosts:
 
-- `#pop`     → `x86_64-linux` (`nix/hosts/pop.nix`)
-- `#cachyos` → `x86_64-linux` (`nix/hosts/cachyos.nix`)
-- `#darwin`  → `x86_64-darwin` (`nix/hosts/darwin.nix`)
+| Output | System | Host module | Machine |
+|---|---|---|---|
+| `#pop` | `x86_64-linux` | `nix/hosts/pop.nix` | Pop!_OS laptop (COSMIC, NVIDIA) |
+| `#cachyos` | `x86_64-linux` | `nix/hosts/cachyos.nix` | CachyOS work PC (niri + Noctalia) |
+| `#darwin` | `x86_64-darwin` | `nix/hosts/darwin.nix` | Intel MacBook |
 
-nixpkgs dropped `x86_64-darwin` after the 26.05 release, so the Mac needs a
-26.05 nixpkgs input to build.
+nixpkgs dropped `x86_64-darwin` after 26.05, so the Mac needs a 26.05
+nixpkgs input. Notes for agents are in `CLAUDE.md`.
 
 ## Layout
 
-| Folder | Ends up in |
+Each file lives where its main copy lands (ADR 0003).
+
+| Folder | Lands in |
 |---|---|
 | `config/` | `~/.config` |
 | `home/` | `~` (`~/bin`, `~/.tmux.conf`, `~/.ssh/config`) |
-| `system/` | outside the home folder, installed with sudo by a setup script (`/etc`, `/usr/share`) |
-| `nix/` | the flake's modules; `nix/hosts/` holds one module per host |
+| `system/` | outside `~` (`/etc`, `/usr/share`), installed with sudo by a setup script |
+| `nix/` | the flake's modules; `nix/hosts/` has one module per host |
 | `scripts/` | what activation runs: setup scripts, `hms-state.sh`, `niri-which-key.py` |
 | `tests/` | tests, run by hand |
 
-See ADR 0003 (`docs/adr/`).
-
-## Setup scripts
-
-- **Per-program glue**: `scripts/setup-*.sh` — one script per program for
-  setup nix can't do declaratively on a non-NixOS host. Each is wired to its
-  own `home.activation.setup<Program>` block: `setup-zsh.sh` and
-  `setup-firefox.sh` in `nix/linux.nix` (both Linux hosts), `setup-cachyos.sh` in `nix/hosts/cachyos.nix`, the rest in
-  `nix/hosts/pop.nix` (Pop!_OS only). Each runs standalone too and is idempotent
-  (only acts when something changed). Currently:
-  - `setup-keyd.sh` — sudo; installs keyd config + a generated systemd unit
-    into `/etc`.
-  - `setup-alacritty.sh` — no sudo; installs a desktop entry into
-    `~/.local/share/applications` with absolute nix-store paths.
-  - `setup-zsh.sh` — sudo; sets the nix zsh as the login shell.
-  - `setup-firefox.sh` — sudo, both Linux hosts (in `nix/linux.nix`);
-    installs `system/firefox/policies.json` to `/etc/firefox/policies`: the
-    extensions Firefox installs in every profile, plus no telemetry, studies,
-    Pocket, sponsored tiles, password saving or first-run pages, and web apps
-    on (`browser.taskbarTabs.enabled`, off by default on Linux; e.g. Teams
-    via "Add tab to taskbar"). Extension
-    settings are not in it (uBlock, Vimium C and Containers sync through a
-    Firefox account).
-  - `setup-docker.sh` — sudo; installs Docker Engine from Docker's official
-    apt repo, enables the daemon, adds the user to the docker group.
-  - `setup-cachyos.sh` — sudo, CachyOS only; installs keyd, alacritty, docker,
-    tailscale, flatpak, openssh and greetd-tuigreet with pacman, installs the keyd config, enables the services
-    (sshd too, Arch defaults: keys and passwords), allows SSH (tcp 22) from the
-    LAN `192.168.0.0/20` in ufw, adds the docker group, sets the Tailscale operator, and sets up the login
-    screen: greetd running tuigreet, a text greeter on the console that
-    remembers the last user and session and starts `niri-session`
-    (`system/greetd/config.toml` → `/etc/greetd/config.toml`). It also
-    removes what the earlier ReGreet login screen left behind. Noctalia's
-    lock screen (`config/noctalia/lockscreen.toml`) shows the current
-    desktop painting. The switch from SDDM happens at the next boot. To go back from a text console
-    (Ctrl+Alt+F3): `sudo systemctl disable greetd && sudo systemctl enable
-    sddm`, then reboot.
-  - `setup-flatpak.sh` — no sudo, CachyOS (runs after `setup-cachyos.sh`);
-    installs the desktop apps listed in `nix/hosts/cachyos.nix` per user from
-    Flathub (ADR 0002: desktop apps from Flatpak, pacman keeps the base
-    system). Skips itself until flatpak is installed. Removing an app does not
-    uninstall: `flatpak uninstall --user <id>`.
-
-## Bootstrap (fresh host)
+## Bootstrap a new host
 
 ```bash
 git clone <repo> ~/dotfiles && ~/dotfiles/bootstrap.sh   # or: bootstrap.sh cachyos
 ```
 
-`bootstrap.sh` picks the host (macOS -> `darwin`, `pacman` -> `cachyos`,
-`apt-get` -> `pop`), installs nix if missing, enables flakes in
-`~/.config/nix/nix.conf` if that file is missing, and runs the first switch
-with `-b backup`, so replaced files are kept as `*.backup`. It is safe to run
-again.
+`bootstrap.sh` does these steps:
 
-`tests/cachyos.sh` runs the bootstrap twice in an unprivileged
-`cachyos/cachyos` container (never `--privileged`, never systemd as init),
-capped at 4 CPUs and 6 GB. It tests the committed `HEAD`, so commit first.
-It cannot test services, the login screen or the desktop.
+1. It picks the host: macOS → `darwin`, `pacman` → `cachyos`, `apt-get` → `pop`.
+2. It installs nix if nix is missing.
+3. It enables flakes in `~/.config/nix/nix.conf` if that file is missing.
+4. It runs the first switch with `-b backup`. Replaced files stay as `*.backup`.
 
-## How to apply changes
+You can run it again safely. The first switch takes 10–20 minutes.
+
+## Apply changes
+
+Run `hms`. Each host has its own alias:
 
 ```bash
-# from anywhere — `hms` is a per-host alias:
-hms                # pop     -> home-manager switch --flake ~/dotfiles#pop     --impure
-                   # cachyos -> home-manager switch --flake ~/dotfiles#cachyos --impure
-                   # darwin -> home-manager switch --flake ~/dotfiles#darwin  --impure
-
-# or the full form, e.g. from a fresh shell before zshrc is in place:
-nix run home-manager/master -- switch --flake ~/dotfiles#pop     --impure  # pop
-nix run home-manager/master -- switch --flake ~/dotfiles#cachyos --impure  # cachyos
-nix run home-manager/master -- switch --flake ~/dotfiles#darwin  --impure  # darwin
+hms   # home-manager switch --flake ~/dotfiles#<host> --impure
 ```
 
-The laptop's output was renamed `default` → `pop`, so its old `hms` alias
-points at a missing output until it switches once with the full form above
-(`#pop`); after that `hms` works again.
+Before zsh is set up, use the full form:
 
-The `--impure` is required on both OSes because the flake reads `$USER` via
-`builtins.getEnv` (and on Linux, because nixGL's NVIDIA wrapper detects the
-host driver version at eval time). The unfree NVIDIA driver pulled in by nixGL
-is allowed via a scoped `config.allowUnfreePredicate` in `flake.nix` (matches
-only `nvidia*`), so no blanket `NIXPKGS_ALLOW_UNFREE` env var is needed.
+```bash
+nix run home-manager/master -- switch --flake ~/dotfiles#<host> --impure
+```
 
-Anything added to the repo must be `git add`ed (not necessarily committed)
-before `hms` will see it — flakes only operate on tracked files.
+- `--impure` is necessary because the flake reads `$USER`. On `pop`, nixGL also
+  reads the NVIDIA driver version.
+- `flake.nix` allows only the unfree `nvidia*` packages that nixGL needs.
+- Flakes see only tracked files. `git add` a new file before you run `hms`.
+- The laptop's output was `default` and is now `pop`. Its old `hms` alias
+  fails until you switch once with the full form and `#pop`.
+
+## Update
+
+```bash
+nix flake update             # update all inputs
+nix flake update nixpkgs     # update only nixpkgs
+hms                          # apply
+git add flake.lock           # commit the lock so the other hosts match
+```
+
+## Setup scripts
+
+A setup script does work that nix cannot do on a non-NixOS host, for example
+it writes to `/etc`. Each script is in `scripts/`, has its own
+`home.activation.setup<Program>` block, and runs on its own too. A script does
+nothing when nothing changed. It asks for sudo only when it must change
+something.
+
+| Script | Hosts | Sudo | What it does |
+|---|---|---|---|
+| `setup-zsh.sh` | Linux | yes | Sets the nix zsh as the login shell (see below). |
+| `setup-firefox.sh` | Linux | yes | Installs `system/firefox/policies.json` (see below). |
+| `setup-keyd.sh` | pop | yes | Installs the keyd config and a systemd unit (see below). |
+| `setup-alacritty.sh` | pop | no | Installs an Alacritty desktop entry with store paths (see below). |
+| `setup-docker.sh` | pop | yes | Installs Docker from Docker's apt repo (see below). |
+| `setup-tailscale.sh` | pop | yes | Installs Tailscale from its apt repo (see below). |
+| `setup-cachyos.sh` | cachyos | yes | Installs packages, services and the login screen (see below). |
+| `setup-flatpak.sh` | cachyos | no | Installs the Flatpak apps (see below). |
+
+### Firefox policy
+
+`setup-firefox.sh` installs the policy to `/etc/firefox/policies`. The policy:
+
+- installs the extensions in every profile,
+- turns off telemetry, studies, Pocket, sponsored tiles, password saving and
+  first-run pages,
+- turns on web apps (`browser.taskbarTabs.enabled`), for example Teams with
+  "Add tab to taskbar".
+
+Extension settings are not in the policy. uBlock, Vimium C and Containers sync
+them through a Firefox account.
+
+### CachyOS setup
+
+`setup-cachyos.sh` does these steps:
+
+1. It installs with pacman: keyd, Alacritty, Docker, Tailscale, Flatpak,
+   OpenSSH, greetd-tuigreet, wf-recorder and slurp.
+2. It installs the keyd config and enables the services, sshd included.
+3. It lets SSH (TCP 22) in from the LAN `192.168.0.0/20` in ufw.
+4. It adds you to the docker group and sets you as the Tailscale operator.
+5. It installs the wallpapers to `/usr/share/backgrounds/dotfiles`.
+6. It sets up the login screen: greetd runs tuigreet, a text greeter that
+   remembers the last user and session and starts `niri-session`
+   (`system/greetd/config.toml` → `/etc/greetd/config.toml`). It also removes
+   what the old ReGreet login screen left.
+
+The switch from SDDM happens at the next boot. To go back, open a text console
+(Ctrl+Alt+F3), run `sudo systemctl disable greetd && sudo systemctl enable
+sddm`, then reboot.
+
+`setup-flatpak.sh` runs after it. It installs the apps listed in
+`nix/hosts/cachyos.nix` from Flathub, per user (ADR 0002). It waits until
+Flatpak is installed. To remove an app, delete it from the list, then run
+`flatpak uninstall --user <id>`.
 
 ## What nix manages
 
-- Cross-platform CLI packages in `common.nix`'s `home.packages` (neovim, tmux,
-  lazygit, btop, yazi (`y` opens it and cds on quit; official Rosé Pine flavours, Moon or Dawn picked from the terminal background), ripgrep, go, rustup, nodejs, python3, uv, delta, fzf, bat, direnv,
-  stylua, yt-dlp, ffmpeg, iosevka-term nerd font, etc.). `stylua` is the lua formatter the
-  repo's `Makefile fmt` target calls — now nix-managed rather than via Mason.
-  OS-specific packages are added in the per-OS modules: `alacrittyGL`, `keyd`,
-  `safeeyes` in `pop.nix`; `wl-clipboard`, `fontconfig`, `xdg-utils`,
-  `lima` in `linux.nix` (both Linux hosts); plain
-  `alacritty` in `darwin.nix`.
-- zsh config (in `common.nix`): history, aliases, vi-mode bindings, pure prompt
-  (via `pkgs.pure-prompt`), zoxide (`programs.zoxide`, the `z`/`zi` jump
-  commands — replaced the older `zsh-z`), navigation setopts (AUTO_CD,
-  AUTO_PUSHD), completion zstyles (highlighted menu, case-insensitive matching,
-  ls-colors), autosuggestion, syntax highlighting, `nr <pkg> [args]` (`nix run
-  nixpkgs#<pkg>`) and `ns <pkg>...` (`nix shell` with them) to try programs.
-  Those only skip the install: what a program does when run is real. For a
-  tool that would change the host (writes config, starts containers), try it
-  in a Lima VM (Linux hosts), which sees `~` read-only and goes away whole:
-  `limactl start --name=try template:docker`, `limactl shell try`,
-  `limactl delete -f try`. The clipboard command and
-  `o` alias are OS-conditional
-  (`pbcopy`/`open` on darwin, `wl-copy`/`xdg-open` on linux); the `hms` alias
-  is defined per host in `pop.nix`/`cachyos.nix`/`darwin.nix` (different `--flake` target).
-- Themes: Rosé Pine (Moon / Dawn, the default), Gruvbox, Catppuccin (Mocha /
-  Latte), Tokyo Night (Night / Day), Everforest, Kanagawa (Wave / Lotus),
-  Solarized, Flexoki and Twilight (dark only), through the theme system below (`theme list`).
-  fzf, bat and lazygit follow the terminal palette and need no theme files.
-- git config (delta integration, settings.user.{name,email}). delta's layout
-  (line numbers, file labels, hunk headers, blame, merge conflicts) is inline in
-  `programs.delta.options`.
-- Themes (see GLOSSARY.md for Theme, Variant, Mode):
-  - `config/themes/<theme>/<variant>/` holds one file per program:
-    `alacritty.toml`, `tmux.conf`, `nvim` (colour scheme name), `btop.theme`,
-    `sofka.toml`, `delta.gitconfig`, `niri.kdl`, plus a `mode` marker.
-    `config/themes/<theme>/theme` declares `dark=` and `light=` variants and
-    `noctalia=` the palette name; `config/themes/<theme>/noctalia.json` is
-    that palette with both modes, linked as
-    `config/noctalia/palettes/<name>.json`.
-  - `~/.config/themes` links out of store to that folder; the active variant
-    is the `~/.local/state/theme/current` link, so switching needs no `hms`.
-    Each program reads its file through that link (Alacritty import, tmux
-    `source-file`, btop `current` theme, sofka `conf.d`, git include for
-    delta, niri `include optional=true`, nvim at startup).
-  - `theme` (`home/bin/theme`, run `theme help`): with no argument it shows
-    the state; `list`, `set <name>` (also switches Noctalia's palette, kept
-    in Noctalia's state, not `config.toml`), `toggle` (flips the desktop's mode),
-    `apply dark|light` (moves the link and reloads Alacritty, tmux, nvim
-    through its sockets, btop and Claude Code's `theme` setting), `init` (the `setupTheme` activation:
-    creates the link only when it is missing).
-  - Triggers: on `cachyos` Noctalia's `theme_mode_changed` hook
-    (`config/noctalia/theme-hook.toml`); on `pop` the `theme-watch` user
-    service follows COSMIC through the portal's colour-scheme signal.
-  - Test: `tests/theme.sh`. Add a theme by adding a folder, its palette link
-    in `config/noctalia/palettes/` and its nvim plugin
-    (`config/nvim/lua/plugins/themes.lua`).
-- Terminal-palette colours: fzf (no colour options), bat (`ansi` theme), delta
-  (terminal colour names, `syntax-theme = ansi`) and lazygit's delta pager use
-  the terminal's ANSI colours, so a theme switch reaches them with no edits.
-  Also a global gitignore (`programs.git.ignores` → `~/.config/git/ignore`) for
-  `.envrc`/`.venv`/`.direnv` so venv/direnv artifacts never show up in any
-  repo's status — important for the monorepo.
-- python venvs via direnv: `programs.direnv.stdlib` defines a `layout_uv` that
-  keeps venvs centralized in `~/venvs/<name>` (out of the repo) and
-  auto-activates them on cd. Drop `layout uv [name] [python]` in a project's
-  `.envrc` (one at a monorepo root covers all subdirs), then `direnv allow`.
-  Replaced the old hand-rolled `uvenv` shell wrapper.
-- Config file symlinks via `xdg.configFile` and `home.file`:
-  - `~/.config/nvim` ← `config/nvim/`, an out-of-store link to the checkout
-    (edits apply without `hms`; nvim's byte-code cache misses edits to store
-    files)
-  - `~/.config/alacritty` ← `config/alacritty/` (shared; macOS alacritty reads
-    `~/.config/alacritty` too)
-    Colours come from the current theme variant (see Themes).
-  - `~/.config/lazygit` ← `config/lazygit/`
-  - `~/.config/btop/themes/current.theme` ← the current variant's `btop.theme`
-  - `~/.config/btop/btop.conf` ← a local copy of `config/btop/btop.conf`,
-    made by the `setupBtop` activation only when it is missing: btop rewrites
-    the file on every settings change, so those stay local
-  - `~/.config/nix/nix.conf` ← `config/nix/nix.conf` (enables flakes + the new
-    nix CLI; a flat symlink on purpose, not the HM `nix.*` module — see the
-    gotcha below)
-  - `~/.tmux.conf` ← `home/.tmux.conf` (clipboard `copy-command` is split via
-    `if-shell uname` — `pbcopy` on darwin, `wl-copy` on linux)
-  - `~/.ssh/config` ← `home/.ssh/config` (host aliases; the referenced
-    `IdentityFile`s are per-machine, not in the repo)
-  - `~/bin` ← `home/bin/` (hublink script)
-- keyd (Pop!_OS only; CachyOS uses pacman, see `setup-cachyos.sh`), indirectly: nix installs the binary, `setup-keyd.sh` writes
-  `/etc/keyd/default.conf` and a generated `/etc/systemd/system/keyd.service`
-  pointing to the nix-store keyd binary, then enables+restarts the service.
-  Sudo prompt only fires when config or unit file actually changed.
-- alacritty desktop entry (Pop!_OS only), indirectly: `setup-alacritty.sh` rewrites nixpkgs'
-  `Alacritty.desktop` (which uses bare `Exec=alacritty`/`Icon=Alacritty` that
-  COSMIC can't resolve) to absolute store paths and drops it in
-  `~/.local/share/applications`. No sudo.
-- **nixGL** (`nixgl` flake input, Pop!_OS only): nix-built GUI apps can't find
-  this NVIDIA host's GL/EGL driver (it lives in PopOS FHS paths, version-locked
-  to the kernel module). Without it, alacritty dies with
-  `NotSupported("provided display handle is not supported")`. `pop.nix`
-  wraps `pkgs.alacritty` via `symlinkJoin` + `makeWrapper` into `alacrittyGL`,
-  whose `bin/alacritty` runs through `nixGLDefault` while keeping the original
-  `/share` (so the launcher entry inherits the GL-correct binary). The activation
-  block passes `alacrittyGL` (not `pkgs.alacritty`) to `setup-alacritty.sh`.
-  Per ADR 0001, GPU apps normally come from the host OS; nixGL is the Pop!_OS
-  exception, and a GPU app nix-installed on `pop` needs the same wrap.
-  macOS (`darwin.nix`) uses plain `pkgs.alacritty` — no wrap needed. The
-  `nixgl` input is only passed to the `pop` config's `extraSpecialArgs`, so the
-  darwin config never evaluates it.
-- login shell (both Linux hosts), indirectly: `setup-zsh.sh` adds the nix zsh to `/etc/shells` and
-  `sudo chsh`es the user to it. It targets the stable
-  `~/.nix-profile/bin/zsh` symlink (passed as `config.home.profileDirectory`),
-  NOT a `/nix/store` path, so it survives GC/rebuilds and doesn't re-run on
-  every update. Idempotent (no-op when the shell already matches). Takes effect
-  on next login. Not wired on macOS — macOS already defaults to zsh and sources
-  the generated `~/.zshrc` regardless of which zsh binary is the login shell;
-  add a darwin chsh path later if you want the nix zsh as the actual login bin.
-- `hms` marker in the zsh prompt: the `recordHmsState` activation block runs
-  `scripts/hms-state.sh record`, storing the repo's HEAD plus a checksum of
-  uncommitted tracked changes in `~/.local/state/dotfiles/applied`. A precmd
-  hook runs `hms-state.sh check` (local git only) and shows a gold `hms` in
-  `RPROMPT` while the repo differs. `tests/hms-state.sh` tests it.
-- `~/code/{origin,lamp,work}` workspace dirs — created by the
-  `setupCodeDirs` activation block (inline `mkdir -p`, no sudo, no script —
-  too trivial to warrant one).
-- docker (Pop!_OS only; CachyOS uses pacman), indirectly: `setup-docker.sh` installs Docker Engine
-  from Docker's official apt repo (CLI + daemon + compose plugin), enables the
-  systemd unit, and adds the user to the `docker` group. NOT nix-managed — a
-  nix-store dockerd is painful on non-NixOS, and apt is what Docker supports on
-  Ubuntu/PopOS. Sudo prompt + apt work only fire on first run; idempotent
-  after. Group membership needs a re-login to take effect. (macOS uses Docker
-  Desktop, installed separately.)
-- tailscale (Pop!_OS only; CachyOS uses pacman), indirectly: `setup-tailscale.sh` installs Tailscale
-  from its official apt repo, enables `tailscaled`, and sets the user as the
-  operator (CLI without sudo; per-profile, so re-run `hms` after adding a
-  profile). NOT nix-managed — root daemon on non-NixOS, same
-  reason as docker. Login is manual, once: `tailscale up`. (macOS uses the
-  Tailscale app, installed separately.)
-- `tsp` / `tsw` (both Linux hosts, `nix/linux.nix`): `tailscale switch` to the
-  account nicknamed `personal` / `work`; without that nickname they print the
-  setup steps (`sudo tailscale set --operator=$USER --nickname=<name>` on the
-  account).
+### Packages
 
-### CachyOS desktop (niri + Noctalia)
+- **All hosts** (`nix/common.nix`): neovim, tmux, lazygit, btop, yazi, ripgrep,
+  go, rustup, nodejs, python3, uv, delta, fzf, bat, direnv, stylua, yt-dlp,
+  ffmpeg, the Iosevka Term nerd font and more. `make fmt` uses stylua.
+- **Linux** (`nix/linux.nix`): wl-clipboard, fontconfig, xdg-utils, lima.
+- **pop**: alacrittyGL, keyd, safeeyes. **darwin**: alacritty.
 
-`nix/hosts/cachyos.nix` only. The desktop itself comes from the pacman package
-`cachyos-niri-noctalia` (version 1.4.0-1 when these files were copied).
-- `config/niri/` and `config/noctalia/` are copies of that package's
-  `/etc/skel/.config/{niri,noctalia}`. `~/.config/niri` and
-  `~/.config/noctalia` are out-of-store symlinks
-  (`mkOutOfStoreSymlink`) to `~/dotfiles/config/...`, so edits reload at once
-  without `hms`. Put your own keybinds, input and display settings in
-  `config/niri/cfg/*.kdl`. Noctalia's GUI writes its settings to
-  `~/.local/state/noctalia/settings.toml`; that state is not managed and
-  overrides our files.
-- Our changes to those copies: screens matched by make/model in
-  `cfg/display.kdl` (Dell portrait left of the Samsung; the Samsung's
-  DisplayPort and HDMI inputs report the same name, so it is matched by port:
-  DP-3 on, HDMI-A-1 off), key repeat 150 ms
-  / 40/s in `cfg/input.kdl`, screenshots on Print (Ctrl: screen, Alt:
-  window) in `cfg/keybinds.kdl`, animations off in niri and Noctalia, and a bare
-  auto-hiding floating bar in `config/noctalia/bar.toml`.
-- Wallpapers (cachyos): public-domain paintings in
-  `system/wallpapers/{dark,light}/{wide,tall}/`, pre-cropped to the Samsung
-  (3440x1440) and the Dell (1440x2560). `setup-cachyos.sh` installs them to
-  `/usr/share/backgrounds/dotfiles`.
-  `config/noctalia/wallpaper.toml` rotates them every 30 minutes, the Dell
-  from the `tall` folders, and follows the theme mode. Add a painting by
-  dropping a file in the right folder and running `hms`.
-- `nix/which-key.nix` (cachyos only): wlr-which-key on Mod+/, a menu of
-  niri actions whose labels show each direct shortcut (a cheat sheet). The
-  menu is generated from `cfg/keybinds.kdl` at `hms` time by
-  `scripts/niri-which-key.py` (groups and extras are set there), so a new bind
-  shows up after `hms`. It uses no GPU, so it comes from nix under ADR 0001.
-- `targets.genericLinux.enable = true` (GPU part off: CachyOS ships the
-  drivers). Why: the nix zsh does not read Arch's `/etc/zsh/zprofile`, so
-  nothing sources `/etc/profile.d`. Home-manager's session vars then put
-  `~/.nix-profile/bin` on `PATH` and `~/.nix-profile/share` in
-  `XDG_DATA_DIRS` (also via `environment.d`), so apps started by niri and the
-  launcher find nix tools and desktop entries.
-- Audio, Bluetooth, network, all from nix on Mod+Shift: `wiremix` (Mod+Shift+A)
-  and `bluetui` (Mod+Shift+B) open floating (window rule in `cfg/rules.kdl`);
-  `networkmanager_dmenu` (Mod+Shift+N) shows through `fuzzel`
-  (`config/{fuzzel,networkmanager-dmenu}`, out-of-store links). Mod+Shift+O
-  runs `home/bin/audio-output`: a fuzzel list of outputs (current marked);
-  the pick becomes the default and playing streams move to it.
-- Screen recording: Mod+Shift+C opens a fuzzel menu (area or screen, with
-  or without system audio, open the folder); Shift+Print records an area
-  picked with `slurp`, Ctrl+Shift+Print the focused output; any of them
-  stops a running recording. Runs
-  `home/bin/screen-record` (`wf-recorder` and `slurp` come from pacman),
-  saves to `~/Videos/recording-<date>.mp4`.
-- `services.safeeyes.enable = true`: a user unit wanted by
-  `graphical-session.target` (Pop!_OS keeps the plain package in `pop.nix`).
-- `services.wlsunset`: warmer screen (4000 K) from sunset to sunrise, a user
-  unit on `graphical-session.target`, Oslo's coordinates (from the system
-  timezone). Noctalia's own night light stays off, so the two do not fight
-  over the gamma. Check it with `journalctl --user -u wlsunset`.
-- NVIDIA VRAM: niri's wiki asks for a driver profile limiting VRAM use.
-  CachyOS `nvidia-utils` already ships it
-  (`/etc/nvidia/nvidia-application-profiles-rc.d/limit-vram-usage`), so
-  nothing to do.
-- Post-install checks (not in the container test): `systemctl is-active keyd
-  docker tailscaled`; re-login for the docker group; `tailscale up`; greetd logs
-  in to niri; the Noctalia bar and launcher work; `systemctl --user status
-  safeeyes`.
+yazi opens with `y` and changes the folder on quit. It uses the Rosé Pine Moon
+or Dawn flavour, from the terminal background.
 
-## What nix does NOT manage (and why)
+### Shell
 
-- **Neovim plugins** — `lazy.nvim` manages those. `lazy-lock.json` is
-  deliberately gitignored (NOT pinned) — plugins float to upstream HEAD by
-  choice.
-- **Neovim LSPs/formatters** — Mason auto-installs them at nvim startup. See
-  `config/nvim/lua/plugins/mason.lua` for the `ensure_installed` list. This is
-  a known soft spot — Mason binaries aren't pinned by the flake.
-- **gpg** — referenced in zshrc (`GPG_TTY` is exported) but not in
-  `home.packages` yet. Add when actually used. (`xdg-utils` is now declared on
-  linux.)
+zsh is set up in `nix/common.nix`: history, aliases, vi-mode keys, the pure
+prompt, zoxide (`z`, `zi`), `AUTO_CD` and `AUTO_PUSHD`, a highlighted
+completion menu, autosuggestions and syntax highlighting.
 
-## Updating
+- `o` opens a file, and the clipboard alias copies. They use `open` and
+  `pbcopy` on darwin, `xdg-open` and `wl-copy` on Linux.
+- `tsp` and `tsw` (Linux) switch Tailscale to the account nicknamed `personal`
+  or `work`. Without the nickname they print the setup steps.
+- `hms` is set per host, in the host module.
 
-```bash
-nix flake update             # bump everything in flake.lock
-nix flake update nixpkgs     # bump just nixpkgs
-hms                          # apply
-git add flake.lock           # commit the lock so other machines match
-```
+### Try a program
 
-## Migration to NixOS
+`nr <pkg> [args]` runs a program from nixpkgs. `ns <pkg>...` opens a shell
+with the programs, and the prompt shows them. These do not isolate the
+program.
 
-Not done, but the structure ports cleanly: `nix/common.nix` (+ `nix/linux.nix` and
-the relevant host module) becomes a home-manager module imported from a NixOS
-`configuration.nix`. The
-`setup-keyd.sh` script and the keyd activation block both go away in favor
-of `services.keyd.enable = true;` (the alacritty entry can stay as a
-home-manager `xdg.desktopEntries` block). Worth doing when the manual sudo
-prompts
-start feeling like friction.
+To try a tool that changes the host, use a Lima VM (Linux hosts). The VM has
+its own disk and Docker, and sees `~` read-only. Start it with
+`limactl start --name=try template:docker`, then `limactl shell try`.
+`limactl delete -f try` removes it.
 
-## Follow-up TODOs
+### The `hms` marker
 
-- **Replace `setup-alacritty.sh` with `xdg.desktopEntries`**. Now that
-  alacritty is a wrapped derivation, home-manager's native `xdg.desktopEntries`
-  could generate the launcher entry declaratively and drop the script + its
-  brittle `sed` rewrite.
-- **Pin Neovim LSPs/formatters via nix** instead of Mason (the known soft
-  spot) — would also fix the eventual NixOS-Mason patchelf problem.
-- **Move `gpg` into `home.packages`** if you start using it
-  (`GPG_TTY` is exported but gnupg isn't installed).
-- **Shell-script linting** — add `shellcheck`/`shfmt` (+ Makefile targets) for
-  `scripts/*.sh` and `home/bin/*`; nothing lints them today.
+The prompt shows a gold `hms` when the repo differs from what you last
+applied. The `recordHmsState` activation runs `scripts/hms-state.sh record`. It
+stores HEAD and a checksum of uncommitted changes in
+`~/.local/state/dotfiles/applied`. A prompt hook runs `hms-state.sh check`.
+`tests/hms-state.sh` tests it.
+
+### Git
+
+- delta shows diffs. Its layout is in `programs.delta.options`.
+- A global gitignore (`~/.config/git/ignore`) hides `.envrc`, `.venv` and
+  `.direnv` in every repo.
+
+### Python venvs
+
+direnv has a `layout_uv` function. It keeps each venv in `~/venvs/<name>`, out
+of the repo, and activates it when you `cd` in. Put `layout uv [name]
+[python]` in a project's `.envrc`, then run `direnv allow`. One `.envrc` at a
+monorepo root covers all subfolders.
+
+### Linked config
+
+| Link | Source | Notes |
+|---|---|---|
+| `~/.config/nvim` | `config/nvim/` | Out-of-store: edits apply without `hms`. |
+| `~/.config/alacritty` | `config/alacritty/` | macOS reads this path too. |
+| `~/.config/lazygit` | `config/lazygit/` | |
+| `~/.config/btop/btop.conf` | `config/btop/btop.conf` | A local copy, made only when missing. btop rewrites the file. |
+| `~/.config/nix/nix.conf` | `config/nix/nix.conf` | A plain link. The HM `nix.*` module cannot set flakes, because it needs flakes to run. |
+| `~/.tmux.conf` | `home/.tmux.conf` | Copies with `pbcopy` or `wl-copy`. |
+| `~/.ssh/config` | `home/.ssh/config` | Host aliases. The keys stay on each host. |
+| `~/bin` | `home/bin/` | `theme`, `screen-record`, `audio-output` and more. |
+
+The `setupCodeDirs` activation makes `~/code/{origin,lamp,work}`.
+
+### tmux sessions
+
+tmux-resurrect saves sessions to `~/.tmux/resurrect/`, and tmux-continuum
+saves them every 15 minutes. Sessions come back when tmux starts. The plugins
+come from nixpkgs (`~/.tmux-plugins.conf`).
+
+### Themes
+
+A **theme** is a colour family. A **variant** is one palette of it, for dark
+or light. The **mode** is dark or light (GLOSSARY.md).
+
+Themes: Rosé Pine (Moon/Dawn, the default), Gruvbox, Catppuccin
+(Mocha/Latte), Tokyo Night (Night/Day), Everforest, Kanagawa (Wave/Lotus),
+Solarized, Flexoki and Twilight (dark only).
+
+- `config/themes/<theme>/<variant>/` has one file per program:
+  `alacritty.toml`, `tmux.conf`, `nvim`, `btop.theme`, `sofka.toml`,
+  `delta.gitconfig`, `niri.kdl` and a `mode` marker.
+- `config/themes/<theme>/theme` names the `dark=` and `light=` variants and
+  the `noctalia=` palette. `noctalia.json` is that palette; it is linked from
+  `config/noctalia/palettes/`.
+- `~/.local/state/theme/current` links to the active variant. Each program
+  reads its file through that link, so a switch needs no `hms`.
+- fzf, bat, delta and lazygit use the terminal's ANSI colours. They follow the
+  theme with no files.
+
+The `theme` command (`home/bin/theme`, `theme help`):
+
+| Command | What it does |
+|---|---|
+| `theme` | Shows the current theme and mode. |
+| `theme list` | Lists the themes. |
+| `theme set <name>` | Switches theme and Noctalia's palette. |
+| `theme toggle` | Flips the desktop's mode. |
+| `theme apply dark\|light` | Moves the link and reloads Alacritty, tmux, nvim, btop and Claude Code. |
+| `theme init` | Makes the link if it is missing (activation runs this). |
+
+The mode follows the desktop. On `cachyos`, Noctalia's `theme_mode_changed`
+hook calls `theme` (`config/noctalia/theme-hook.toml`). On `pop`, the
+`theme-watch` user service follows COSMIC.
+
+To add a theme, add its folder, its palette link in
+`config/noctalia/palettes/` and its nvim plugin in
+`config/nvim/lua/plugins/themes.lua`. Then run `tests/theme.sh`.
+
+### Login shell (Linux)
+
+`setup-zsh.sh` adds the nix zsh to `/etc/shells` and makes it your login
+shell. It uses `~/.nix-profile/bin/zsh`, not a store path, so it stays valid
+after updates. The change applies at the next login. macOS is not set up: its
+own zsh reads the generated `~/.zshrc`.
+
+### pop only
+
+- **keyd**: nix installs keyd. `setup-keyd.sh` writes
+  `/etc/keyd/default.conf` and a systemd unit for the nix binary, because the
+  nixpkgs package has no unit.
+- **Alacritty entry**: nixpkgs' `Alacritty.desktop` uses bare names that
+  COSMIC cannot find. `setup-alacritty.sh` writes a copy with store paths to
+  `~/.local/share/applications`.
+- **nixGL**: nix-built GUI apps cannot find the host's NVIDIA driver. Without
+  nixGL, Alacritty fails with `NotSupported("provided display handle is not
+  supported")`. `pop.nix` wraps Alacritty as `alacrittyGL`, which runs through
+  `nixGLDefault`. Wrap any other nix GPU app on `pop` the same way (ADR 0001
+  says GPU apps come from the host OS). Only the `pop` config gets the `nixgl`
+  input.
+- **Docker** and **Tailscale** come from their apt repos, because root daemons
+  from nix are hard on non-NixOS. Log out and in again for the docker group.
+  Log in to Tailscale once with `tailscale up`. On macOS, install Docker
+  Desktop and the Tailscale app by hand.
+
+## CachyOS desktop (niri + Noctalia)
+
+The pacman package `cachyos-niri-noctalia` (1.4.0-1) gives the desktop.
+`nix/hosts/cachyos.nix` sets up the rest.
+
+- `config/niri/` and `config/noctalia/` started as copies of the package's
+  `/etc/skel/.config/`. They are out-of-store links, so edits apply at once.
+  Put your binds, input and display settings in `config/niri/cfg/*.kdl`.
+- Noctalia's settings window writes to `~/.local/state/noctalia/settings.toml`.
+  That file is not in the repo, and it overrides the repo's files.
+
+### Changes from the package
+
+- `cfg/display.kdl` matches screens by make and model: the Dell in portrait
+  left of the Samsung. The Samsung's two inputs report the same name, so it is
+  matched by port (DP-3 on, HDMI-A-1 off).
+- `cfg/input.kdl`: key repeat after 150 ms, 40 per second.
+- Animations are off in niri and Noctalia.
+- `config/noctalia/bar.toml`: a bare floating bar that hides itself.
+
+### Keys
+
+| Keys | Action |
+|---|---|
+| Mod+/ | A menu of niri actions with their keys (`nix/which-key.nix`). |
+| Mod+Escape | Lock the screen. |
+| Print / Ctrl+Print / Alt+Print | Screenshot: area / screen / window. |
+| Mod+Shift+C | Recording menu: area or screen, with or without audio. |
+| Shift+Print / Ctrl+Shift+Print | Record an area / the screen. Press again to stop. |
+| Mod+Shift+A | `wiremix`, the audio mixer. |
+| Mod+Shift+B | `bluetui`, Bluetooth. |
+| Mod+Shift+N | `networkmanager_dmenu` in fuzzel, networks. |
+| Mod+Shift+O | `audio-output`: pick the output; playing streams move to it. |
+
+- `scripts/niri-which-key.py` builds the Mod+/ menu from
+  `cfg/keybinds.kdl` at `hms` time. A new bind shows after `hms`.
+- `home/bin/screen-record` saves to `~/Videos/recording-<date>.mp4`.
+- `wiremix` and `bluetui` open floating (`cfg/rules.kdl`).
+
+### Wallpapers
+
+Public-domain paintings are in `system/wallpapers/{dark,light}/{wide,tall}/`.
+They are cropped for the Samsung (3440x1440) and the Dell (1440x2560).
+`config/noctalia/wallpaper.toml` changes them every 30 minutes and follows the
+mode. The Dell uses the `tall` folders. To add a painting, put the file in the
+correct folder and run `hms`. The lock screen shows the current painting.
+
+### Services
+
+- **Safe Eyes** reminds you to take breaks.
+- **wlsunset** makes the screen warmer (4000 K) from sunset to sunrise, for
+  Oslo. Noctalia's night light stays off, so the two do not fight. Check it
+  with `journalctl --user -u wlsunset`.
+- **finger-rehab** sends a notification every 4 hours of the session.
+- **ssh-agent** runs as a user unit, because niri starts none.
+
+### Why `targets.genericLinux`
+
+The nix zsh does not read Arch's `/etc/zsh/zprofile`, so nothing reads
+`/etc/profile.d`. `targets.genericLinux` puts `~/.nix-profile/bin` on `PATH`
+and `~/.nix-profile/share` in `XDG_DATA_DIRS`. Then apps that niri starts find
+nix tools and desktop entries. Its GPU part is off: CachyOS gives the drivers.
+
+niri's wiki asks for an NVIDIA profile that limits VRAM use. CachyOS
+`nvidia-utils` already has it.
+
+### Checks after install
+
+`tests/cachyos.sh` cannot test these. Check them by hand:
+
+- `systemctl is-active keyd docker tailscaled`
+- Log out and in again for the docker group, then run `tailscale up`.
+- greetd logs you in to niri.
+- The Noctalia bar and launcher work.
+- `systemctl --user status safeeyes`
+
+## Tests
+
+| Test | What it tests |
+|---|---|
+| `tests/cachyos.sh` | Runs the bootstrap twice in an unprivileged `cachyos/cachyos` container (4 CPUs, 6 GB). It tests the committed `HEAD`, so commit first. It cannot test services or the desktop. |
+| `tests/theme.sh` | The `theme` command and every theme's files. |
+| `tests/hms-state.sh` | The `hms` marker. |
+| `tests/niri-which-key.sh` | The Mod+/ menu builder. |
+
+## What nix does not manage
+
+- **Neovim plugins**: lazy.nvim manages them. `lazy-lock.json` is not in git,
+  so plugins follow upstream.
+- **Neovim LSPs and formatters**: Mason installs them when nvim starts (see
+  `config/nvim/lua/plugins/mason.lua`). The flake does not pin them.
+- **gpg**: zsh exports `GPG_TTY`, but gnupg is not installed.
+
+## Moving to NixOS
+
+Not done. `nix/common.nix`, `nix/linux.nix` and the host module would become a
+home-manager module in a NixOS `configuration.nix`. `services.keyd.enable`
+would replace `setup-keyd.sh`, and `xdg.desktopEntries` could replace
+`setup-alacritty.sh`.
+
+## To do
+
+- Replace `setup-alacritty.sh` with `xdg.desktopEntries`.
+- Install Neovim LSPs and formatters with nix instead of Mason.
+- Add `gpg` to `home.packages` when you need it.
+- Lint the shell scripts with `shellcheck` and `shfmt`.

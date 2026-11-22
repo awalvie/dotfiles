@@ -11,9 +11,8 @@
     wl-clipboard
     fontconfig
     xdg-utils      # xdg-open, used by the `o` alias
-    # Throwaway VMs for trying tools that would change the host
-    # (`limactl start template:docker`, see README). Bundles its own QEMU and
-    # runs under the user on /dev/kvm: no root service.
+    # VMs to try tools in (see README). Lima brings its own QEMU and runs as
+    # the user, so it needs no root service.
     lima
   ];
 

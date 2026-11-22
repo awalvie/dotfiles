@@ -1,63 +1,36 @@
-# Setting up your SSH keys
+# SSH keys for two GitHub accounts
 
-Say you have two accounts on GitHub
+Use one key per account, and one host alias per key.
 
-1. Create two pairs of rsa keys using `ssh-keygen`, and name them properly:
+1. Make a key for each account:
 
-```bash
-$ ssh-keygen -t rsa -C "email" -f "~/.ssh/key_name"
-```
+   ```bash
+   ssh-keygen -t ed25519 -C "<email>" -f ~/.ssh/<key_name>
+   ```
 
-2. Add generated private key (the ones without `.pub`) to the local agent:
+2. Add the public key (`<key_name>.pub`) to the account on GitHub.
 
-```bash
-# -K options works for Macs
-$ ssh-add -K path_to_private_key
+3. Add a host alias for each key to `~/.ssh/config`. `IdentityFile` is the
+   private key, the file without `.pub`:
 
-# List private keys
-$ ssh-add -l
-```
+   ```
+   Host host_1
+       Hostname github.com
+       User git
+       IdentityFile ~/.ssh/key_1
 
-3. Create a `config` file in `~/.ssh/`. Following are sub options of Host:
+   Host host_2
+       Hostname github.com
+       User git
+       IdentityFile ~/.ssh/key_2
+   ```
 
-- `Hostname`
-Specify the actual `hostname`, just use `github.com` for github,
+4. Use the alias in place of `github.com`:
 
-- `User`: git
-The user is always git for github,
+   ```bash
+   git clone git@host_1:user/repo.git                  # a new repo
+   git remote set-url origin git@host_1:user/repo.git  # a repo you have
+   ```
 
-- `IdentityFile`
-Specify key to use, just put the path the a public key.
-
-```
-Host host_1
-    Hostname github.com
-    User git
-    IdentityFile ~/.ssh/key_1.pub
-
-Host host_2
-    Hostname github.com
-    User git
-    IdentityFile ~/.ssh/key_2.pub
-```
-
-4. For existing repos:
-
-- For repo in Host `host_1`:
-
-```bash
-$ git remote set-url origin git@host_1:user/repo.git
-```
-
-- For repo in Host `host_2`:
-
-```bash
-$ git remote set-url origin git@host_2:user/repo.git
-```
-
-5. Cloning new repos
-
-```bash
-# add the Host name instead of github.com
-$ git clone git@host_1:user/repo.git
-```
+The ssh-agent keeps the key after the first use, because `~/.ssh/config` sets
+`AddKeysToAgent`. To see the keys in the agent, run `ssh-add -l`.

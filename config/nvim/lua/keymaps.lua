@@ -11,8 +11,19 @@ nmap("N", "Nzzzv")
 nmap("<leader>l", "<cmd>bnext<CR>") -- Move to the next buffer
 nmap("<leader>h", "<cmd>bprevious<CR>") -- Move to the previous buffer
 vim.keymap.set("n", "<leader>bq", function()
-	Snacks.bufdelete()
-end) -- Delete current buffer
+	-- the last file: quit nvim (asks to save) instead of opening an empty buffer
+	local cur = vim.api.nvim_get_current_buf()
+	local others = vim.tbl_filter(function(b)
+		return b.bufnr ~= cur
+	end, vim.fn.getbufinfo({ buflisted = 1 }))
+	if vim.bo[cur].buflisted and #others == 0 then
+		vim.cmd("confirm qall")
+	else
+		Snacks.bufdelete()
+	end
+end) -- Delete current buffer; quit on the last one
+-- quit nvim, whatever windows are open (asks about unsaved changes)
+nmap("<leader>q", "<cmd>confirm qall<CR>")
 vim.keymap.set("n", "<leader>bd", function()
 	Snacks.bufdelete.other()
 end) -- Delete all buffers but the current one

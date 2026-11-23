@@ -76,3 +76,6 @@ o.termguicolors = true
 o.wildignore =
 	"deps,.svn,CVS,.git,.hg,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,.DS_Store,*.aux,*.out,*.toc"
 o.completeopt = { "menu", "menuone", "noselect" }
+
+-- one statusline for all windows (mini.statusline)
+vim.o.laststatus = 3

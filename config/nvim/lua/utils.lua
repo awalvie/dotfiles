@@ -1,9 +1,10 @@
-function map(mode, shortcut, command)
-	vim.api.nvim_set_keymap(mode, shortcut, command, { noremap = true, silent = true })
+-- desc is optional; mini.clue shows it in the key hints
+function map(mode, shortcut, command, desc)
+	vim.api.nvim_set_keymap(mode, shortcut, command, { noremap = true, silent = true, desc = desc })
 end
 
-function nmap(shortcut, command)
-	map("n", shortcut, command)
+function nmap(shortcut, command, desc)
+	map("n", shortcut, command, desc)
 end
 
 function imap(shortcut, command)

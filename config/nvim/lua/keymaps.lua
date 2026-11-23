@@ -8,8 +8,8 @@ nmap("n", "nzzzv")
 nmap("N", "Nzzzv")
 
 -- buffer navigation and management
-nmap("<leader>l", "<cmd>bnext<CR>") -- Move to the next buffer
-nmap("<leader>h", "<cmd>bprevious<CR>") -- Move to the previous buffer
+nmap("<leader>l", "<cmd>bnext<CR>", "Next buffer")
+nmap("<leader>h", "<cmd>bprevious<CR>", "Previous buffer")
 vim.keymap.set("n", "<leader>bq", function()
 	-- the last file: quit nvim (asks to save) instead of opening an empty buffer
 	local cur = vim.api.nvim_get_current_buf()
@@ -21,23 +21,24 @@ vim.keymap.set("n", "<leader>bq", function()
 	else
 		Snacks.bufdelete()
 	end
-end) -- Delete current buffer; quit on the last one
+end, { desc = "Delete buffer (quit on the last)" })
 -- quit nvim, whatever windows are open (asks about unsaved changes)
-nmap("<leader>q", "<cmd>confirm qall<CR>")
+nmap("<leader>q", "<cmd>confirm qall<CR>", "Quit nvim")
 vim.keymap.set("n", "<leader>bd", function()
 	Snacks.bufdelete.other()
-end) -- Delete all buffers but the current one
+end, { desc = "Delete other buffers" })
 
 -- tab navigation
-vim.keymap.set("n", "<leader>dq", ":diffoff! | only<CR>") -- Close all diff windows when using Gitsigns.diffthis()
+-- close all diff windows after Gitsigns.diffthis()
+vim.keymap.set("n", "<leader>dq", ":diffoff! | only<CR>", { desc = "Close diff" })
 
 -- Begining & End of line in Normal mode
 nmap("H", "^")
 nmap("L", "g_")
 
 -- disable highlighting
-nmap("<leader><space>", "<cmd>noh<CR>")
-nmap("<leader>sm", "<cmd>messages<CR>")
+nmap("<leader><space>", "<cmd>noh<CR>", "Clear search highlight")
+nmap("<leader>sm", "<cmd>messages<CR>", "Show messages")
 
 -- Built-in Neovim 0.12 undo tree UI
 vim.keymap.set("n", "<leader>uu", function()
@@ -49,11 +50,11 @@ end, { desc = "Open Undotree" })
 nmap("Q", "<Nop>")
 
 -- Restart neovim
-nmap("<leader>rn", "<cmd>restart<CR>")
+nmap("<leader>rn", "<cmd>restart<CR>", "Restart nvim")
 
 -- Easy window split; C-w v -> <leader>wv, C-w s -> <leader>ws
-nmap("<leader>wv", "<C-w>v")
-nmap("<leader>ws", "<C-w>s")
+nmap("<leader>wv", "<C-w>v", "Split vertically")
+nmap("<leader>ws", "<C-w>s", "Split horizontally")
 
 -- Shortcutting split navigation, saving a keypress:
 nmap("<C-h>", "<C-w>h")
@@ -66,4 +67,4 @@ vim.keymap.set("n", "<leader>cp", function()
 	local rel_path = vim.fn.expand("%") -- Get relative path
 	vim.fn.setreg("+", rel_path) -- Copy to system clipboard
 	print("Copied relative path: " .. rel_path) -- Print message
-end, { silent = true })
+end, { silent = true, desc = "Copy file path" })

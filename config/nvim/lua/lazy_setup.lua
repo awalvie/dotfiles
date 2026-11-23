@@ -26,8 +26,4 @@ require("lazy").setup({
 		"MeanderingProgrammer/render-markdown.nvim",
 		opts = {},
 	},
-	{
-		"folke/which-key.nvim",
-		event = "VeryLazy",
-	},
 })

@@ -9,7 +9,7 @@ binds {
     Mod+Shift+ESCAPE                     { show-hotkey-overlay; }
 
     // ─── Applications ───
-    Mod+Slash                           hotkey-overlay-title="Which-key menu" { spawn "wlr-which-key"; }
+    Mod+Slash                           hotkey-overlay-title="Which-key menu" { spawn-sh "~/bin/which-key"; }
     Mod+Return                          hotkey-overlay-title="Open Terminal: Alacritty" { spawn "alacritty"; }
     Mod+B                               hotkey-overlay-title="Open Browser: firefox" { spawn "firefox"; }
 

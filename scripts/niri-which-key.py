@@ -37,6 +37,8 @@ EXTRAS = {
     ],
 }
 
+# Colours here are a fallback: home/bin/which-key swaps in the current
+# theme's colours each time the menu opens.
 STYLE = {
     "font": "IosevkaTerm Nerd Font 13",
     "background": "#232136",
@@ -104,7 +106,7 @@ def main(path):
         if not m or "Wheel" in m["key"] or m["key"].startswith("XF86"):
             continue
         action = m["action"].strip()
-        if "wlr-which-key" in action:
+        if "which-key" in action:
             continue
         title = TITLE.search(m["props"])
         # Group by the main action: `focus-column-or-monitor-left` is a focus
@@ -130,6 +132,8 @@ def main(path):
         ]
         menu.append({"key": key, "desc": title, "submenu": sub})
 
+    # wlr-which-key closes only on Esc; a no-op entry makes q close it too
+    menu.append({"key": "q", "desc": "Close", "cmd": "true"})
     print(json.dumps(STYLE | {"menu": menu}, indent=2))
 
 

@@ -203,7 +203,7 @@ for dir in "$repo"/config/themes/*/; do
     for side in dark light; do
         v=$(sed -n "s/^$side=//p" "$dir/theme")
         [ -n "$v" ] || continue # a one-variant theme serves both modes
-        for f in alacritty.toml tmux.conf niri.kdl btop.theme delta.gitconfig sofka.toml mode nvim; do
+        for f in alacritty.toml tmux.conf niri.kdl btop.theme delta.gitconfig sofka.toml fuzzel.ini mode nvim; do
             check "$t $v has $f" test -s "$dir/$v/$f"
         done
         check "$t $v is marked $side" has_text "$dir/$v/mode" "^$side\$"

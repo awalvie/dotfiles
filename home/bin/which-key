@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# The Mod+/ menu: wlr-which-key with the current theme's colours. The menu
+# itself is built at `hms` time (nix/which-key.nix); this copies it with the
+# background, text and border colours of the theme's fuzzel.ini.
+set -euo pipefail
+
+menu=${XDG_CONFIG_HOME:-$HOME/.config}/wlr-which-key/config.yaml
+colours=${XDG_STATE_HOME:-$HOME/.local/state}/theme/current/fuzzel.ini
+[ -f "$colours" ] || exec wlr-which-key
+
+colour() { sed -n "s/^$1 *= *\([0-9a-fA-F]\{6\}\).*/#\1/p" "$colours"; }
+out=${XDG_RUNTIME_DIR:-/tmp}/which-key.yaml
+sed -e "s/^  \"background\": .*/  \"background\": \"$(colour background)\",/" \
+    -e "s/^  \"color\": .*/  \"color\": \"$(colour text)\",/" \
+    -e "s/^  \"border\": .*/  \"border\": \"$(colour border)\",/" \
+    "$menu" >"$out"
+exec wlr-which-key "$out"

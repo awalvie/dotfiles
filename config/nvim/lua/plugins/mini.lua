@@ -35,11 +35,20 @@ return {
 						signs = { ERROR = "E", WARN = "W", INFO = "I", HINT = "H" },
 					})
 					local search = sl.section_searchcount({ trunc_width = 75 })
+					-- long branch names push the file name off; cap them
+					if vim.fn.strchars(git) > 30 then
+						git = vim.fn.strcharpart(git, 0, 29) .. "…"
+					end
+					-- last two folders and the file name, e.g. zot/vars/main.yml
+					local name = vim.api.nvim_buf_get_name(0)
+					local parts = vim.split(name, "/", { trimempty = true })
+					local file = name == "" and "[No Name]" or table.concat(parts, "/", math.max(1, #parts - 2))
+					file = file:gsub("%%", "%%%%") .. "%m"
 					return sl.combine_groups({
 						{ hl = mode_hl, strings = { mode:upper() } },
 						{ hl = "MiniStatuslineDevinfo", strings = { git, diff, diag } },
 						"%<",
-						{ hl = "MiniStatuslineFilename", strings = { "%f%m" } },
+						{ hl = "MiniStatuslineFilename", strings = { file } },
 						"%=",
 						{ hl = "MiniStatuslineFileinfo", strings = { vim.bo.filetype, search } },
 						{ hl = mode_hl, strings = { "%l:%v" } },

@@ -7,6 +7,8 @@ input {
             //If you want to overwrite your keyboard layout,
             // uncomment the line below and change the layout accordingly.
             //layout "us" // Use the American keyboard layout
+            // Right Alt is the compose key: RAlt, a, a → å; RAlt, o, / → ø; RAlt, a, e → æ
+            options "compose:ralt"
         }
         numlock // Enable numlock on startup
         repeat-delay 180 // ms before a held key repeats

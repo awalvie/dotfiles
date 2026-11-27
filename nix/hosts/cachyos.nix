@@ -79,6 +79,7 @@ in
       "com.calibre_ebook.calibre"
       "md.obsidian.Obsidian"
       "com.slack.Slack"
+      "com.valvesoftware.Steam"
     ];
   in lib.hm.dag.entryAfter [ "setupCachyos" ] ''
     export PATH=/usr/bin:/bin:$PATH

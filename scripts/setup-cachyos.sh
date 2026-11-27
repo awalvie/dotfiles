@@ -18,7 +18,7 @@ GREETD_CONF_DST=/etc/greetd/config.toml
 WALLPAPERS_SRC="${4:?missing wallpapers dir}"
 WALLPAPERS_DST=/usr/share/backgrounds/dotfiles
 PACKAGES=(keyd alacritty docker docker-compose docker-buildx tailscale
-    greetd greetd-tuigreet flatpak openssh wf-recorder slurp)
+    greetd greetd-tuigreet flatpak openssh wf-recorder slurp steam-devices)
 
 if ! pacman -Q "${PACKAGES[@]}" >/dev/null 2>&1; then
     echo ">>> cachyos: installing packages (sudo required)"

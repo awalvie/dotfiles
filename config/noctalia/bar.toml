@@ -23,7 +23,7 @@ hover_highlight          = false
 capsule                  = false
 start  = ["workspaces"]
 center = ["clock"]
-end    = ["tray", "volume", "network"]
+end    = ["tray", "volume", "network", "battery"]
 
 # Dots for workspaces, a wider pill for the focused one.
 [widget.workspaces]
@@ -41,6 +41,12 @@ peek       = true
 [widget.network]
 show_label = false
 peek       = true
+
+# Pinned to the laptop battery: hides on a machine without one, instead of
+# falling back to a mouse or gamepad battery as device = "auto" would.
+[widget.battery]
+device     = "BAT0"
+show_label = true
 
 [widget.tray]
 hide_passive = true
